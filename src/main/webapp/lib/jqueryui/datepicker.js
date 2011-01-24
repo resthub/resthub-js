@@ -11,7 +11,7 @@ define('jqueryui/datepicker', ['jquery','jqueryui/core'], function (jQuery) {
  * Depends:
  *	jquery.ui.core.js
  */
-(function( $) {
+(function( $ ) {
 
 $.extend($.ui, { datepicker: { version: "1.8.7" } });
 

@@ -1,7 +1,7 @@
-define(['jquery', 'resthub.route'], function($) {
+define(["jquery", "route"], function($) {
 
 	$(document).ready(function(){
-		$.route('#/', function() {
+		$.route('#',  function() {
 			$('#main').html("Home");
 		});
 		

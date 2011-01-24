@@ -13,7 +13,7 @@ define('jqueryui/autocomplete', ['jquery','jqueryui/core','jqueryui/widget','jqu
  *	jquery.ui.widget.js
  *	jquery.ui.position.js
  */
-(function( $) {
+(function( $ ) {
 
 $.widget( "ui.autocomplete", {
 	options: {
@@ -343,7 +343,7 @@ $.widget( "ui.autocomplete", {
 		var ul = this.menu.element
 			.empty()
 			.zIndex( this.element.zIndex() + 1 );
-		this._renderMenu( ul, items );
+		this.renderMenu( ul, items );
 		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
 		this.menu.deactivate();
 		this.menu.refresh();
