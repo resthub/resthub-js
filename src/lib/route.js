@@ -34,6 +34,9 @@ define(['jquery', 'pubsub'], function (jQuery) {
 			
 			// Save the original path
 			var real_path = path;
+
+                        /* remove trailing query string part of the path */
+                        path = path.split("?")[0];
 			
 			/* remove trailing slash from path if it exists */
 			if(path[path.length-1]=='/' && path!= '#/') {
@@ -45,6 +48,16 @@ define(['jquery', 'pubsub'], function (jQuery) {
 			}
 			
 			var args = {};
+                        var parts = real_path.match(/\?([^#]*)$/);
+                        if (parts) {
+                            var pairs = parts[1].split('&');
+                            for (i = 0; i < pairs.length; i++) {
+                                var pair = pairs[i].split('=');
+                                var key = decodeURIComponent(pair[0].replace(/\+/g, ' '));
+                                var val = decodeURIComponent(pair[1].replace(/\+/g, ' '));
+                                args[key] = val;
+                            }
+                        }
 			// Run route
 			if(arguments.length == 1) {
 				

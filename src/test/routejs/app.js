@@ -28,6 +28,10 @@ define(["route"], function() {
 			$('#main').html('Toto ' + p.id + ', tutu ' + p.id2);
 		});
 		
+		$.route('#/toto/search', function(p) {
+			$('#main').html('Link with query string: q=' + p.q + ', page=' + p.page);
+		});
+		
 		// Listen to the run-route event on the event bus
 		$.subscribe('route-run', function(path) {
 			console.debug("route-run event for route " + path);
