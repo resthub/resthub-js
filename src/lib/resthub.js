@@ -1,3 +1,3 @@
-define([ 'jquery', 'class', 'repository', 'controller', 'console', 'json', 'pubsub', 'render', 'route', 'storage' ], function($, Class, Repository, Controller) {
+define([ 'lib/jquery', 'lib/class', 'lib/repository', 'lib/controller', 'lib/console', 'lib/json', 'lib/pubsub', 'lib/render', 'lib/route', 'lib/storage' ], function($, Class, Repository, Controller) {
 	return $;
 });

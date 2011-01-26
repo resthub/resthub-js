@@ -3,7 +3,7 @@ define(['controller'], function(Controller) {
 			
 		init: function() {
 			this.template = 'widget1.html';
-			this.render();			
+			this.render({user:{login:'hsimpson', username:'Homer Simpson'}});			
 		}
 	});
 });
