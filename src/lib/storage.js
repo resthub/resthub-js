@@ -1,4 +1,4 @@
-define([ 'jquery', 'json', 'pubsub' ], function() {
+define([ 'lib/jquery', 'lib/json', 'lib/pubsub' ], function() {
 (function($) {
 
     if(!localStorage) {

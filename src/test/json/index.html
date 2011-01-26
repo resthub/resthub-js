@@ -2,7 +2,15 @@
 <html>
 <head>
 <title>JSon support</title>
-<script data-main="../../test/json/app" src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+	require = {
+		baseUrl:'../..',
+		callback: function() {
+            require(['test/json/app']);
+        }
+	};
+</script>
+<script src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 

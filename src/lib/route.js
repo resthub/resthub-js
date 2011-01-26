@@ -1,4 +1,4 @@
-define(['jquery', 'pubsub'], function (jQuery) {
+define(['lib/jquery', 'lib/pubsub'], function () {
 	(function($) {
 		
 		/**

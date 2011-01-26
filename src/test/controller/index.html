@@ -2,14 +2,18 @@
 <html>
 <head>
 <title>Controller</title>
-<script data-main="../../test/controller/app" src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-		require({
-         		paths: {
-             		"test": "../../test",
-             	}
-         	});
-	</script>
+<script type="text/javascript" charset="utf-8">
+	require = {
+		baseUrl:'../..',
+		paths: {
+     		"test": "../../test"
+     	},
+		callback: function() {
+            require(['test/controller/app']);
+        }
+	};
+</script>
+<script src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 

@@ -1,9 +1,10 @@
-define(["route"], function() {
-	
+define(["lib/route"], function() {
+
 	$(document).ready(function(){
-		
+
 		// Define routes
 		$.route('#', function() {
+
 			$('#main').html('<span>Root</span>');
 		});
 				
@@ -37,6 +38,7 @@ define(["route"], function() {
 			console.debug("route-run event for route " + path);
 		});
 		
+
 		// Run current route
 		$.route(location.hash);
 				

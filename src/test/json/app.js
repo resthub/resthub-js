@@ -1,4 +1,4 @@
-define(['json'], function() {
+define(['lib/json'], function() {
 
 	$('.tojson').click(function() {
 		var thing = {plugin: 'jquery-json', version: 2.2};

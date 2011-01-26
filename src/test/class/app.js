@@ -1,4 +1,4 @@
-define(['class'], function(Class) {
+define(['lib/class'], function(Class) {
 
 	var Resource = Class.extend({
 	  init: function(name) {

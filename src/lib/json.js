@@ -1,4 +1,4 @@
-define(['jquery'], function (jQuery) {
+define(['lib/jquery'], function () {
 /*
  * jQuery JSON Plugin
  * version: 2.2

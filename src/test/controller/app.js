@@ -1,5 +1,4 @@
-define(["jquery", "route"], function($) {
-
+define(["lib/route"], function(p1) {
 	$(document).ready(function(){
 		$.route('#',  function() {
 			$('#main').html("Home");

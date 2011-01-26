@@ -1,4 +1,4 @@
-define(['controller'], function(Controller) {
+define(['lib/controller'], function(Controller) {
 	Controller.extend("Widget1", {
 			
 		init: function() {

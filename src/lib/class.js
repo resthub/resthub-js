@@ -2,8 +2,8 @@
 // This is a modified version of John Resig's class
 // http://ejohn.org/blog/simple-javascript-inheritance/
 // It provides class level inheritance and callbacks.
-define(['jquery'], function (jQuery) {
-	
+define(['lib/jquery'], function () {
+
 	// jQuery.Class taken for Javascript MVC framework
 	//
 	// This is a modified version of John Resig's class

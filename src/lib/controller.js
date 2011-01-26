@@ -2,7 +2,7 @@
  * Resthub-controller is a generic javascript controller for resthub
  * applications. It provides utility functions for basic op�rations.
  */
-define([ 'jquery', 'class', 'render' ], function($, Class) {
+define([ 'lib/jquery', 'lib/class', 'lib/render' ], function(p1, Class) {
 
 	return Class.extend("Controller", {
 
