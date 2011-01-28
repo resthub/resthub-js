@@ -6,7 +6,7 @@
  * Licensed (along with all of Pines) under the GNU Affero GPL:
  *	  http://www.gnu.org/licenses/agpl.html
  */
-
+define(['lib/jquery'], function () {
 (function($) {
 	var history_handle_top, timer;
 	var body;
@@ -721,3 +721,4 @@
 		pnotify_stack: {"dir1": "down", "dir2": "left", "push": "bottom"}
 	};
 })(jQuery);
+});

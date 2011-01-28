@@ -14,6 +14,7 @@
 
 	
 */
+define(['lib/jquery'], function () {
 (function($) {
 	/* private variable "oHover" used to determine if you're still hovering over the same element */
 	var textarea, staticOffset;  // added the var declaration for 'staticOffset' thanks to issue logged by dec.
@@ -75,4 +76,4 @@
 		return { x: e.clientX + document.documentElement.scrollLeft, y: e.clientY + document.documentElement.scrollTop };
 	};
 })(jQuery);
-
+});

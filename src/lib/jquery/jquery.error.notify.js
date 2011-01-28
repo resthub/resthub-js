@@ -1,4 +1,4 @@
-define(['lib/jquery', 'lib/jquery.pnotify'], function() {
+define(['lib/jquery', 'lib/jquery/jquery.pnotify'], function() {
 
 	//--- Ajax request with errors management ---//
 	var old_ajax = $.ajax;
