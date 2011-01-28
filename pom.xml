@@ -71,5 +71,21 @@
             </plugin>
         </plugins>
     </build>
+	
+	<repositories>
+		<!-- Contains all RESThub artifacts and transitive dependencies -->
+        <repository>
+            <id>resthub</id>
+            <url>http://resthub.org/nexus/content/groups/resthub</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+		<!-- Contains all RESThub artifacts and transitive dependencies -->
+        <pluginRepository>
+            <id>resthub</id>
+            <url>http://resthub.org/nexus/content/groups/resthub</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>

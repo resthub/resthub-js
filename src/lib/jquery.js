@@ -1616,6 +1616,15 @@ var require, define;
                 if (!cfg.baseUrl && (src = script.src)) {
                     src = src.split('/');
                     src.pop();
+                    
+                    //**********************************
+                    //Start of RESThub JS modification//
+                    //**********************************
+                    src.pop();
+                    //**********************************
+                    //End of RESThub JS modification//
+                    //**********************************
+                    
                     //Make sure current config gets the value.
                     s.baseUrl = cfg.baseUrl = src.length ? src.join('/') : './';
                 }
