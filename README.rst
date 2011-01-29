@@ -13,11 +13,28 @@ API
  
 Script loading
 --------------
-Todo ...
+
+Example when you have :
+ * lib/ RESThub JS framework
+ * routes.js JS files where are defined your routes
+ * home.js Your home controller
+ * app.js Your application JS main file
+ * index.html Your application HTML main file
+
+index.html::
+
+	<script data-main="app" src="lib/jquery.js" type="text/javascript"></script>
+	
+app.js::
+
+	define([ 'lib/resthub', 'routes', 'home' ], function() {
+		...
+	});
+
 
 Logging
 -------
-Minimal 'CommonJS console<http://wiki.commonjs.org/wiki/Console>'_ implementation, doesn't support advanced feature if not available through original console.
+Minimal CommonJS Console (http://wiki.commonjs.org/wiki/Console) implementation, doesn't support advanced feature if not available through original console.
 Defined in console.js.::
 
 	console.log(object);
@@ -34,8 +51,12 @@ Defined in routes.js.::
 
 	/**
 	 * Define a route with the matching callback
-	 * @param {String} path A location hash (also named URL fragment) that identify the route, for example #/ or #/route1. You can define some parameters that will be available in the handler by user routes like #/user/:id for example
-	 * @param {Function} handler(params) A function to execute when the route is runned. If the path contains some params like :id or :name, they will be available in the handler with params.id or params.name.
+	 * @param {String} path A location hash (also named URL fragment) that identify the route, for
+	 				   example #/ or #/route1. You can define some parameters that will be available
+	 				   in the handler by user routes like #/user/:id for example
+	 * @param {Function} handler(params) A function to execute when the route is runned. If the path
+	 					 contains some params like :id or :name, they will be available in the
+	 					 handler with params.id or params.name
 	 **/
 	$.route(path, handler(params) );
 	
