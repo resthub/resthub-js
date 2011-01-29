@@ -1,3 +1,5 @@
+-*- restructuredtext -*-
+
 =====================================
 Welcome to RESThub JS documentation !
 =====================================
