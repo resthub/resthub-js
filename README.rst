@@ -1,4 +1,3 @@
--*- restructuredtext -*-
 
 =====================================
 Welcome to RESThub JS documentation !
@@ -6,7 +5,6 @@ Welcome to RESThub JS documentation !
 
 Introduction
 ============
-
 RESThub JS is a Javascript micro framework, built on top of jQuery, intended to give you usually needed functionnalities
 to build large application that scales well.
 
