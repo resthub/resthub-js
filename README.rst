@@ -1,7 +1,5 @@
-
-=====================================
-Welcome to RESThub JS documentation !
-=====================================
+RESThub JS documentation
+========================
 
 Introduction
 ============
