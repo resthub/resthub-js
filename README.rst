@@ -188,6 +188,7 @@ powerful fighters.::
 **Static property inheritance**
 
 You can also inherit static properties in the same way:::
+
 		$.Class.extend("First",
 		{
 			staticMethod: function() { return 1;}
@@ -199,8 +200,8 @@ You can also inherit static properties in the same way:::
 		
 		Second.staticMethod() // -> 2
 
-Namespaces
-∼∼∼∼∼∼∼∼∼∼
+**Namespaces**
+
 Namespaces are a good idea! We encourage you to namespace all of your code.
  * It makes it possible to drop your code into another app without problems.
  * Making a namespaced class is easy:::
