@@ -1,9 +1,18 @@
-RESThub JS is a Javascript micro framework, built on top of jQuery, intended to give you usually needed functionnalities
-to build large application that scales well.
+**RESThub JS** is a Javascript micro framework, built on top of jQuery, intended to give you usually needed
+functionnalities to build large application that scales well. It is freely inspired and based on best
+Javascript code/plugins found on Open Source projects, more specifically on Sammy.JS (route and storage)
+and JavascriptMVC (class and controller).
 
-It is freely inspired and based on best Javascript code/plugins found on Open Source projects, more specifically on :
- * Sammy.JS : RESThub route and storage plugins are directly inspired from Sammy ones. Sammy is too much for our need and not really MVC oriented, but is a great source of inspiration.
- * Javascript MVC : too big and complex for our need, but our class implementation come from JavascriptMVC one, and our controller is inspired from their too.
+Examples
+========
+
+You can test RESThub JS functionnalities in your browser by running `builtin test examples <https://bitbucket.org/ilabs/resthub-js/src/tip/src/test/>`_ :
+ * Opening src/test/index.html (file:// mode)
+ * Run mvn jetty:run and go to http://localhost:8080/test/ URL (http:// mode, mostly usefull with Chrome that has difficulties with file:// mode)
+
+You can also have a look to RESThub applications based on RESThub JS :
+ * `Booking <https://bitbucket.org/ilabs/resthub/src/tip/resthub-apps/booking/booking-js/src/main/webapp/>`_ : a sample booking web application
+ * `Roundtable <https://bitbucket.org/ilabs/resthub/src/tip/resthub-apps/roundtable/src/main/webapp/>`_ : a Doodle clone
 
 API
 ===
@@ -47,11 +56,10 @@ On recent browser, the hashchange event is used. On other browser, a timer check
 	/**
 	 * Define a route with the matching callback
 	 * @param {String} path A location hash (also named URL fragment) that identify the route, for
-	 *				   example #/ or #/route1. You can define some parameters that will be available
-	 *				   in the handler by user routes like #/user/:id for example
+	 *  example #/ or #/route1. You can define some parameters that will be available in the handler
+	 *  by user routes like #/user/:id for example
 	 * @param {Function} handler(params) A function to execute when the route is runned. If the path
-	 *					 contains some params like :id or :name, they will be available in the
-	 *					 handler with params.id or params.name
+	 *  contains some params like :id or :name, they will be available in the handler with params.id or params.name
 	 **/
 	$.route(path, handler(params) );
 	
@@ -114,7 +122,7 @@ Client side templating engine, based on `EJS syntax <http://embeddedjs.com/getti
 		 * @param element The jQuery element where the dynamized template will be inserted
 		 * @param {String} templateUrl The relative or absolute URL of the static template will be retreived
 		 * @param {Object} context Object pass as parameter to dynamize templates. It typically contains
-		 				   arrays and booleans used in for loop and if tests from the template.
+		 *  arrays and booleans used in for loop and if tests from the template.
 		 **/
 		$(element).render(templateUrl, [context]); 
 		
@@ -133,24 +141,21 @@ Repositories (repository.js)
 ----------------------------
 Repositories are used to implement data retreiving from REST webservices. Since all call to the server
 is implemented in repositories, they are useful for easily mock your remote access, for testing or 
-offline mode for example (not implemented yet).::
+offline mode for example (not implemented yet).
 
 Important notes :
  * Since they are stateless, they only define static vars and functions
  * Default data format is json
  * Don't forget the second pair of {} in your repository declaration, it means that vars and functions declared in
    the first one are static. Read Class JSdoc for more details
- * You may need to use $.proxy(this, 'callback') instead just callback if you use "this" object in your callback::
+ * You may need to use $.proxy(this, 'callback') instead just callback if you use "this" object in your callback
+
+::
 
 	/**
 	 * Base URL for Ajax call
 	 **/
 	Repository.root;
-	
-	/**
-	 * Repository init function used like a constructor
-	 **/
-	Repository.init();
 	
 	/**
 	 * Repository init function used like a constructor
@@ -190,7 +195,8 @@ Important notes :
 	 **/
 	Repository.update(callback, id, data);
 
-Example :::
+Usage :
+::
 
 		Repository.extend("UserRepository", {
 			root : 'api/user/',
@@ -206,7 +212,62 @@ Example :::
 
 Controller
 ----------
-Todo ...
+Controllers are used to make the link between :
+ * The template
+ * The data retreived from the server thanks to repositories
+ 
+A controller is applyed to a jQuery element, with a name based on the the Controller classname with :
+ * Underscore between words
+ * De-captitalized words
+ * Without Controller word
+ 
+For example UserLoginController will be applyed to a jQuery element with $(element).user_login().
+ 
+Controller instance variables and functions:
+::
+ 
+ 	/**
+	 * jQuery element where this controller will be applyed
+	 **/
+	element;
+	
+	/**
+	 * Template URL
+	 **/
+	template;
+
+	/**
+	 * Controller init function used like a constructor
+	 **/
+	init();
+
+Usage:
+::
+
+		Controller.extend("UserLoginController", {
+			template: 'user/login.html',
+			init : function() {
+				this.render();
+				var self = this;
+				$('#formLogin').submit(function() {
+					$.storage.remove('user');
+					var user = {
+						username : $('input[name="username"]').val(),
+						password : $('input[name="password"]').val()
+					};				
+					UserRepository.check($.proxy(self, '_userLoggedIn'), $.toJSON(user));
+					return false; 
+				});	
+			},
+			_userLoggedIn : function(user) {
+				$.storage.set('user', user);
+				$.route('#/home');
+			}
+		});
+		
+		...
+		
+		$('#main').user_login();
 
 Class (class.js)
 ----------------
@@ -417,15 +478,15 @@ Abstract various browser storage methods. Actually just localstorage is implemen
 		 **/
 		$.storage.get(key);
         
-         /**
-          * Clear all items currently stored
-          **/
+		/**
+		 * Clear all items currently stored
+		 **/
 		$.storage.clear();
         
-        /**
-          * Remove the specified item 
-          * @param key Key of the item to remove
-          **/
+		/**
+		 * Remove the specified item 
+		 * @param key Key of the item to remove
+		 **/
 		$.storage.remove(key);
 
 JSON (json.js)
@@ -458,11 +519,3 @@ JSON.parse() are not implemented.::
 		 * @return {Object} The object evaluated
     	 **/
     	$.secureEvalJSON(src);
-
-
-Test it in your browser
-=======================
-
-You can test RESThub JS functionnalities in your browser by :
- * Opening src/test/index.html (file:// mode)
- * Run mvn jetty:run and go to http://localhost:8080/test/ URL (http:// mode, mostly usefull with Chrome that has difficulties with file:// mode)
