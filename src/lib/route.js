@@ -17,6 +17,12 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 		 * $.route('#/route2/:id', function(params) {
 		 * 	console.log('Run route 2 with parameter id = ' + params.id);
 		 * });
+		 *
+		 * Define a route with optionnal parameters (Query String)
+		 * $.route('#/route3/:id?foo=bar&goo=car', function(params) {
+		 * 	console.log('Run route 3 with parameter id = ' + params.id);
+		 * 	console.log('and these optionnal parameters: ' + params.foo + ';' + params.goo);
+		 * });
 		 * 
 		 * Run a route
 		 * When a route is runned, the route-run event is dispatched (could be catched thanks to $.subscribe())
@@ -35,8 +41,8 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 			// Save the original path
 			var real_path = path;
 
-                        /* remove trailing query string part of the path */
-                        path = path.split("?")[0];
+			/* remove trailing query string part of the path */
+			path = path.split("?")[0];
 			
 			/* remove trailing slash from path if it exists */
 			if(path[path.length-1]=='/' && path!= '#/') {
@@ -48,16 +54,16 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 			}
 			
 			var args = {};
-                        var parts = real_path.match(/\?([^#]*)$/);
-                        if (parts) {
-                            var pairs = parts[1].split('&');
-                            for (i = 0; i < pairs.length; i++) {
-                                var pair = pairs[i].split('=');
-                                var key = decodeURIComponent(pair[0].replace(/\+/g, ' '));
-                                var val = decodeURIComponent(pair[1].replace(/\+/g, ' '));
-                                args[key] = val;
-                            }
-                        }
+			var parts = real_path.match(/\?([^#]*)$/);
+			if (parts) {
+				var pairs = parts[1].split('&');
+				for (i = 0; i < pairs.length; i++) {
+					var pair = pairs[i].split('=');
+					var key = decodeURIComponent(pair[0].replace(/\+/g, ' '));
+					var val = decodeURIComponent(pair[1].replace(/\+/g, ' '));
+					args[key] = val;
+				}
+			}
 			// Run route
 			if(arguments.length == 1) {
 				
@@ -84,6 +90,7 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 							args[registered_route_parts[i]] = path_parts[i];
 						}		
 						path = registered_route;
+						break;
 					}
 					
 				}
@@ -101,7 +108,7 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 				$.publish('route-run', [real_path, args]);
 				console.debug('Run route ' + arguments[0]);
 				
-			// Register route
+				// Register route
 			} else if(arguments.length == 2) {
 				var callback = arguments[1];
 				
