@@ -1,7 +1,10 @@
 **RESThub JS** is a Javascript micro framework, built on top of jQuery, intended to give you usually needed
-functionnalities to build large application that scales well. It is freely inspired and based on best
-Javascript code/plugins found on Open Source projects, more specifically on Sammy.JS (route and storage)
-and JavascriptMVC (class and controller).
+functionnalities to build large jQuery applications that scales well. It is freely inspired from best
+Javascript code/plugins found on Open Source projects, more specifically on `Sammy JS <http://code.quirkey.com/sammy/>`_ (route and storage functionnality)
+and `JavascriptMVC <http://www.javascriptmvc.com/>`_ (class and controller implementation).
+
+**RESThub JS** is originally designed to work with Java `RESThub framework <http://resthub.org/>`_, but can work
+with any serverside technology (Python, Ruby, PHP) that exposes REST webservices.
 
 Examples
 ========
@@ -17,15 +20,17 @@ You can also have a look to RESThub applications based on RESThub JS :
 API
 ===
  
-Script loading
---------------
+Script loading + jQuery (jquery.js) 
+-----------------------------------
+Script loading is based on `RequireJS <http://requirejs.org/>`_, so check it for a detailed documentation.
 
-Example when you have :
- * lib/ RESThub JS framework
- * routes.js JS files where are defined your routes
- * home.js Your home controller
- * app.js Your application JS main file
- * index.html Your application HTML main file
+Typically RESThub JS based application will have the following file structure :
+ * lib/* : RESThub JS framework
+ * routes.js : JS files where are defined your routes
+ * home.js : your home controller
+ * home.html : your home template
+ * app.js : your application JS main file
+ * index.html : your application HTML main file
 
 index.html::
 
@@ -36,7 +41,8 @@ app.js::
 	define([ 'lib/resthub', 'routes', 'home' ], function() {
 		...
 	});
-
+	
+Have a look to RESThub example applications like booking for more tips.
 
 Logging (console.js)
 --------------------
@@ -498,7 +504,7 @@ JSON.parse() are not implemented.::
 		/** 
 		 * Converts the given argument into a JSON respresentation.
 		 * If an object has a "toJSON" function, that will be used to get the representation.
-         * Non-integer/string keys are skipped in the object, as are keys that point to a function.
+		 * Non-integer/string keys are skipped in the object, as are keys that point to a function.
 		 *
 		 * @param {Object} object The object to convert to JSON respresentation
 		 * @return {String} The JSON representation of the object passed as parameter
