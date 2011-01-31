@@ -508,20 +508,20 @@ JSON.parse() are not implemented.::
 		 *
 		 * @param {Object} object The object to convert to JSON respresentation
 		 * @return {String} The JSON representation of the object passed as parameter
-     	 **/
-    	$.toJSON(object);
+		 **/
+		$.toJSON(object);
     	
 		/**
 		 * Evaluates a JSON representation to an object
 		 * @param {String} src The object to convert to JSON respresentation
 		 * @return {Object} The object evaluated
 		 **/
-    	$.evalJSON(src);
+		$.evalJSON(src);
     	
-    	/**
-         * Evals JSON in a way that is *more* secure.
-         *
-         * @param {String} src The object to convert to JSON respresentation
+		/**
+		 * Evals JSON in a way that is *more* secure.
+		 *
+		 * @param {String} src The object to convert to JSON respresentation
 		 * @return {Object} The object evaluated
-    	 **/
-    	$.secureEvalJSON(src);
+		 **/
+		$.secureEvalJSON(src);
