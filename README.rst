@@ -388,8 +388,8 @@ Namespaces are a good idea! We encourage you to namespace all of your code.
 		
 **Introspection**
 
-Often, it's nice to create classes whose name helps determine functionality.  Ruby on Rails's .. _ActiveRecord
-ORM class: http://api.rubyonrails.org/classes/ActiveRecord/Base.html is a great example of this. Unfortunately,
+Often, it's nice to create classes whose name helps determine functionality.  Ruby on Rails's ActiveRecord
+`ORM class <http://api.rubyonrails.org/classes/ActiveRecord/Base.html>`_ is a great example of this. Unfortunately,
 JavaScript doesn't have a way of determining an object's name, so the developer must provide a name.
 Class fixes this by taking a String name for the class.::
 
