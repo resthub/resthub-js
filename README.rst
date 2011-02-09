@@ -81,14 +81,50 @@ Examples::
 	
 	/** Run a route **/ 
 	$.route('#/route1');
+	
+	/** Trigger the route for current location **/
+	$.route(location.hash);
 
 Event bus
 ---------
-Todo ...
+Simple event bus in order to allow losely coupled software design in you application.
+Implemented in pubsub.js.::
+ 
+		/**
+		 * Define an event handler for this eventType listening on th event bus
+		 *
+		 * @param {String} eventType A string that identify your custom javaScript event type
+		 * @param {function} handler(args) function to execute each time the event is triggered, with
+		 **/
+		$.subscribe(eventType, handler(args));
+	  
+		/**
+		 * Remove a previously-defined event handler for the matching eventType
+		 * 
+		 * @param {String} eventType A string that identify your custom javaScript event type
+		 **/
+		$.unsubscribe(eventType);
+	  
+		/**
+		 * Publish an event in the event bus
+		 * 
+		 * @param {String} eventType A string that identify your custom javaScript event type
+		 * @param {Array} extraParameters  Additional parameters to pass along to the event handler
+		 **/
+		$.publish(eventType, [extraParameters]);
 
 Templating
 ----------
-Todo ...
+Client side templating capabilities based on EJS.
+Implemented in render.js.::
+
+		/**
+		 * Render a template in the specified element
+		 * 
+		 * @param element the jQuery element where the rendered template will by inserted
+		 * @param {Array} extraParameters  Additional parameters to pass along to the event handler
+		 **/
+	$(element).render(htmlTemplateUrl, [context]);
 
 Repositories
 ------------
