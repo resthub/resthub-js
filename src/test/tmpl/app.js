@@ -1,4 +1,4 @@
-define(['lib/jquery', 'lib/jquery/jquery.tmpl'], function() {
+define(['lib/resthub'], function() {
 
 	$(document).ready(function() {
 	
@@ -54,6 +54,20 @@ define(['lib/jquery', 'lib/jquery/jquery.tmpl'], function() {
 			$('#main').empty();
 			$.tmpl( tmpl, people ).appendTo( '#main' );
 
+		});
+		
+		$('.remoteSimpleTemplate').click(function() {
+			var dataObject = {
+				firstName: "John",
+				lastName: "Resig",
+				url: "http://ejohn.org/",
+				cities: [
+					"Boston, MA",
+					"San Francisco, CA"
+				]
+			};
+			
+			$('#main').render('simpletemplate.html', dataObject);
 		});
 		
 	});
