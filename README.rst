@@ -1,36 +1,25 @@
-**RESThub JS** is a Javascript micro framework, built on top of jQuery, intended to give you usually needed
-functionnalities to build large jQuery applications that scales well. It is freely inspired from best
-Javascript code/plugins found on Open Source projects, more specifically on `Sammy JS <http://code.quirkey.com/sammy/>`_ (route and storage functionnality)
-and `JavascriptMVC <http://www.javascriptmvc.com/>`_ (class and controller implementation).
+RESThub JS
+==========
 
-**RESThub JS** is originally designed to work with Java `RESThub framework <http://resthub.org/>`_, but can work
-with any serverside technology (Python, Ruby, PHP) that exposes REST webservices.
+RESThub JS is a Javascript micro framework, built on top of jQuery, intended to give you usually needed functionnalities
+to build large application that scales well.
 
-Examples
-========
-
-You can test RESThub JS functionnalities in your browser by running `builtin test examples <https://bitbucket.org/ilabs/resthub-js/src/tip/src/test/>`_ :
- * Opening src/test/index.html (file:// mode)
- * Run mvn jetty:run and go to http://localhost:8080/test/ URL (http:// mode, mostly usefull with Chrome that has difficulties with file:// mode)
-
-You can also have a look to RESThub applications based on RESThub JS :
- * `Booking <https://bitbucket.org/ilabs/resthub/src/tip/resthub-apps/booking/booking-js/src/main/webapp/>`_ : a sample booking web application
- * `Roundtable <https://bitbucket.org/ilabs/resthub/src/tip/resthub-apps/roundtable/src/main/webapp/>`_ : a Doodle clone
+It is freely inspired and based on best Javascript code/plugins found on Open Source projects, more specifically on :
+ * Sammy.JS : RESThub route and storage plugins are directly inspired from Sammy ones. Sammy is too much for our need and not really MVC oriented, but is a great source of inspiration.
+ * Javascript MVC : too big and complex for our need, but our class implementation come from JavascriptMVC one, and our controller is inspired from their too.
 
 API
 ===
  
-Script loading + jQuery (jquery.js) 
------------------------------------
-Script loading is based on `RequireJS <http://requirejs.org/>`_, so check it for a detailed documentation.
+Script loading
+--------------
 
-Typically RESThub JS based application will have the following file structure :
- * lib/* : RESThub JS framework
- * routes.js : JS files where are defined your routes
- * home.js : your home controller
- * home.html : your home template
- * app.js : your application JS main file
- * index.html : your application HTML main file
+Example when you have :
+ * lib/ RESThub JS framework
+ * routes.js JS files where are defined your routes
+ * home.js Your home controller
+ * app.js Your application JS main file
+ * index.html Your application HTML main file
 
 index.html::
 
@@ -41,31 +30,33 @@ app.js::
 	define([ 'lib/resthub', 'routes', 'home' ], function() {
 		...
 	});
-	
-Have a look to RESThub example applications like booking for more tips.
 
-Logging (console.js)
---------------------
-Minimal `CommonJS Console <http://wiki.commonjs.org/wiki/Console>`_ implementation, doesn't support advanced feature if not available through original console.::
 
-		console.log(message);
-		console.debug(message);
-		console.info(message);
-		console.warn(message);
-		console.error(message);
+Logging
+-------
+Minimal CommonJS Console (http://wiki.commonjs.org/wiki/Console) implementation, doesn't support advanced feature if not available through original console.
+Defined in console.js.::
+
+	console.log(object);
+	console.debug(object);
+	console.info(object);
+	console.warn(object);
+	console.error(object);
 	
-Routing (routes.js)
--------------------
+Routing
+-------
 Define or run a route depending parameters. A route is defined by a location hash, that will trigger the handler passed in parameter.
-On recent browser, the hashchange event is used. On other browser, a timer check if location.hash has changed or not in order to determine what route should be runned.::
+On recent browser, the hashchange event is used. On other browser, a timer check if location.hash has changed or not in order to determine what route should be runned.
+Implemented in routes.js.::
 
 	/**
 	 * Define a route with the matching callback
 	 * @param {String} path A location hash (also named URL fragment) that identify the route, for
-	 *  example #/ or #/route1. You can define some parameters that will be available in the handler
-	 *  by user routes like #/user/:id for example
+	 *				   example #/ or #/route1. You can define some parameters that will be available
+	 *				   in the handler by user routes like #/user/:id for example
 	 * @param {Function} handler(params) A function to execute when the route is runned. If the path
-	 *  contains some params like :id or :name, they will be available in the handler with params.id or params.name
+	 *					 contains some params like :id or :name, they will be available in the
+	 *					 handler with params.id or params.name
 	 **/
 	$.route(path, handler(params) );
 	
@@ -90,196 +81,64 @@ Examples::
 	
 	/** Run a route **/ 
 	$.route('#/route1');
+	
+	/** Trigger the route for current location **/
+	$.route(location.hash);
 
-Event bus (pubsub.js)
----------------------
-Implements a simple event bus in order to allow low coupling in you application.::
-
-	  /**
-	   * Define an event handler for this eventType listening on th event bus
-	   *
-	   * @param {String} eventType A string that identify your custom javaScript event type
-	   * @param {function} handler(args) function to execute each time the event is triggered, with 
-	   **/
-	  $.subscribe(eventType, handler(args));
+Event bus
+---------
+Simple event bus in order to allow losely coupled software design in you application.
+Implemented in pubsub.js.::
+ 
+		/**
+		 * Define an event handler for this eventType listening on th event bus
+		 *
+		 * @param {String} eventType A string that identify your custom javaScript event type
+		 * @param {function} handler(args) function to execute each time the event is triggered, with
+		 **/
+		$.subscribe(eventType, handler(args));
 	  
-	  /**
-	   * Remove a previously-defined event handler for the matching eventType
-	   * 
-	   * @param {String} eventType A string that identify your custom javaScript event type
-	   **/
-	  $.unsubscribe(eventType);
+		/**
+		 * Remove a previously-defined event handler for the matching eventType
+		 * 
+		 * @param {String} eventType A string that identify your custom javaScript event type
+		 **/
+		$.unsubscribe(eventType);
 	  
-	  /**
-	   * Publish an event in the event bus
-	   * 
-	   * @param {String} eventType A string that identify your custom javaScript event type
-	   * @param {Array} extraParameters Additional parameters to pass along to the event handler
-	   **/
-	  $.publish(eventType, [extraParameters]);
+		/**
+		 * Publish an event in the event bus
+		 * 
+		 * @param {String} eventType A string that identify your custom javaScript event type
+		 * @param {Array} extraParameters  Additional parameters to pass along to the event handler
+		 **/
+		$.publish(eventType, [extraParameters]);
 
-Templating (render.js)
-----------------------
-Client side templating engine, based on `EJS syntax <http://embeddedjs.com/getting_started.html>`_.::
+Templating
+----------
+Client side templating capabilities based on EJS.
+Implemented in render.js.::
 
 		/**
-		 * Render a template and insert the result in the element passed as parameter
+		 * Render a template in the specified element
 		 * 
-		 * @param element The jQuery element where the dynamized template will be inserted
-		 * @param {String} templateUrl The relative or absolute URL of the static template will be retreived
-		 * @param {Object} context Object pass as parameter to dynamize templates. It typically contains
-		 *  arrays and booleans used in for loop and if tests from the template.
+		 * @param element the jQuery element where the rendered template will by inserted
+		 * @param {Array} extraParameters  Additional parameters to pass along to the event handler
 		 **/
-		$(element).render(templateUrl, [context]); 
-		
-Example :
+	$(element).render(htmlTemplateUrl, [context]);
 
-user/view.js::
-		
-		$('#main').render('user/view.html', { user : { login: 'admin', name: 'Administrator'} });
-		
-user/view.html::
-
-		<strong>Login:</strong> <%= user.login %><br />
-		<strong>Name:</strong> <%= user.name %><br />
-
-Repositories (repository.js)
-----------------------------
-Repositories are used to implement data retreiving from REST webservices. Since all call to the server
-is implemented in repositories, they are useful for easily mock your remote access, for testing or 
-offline mode for example (not implemented yet).
-
-Important notes :
- * Since they are stateless, they only define static vars and functions
- * Default data format is json
- * Don't forget the second pair of {} in your repository declaration, it means that vars and functions declared in
-   the first one are static. Read Class JSdoc for more details
- * You may need to use $.proxy(this, 'callback') instead just callback if you use "this" object in your callback
-
-::
-
-	/**
-	 * Base URL for Ajax call
-	 **/
-	Repository.root;
-	
-	/**
-	 * Repository init function used like a constructor
-	 **/
-	Repository.init();
-	
-	/**
-	 * Read an item from the server using a GET http request
-	 *
-	 * @param callback {Function} The callback to call when the request is completed, will have the item read as parameter
-	 * @param id {String} The id of the item to read
-	 **/
-	Repository.read(callback, id);
-	
-	/**
-	 * Remove an item from the server using a DELETE http request
-	 *
-	 * @param callback {Function} The callback to call when the request is completed
-	 * @param id {String} The id of the item to remove
-	 **/
-	Repository.remove(callback, id);
-	
-	/**
-	 * Save an item from the server using a POST http request
-	 *
-	 * @param callback {Function} The callback to call when the request is completed, will have the item saved as parameter
-	 * @param data {Object} The item to save
-	 **/
-	Repository.save(callback, data);
-	
-	/**
-	 * Update an item on the server using a PUT http request
-	 *
-	 * @param callback {Function} The callback to call when the request is completed
-	 * @param id {String} The id of the item to update
-	 * @param data {Object} The item to update
-	 **/
-	Repository.update(callback, id, data);
-
-Usage :
-::
-
-		Repository.extend("UserRepository", {
-			root : 'api/user/',
-			check : function(callback, data) {
-				this._post(this.root + 'check/', callback, data);
-			}
-		}, {});
-		
-		...
-		
-		UserRepository.save(function() { console.log('User saved'); }), { login: 'admin', name: 'Administrator'});
-		UserRepository.check(function() { console.log('User checked'); }), { login: 'admin', password: '1234'})
+Repositories
+------------
+Todo ...
 
 Controller
 ----------
-Controllers are used to make the link between :
- * The template
- * The data retreived from the server thanks to repositories
- 
-A controller is applyed to a jQuery element, with a name based on the the Controller classname with :
- * Underscore between words
- * De-captitalized words
- * Without Controller word
- 
-For example UserLoginController will be applyed to a jQuery element with $(element).user_login().
- 
-Controller instance variables and functions:
-::
- 
- 	/**
-	 * jQuery element where this controller will be applyed
-	 **/
-	element;
-	
-	/**
-	 * Template URL
-	 **/
-	template;
+Todo ...
 
-	/**
-	 * Controller init function used like a constructor
-	 **/
-	init();
-
-Usage:
-::
-
-		Controller.extend("UserLoginController", {
-			template: 'user/login.html',
-			init : function() {
-				this.render();
-				var self = this;
-				$('#formLogin').submit(function() {
-					$.storage.remove('user');
-					var user = {
-						username : $('input[name="username"]').val(),
-						password : $('input[name="password"]').val()
-					};				
-					UserRepository.check($.proxy(self, '_userLoggedIn'), $.toJSON(user));
-					return false; 
-				});	
-			},
-			_userLoggedIn : function(user) {
-				$.storage.set('user', user);
-				$.route('#/home');
-			}
-		});
-		
-		...
-		
-		$('#main').user_login();
-
-Class (class.js)
-----------------
+Class
+-----
 Class provides simulated inheritance in JavaScript. Use $.Class to bridge the gap between
 jQuery's functional programming style and Object Oriented Programming.
-It is based off John Resig's `Simple Class <http://ejohn.org/blog/simple-javascript-inheritance/>`_
+It is based off John Resig's .. _Simple Class: http://ejohn.org/blog/simple-javascript-inheritance/
 Inheritance library and Javascript MVC improvements.
 
 Besides prototypal inheritance, it includes a few important features:
@@ -388,8 +247,8 @@ Namespaces are a good idea! We encourage you to namespace all of your code.
 		
 **Introspection**
 
-Often, it's nice to create classes whose name helps determine functionality.  Ruby on Rails's ActiveRecord
-`ORM class <http://api.rubyonrails.org/classes/ActiveRecord/Base.html>`_ is a great example of this. Unfortunately,
+Often, it's nice to create classes whose name helps determine functionality.  Ruby on Rails's .. _ActiveRecord
+ORM class: http://api.rubyonrails.org/classes/ActiveRecord/Base.html is a great example of this. Unfortunately,
 JavaScript doesn't have a way of determining an object's name, so the developer must provide a name.
 Class fixes this by taking a String name for the class.::
 
@@ -460,10 +319,11 @@ The following example uses this.callback to make sure this.name is available in 
 
 Callback is available as a static and prototype method.
 
-Storage (storage.js)
---------------------
+Storage
+-------
 
-Abstract various browser storage methods. Actually just localstorage is implemented, but it will shortly implement other storage mechanisms (memory, jquery data, session storage, cookie).::
+Abstract various browser storage methods. Actually just localstorage is implemented, but it will shortly implement other storage mechanisms (memory, jquery data, session storage, cookie).
+Implemented in storage.js.::
 
 		/**
 		 * Store an item in the local storage (Not compatible with Internet Explorer <= 7)
@@ -476,7 +336,7 @@ Abstract various browser storage methods. Actually just localstorage is implemen
 		 **/
 		$.storage.set(key, item);
     	
-		/**
+    	/**
 		 * Retreive an item from the local storage
 		 *
 		 * @param {String} key Key of the item to retreive
@@ -484,44 +344,53 @@ Abstract various browser storage methods. Actually just localstorage is implemen
 		 **/
 		$.storage.get(key);
         
-		/**
-		 * Clear all items currently stored
-		 **/
+         /**
+          * Clear all items currently stored
+          **/
 		$.storage.clear();
         
-		/**
-		 * Remove the specified item 
-		 * @param key Key of the item to remove
-		 **/
+        /**
+          * Remove the specified item 
+          * @param key Key of the item to remove
+          **/
 		$.storage.remove(key);
 
-JSON (json.js)
---------------
+JSON
+----
 
 Abstract object to JSON and JSON to object conversions, in order to be able to handle this in browser when JSON.stringify() and
-JSON.parse() are not implemented.::
+JSON.parse() are not implemented.
+Implemented in json.js.::
 
 		/** 
 		 * Converts the given argument into a JSON respresentation.
 		 * If an object has a "toJSON" function, that will be used to get the representation.
-		 * Non-integer/string keys are skipped in the object, as are keys that point to a function.
+         * Non-integer/string keys are skipped in the object, as are keys that point to a function.
 		 *
 		 * @param {Object} object The object to convert to JSON respresentation
 		 * @return {String} The JSON representation of the object passed as parameter
-		 **/
-		$.toJSON(object);
+     	 **/
+    	$.toJSON(object);
     	
 		/**
 		 * Evaluates a JSON representation to an object
 		 * @param {String} src The object to convert to JSON respresentation
 		 * @return {Object} The object evaluated
 		 **/
-		$.evalJSON(src);
+    	$.evalJSON(src);
     	
-		/**
-		 * Evals JSON in a way that is *more* secure.
-		 *
-		 * @param {String} src The object to convert to JSON respresentation
+    	/**
+         * Evals JSON in a way that is *more* secure.
+         *
+         * @param {String} src The object to convert to JSON respresentation
 		 * @return {Object} The object evaluated
-		 **/
-		$.secureEvalJSON(src);
+    	 **/
+    	$.secureEvalJSON(src);
+
+
+Test it in your browser
+=======================
+
+You can test RESThub JS functionnalities in your browser by :
+ * Opening src/test/index.html (file:// mode)
+ * Run mvn jetty:run and go to http://localhost:8080/test/ URL (http:// mode, mostly usefull with Chrome that has difficulties with file:// mode)

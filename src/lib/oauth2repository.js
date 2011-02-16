@@ -51,7 +51,7 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 				existingError = errorCallback;
 			}
 			// Gets the protocol errors.
-			var authorizationError = this.authorizationError
+			var authorizationError = this.authorizationError;
 			settings.error = function(XMLHttpRequest, textStatus, errorThrown) {
 				// Only for 400, 401 and 403 scopes.
 				if(XMLHttpRequest.status == 400 ||
