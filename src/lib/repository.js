@@ -47,6 +47,11 @@ define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 		update : function(callback, id, data, errorCallback) {
 			return this._put(this.root + id, callback, data, errorCallback);
 		},
+		list: function(callback, page, size) {
+			page = page===null || page===undefined ? 0 : page;
+			size = size===null || size===undefined ? 5 : size;
+			this._get(this.root + '?page=' + page + '&size=' + size, callback);
+		},
 
 		_post : function(url, callback, data, errorCallback) {
 			this._ajax(url, callback, 'POST', data, errorCallback);
