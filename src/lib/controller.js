@@ -79,9 +79,9 @@ define([ 'lib/jquery', 'lib/class', 'lib/tmpl' ], function(p1, Class) {
 			 */
 			render : function(data) {
 				if (typeof (this.template) == 'undefined') {
-					this.element.remoteTmpl('./' + this.widgetName + '.html', data);
+					this.element.render('./' + this.widgetName + '.html', data);
 				} else {
-					this.element.remoteTmpl(this.template, data);
+					this.element.render(this.template, data);
 				}
 			}
 		});
