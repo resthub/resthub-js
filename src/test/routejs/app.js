@@ -1,7 +1,7 @@
 define(["lib/route"], function() {
 
 	$(document).ready(function(){
-
+		
 		// Define routes
 		$.route('#', function() {
 
