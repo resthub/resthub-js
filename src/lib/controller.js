@@ -77,11 +77,11 @@ define([ 'lib/jquery', 'lib/class', 'lib/tmpl' ], function(p1, Class) {
 			 * this.options.template. If none is defined, it used a
 			 * view with the same name of the controller
 			 */
-			render : function(data) {
+			render : function(data, options) {
 				if (typeof (this.template) == 'undefined') {
-					this.element.render('./' + this.widgetName + '.html', data);
+					this.element.render('./' + this.widgetName + '.html', data, options);
 				} else {
-					this.element.render(this.template, data);
+					this.element.render(this.template, data, options);
 				}
 			}
 		});
