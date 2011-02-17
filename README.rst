@@ -135,6 +135,7 @@ The template file is define into the template variable of a Controler::
 	});
 
 The render function is defined as follow::
+
 	/**
 	 * Renders current widget with the template specified in
 	 * this.options.template. If none is defined, it used a
