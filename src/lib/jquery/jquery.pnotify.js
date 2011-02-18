@@ -12,6 +12,27 @@ define(['lib/jquery'], function () {
 	var body;
 	var jwindow;
 	$.extend({
+		
+		/**
+		 * RESTHub-js addition
+		 * Ability to remove all existing notifications.
+		 */
+		pnotify_clear: function() {
+			// We need to use references, because the local var body_data holds the array even
+			// after removeData().  
+			var body = $('body');
+			var data = body.data('pnotify');
+			if (data) {
+				data.splice(0, data.length);
+			}
+			data = body.data('pnotify_history');
+			if (data) {
+				data.splice(0, data.length);
+			}
+			body.removeData('pnotify');
+			body.removeData('pnotify_history');
+		},
+		
 		pnotify_remove_all: function () {
 			var body_data = body.data("pnotify");
 			/* POA: Added null-check */
