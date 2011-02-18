@@ -8,6 +8,14 @@ It is freely inspired and based on best Javascript code/plugins found on Open So
  * Sammy.JS : RESThub route and storage plugins are directly inspired from Sammy ones. Sammy is too much for our need and not really MVC oriented, but is a great source of inspiration.
  * Javascript MVC : too big and complex for our need, but our class implementation come from JavascriptMVC one, and our controller is inspired from their too.
 
+Sample applications
+===================
+
+There are 3 sample applications based on RESThub JS :
+ * `Booking JS <https://bitbucket.org/ilabs/resthub/src/tip/resthub-apps/booking/booking-js/src/main/webapp/>`_ : RESThub based implementation of this famous sample already implmented in JBoss Seam, Play framework and others.
+ * `Roundtable JS <https://bitbucket.org/ilabs/resthub/src/tip/resthub-apps/roundtable/src/main/webapp/>`_ : Doodle clone
+ * `Identity Manager <https://bitbucket.org/ilabs/resthub/src/tip/resthub-identity/resthub-identity-manager/src/main/webapp/>`_ : Generic administration GUI for RESThub based User/Group/Role application
+ 
 API
 ===
  
