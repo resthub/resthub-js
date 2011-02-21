@@ -86,6 +86,12 @@ Examples::
 	$.route('#/route2/:id', function(params) {
 		console.log('Run route 2 with parameter id = ' + params.id);
 	});
+
+	/** Define a route with optionnal parameters (Query String) **/
+	$.route('#/route3/:id?foo=bar&goo=car', function(params) {
+		console.log('Run route 3 with parameter id = ' + params.id);
+		console.log('and these optionnal parameters: ' + params.foo + ';' + params.goo);
+	});
 	
 	/** Run a route **/ 
 	$.route('#/route1');
@@ -123,16 +129,53 @@ Implemented in pubsub.js.::
 
 Templating
 ----------
-Client side templating capabilities based on EJS.
-Implemented in render.js.::
+Client side templating capabilities based on jQuery Tmpl : http://api.jquery.com/jquery.tmpl/
 
-		/**
-		 * Render a template in the specified element
-		 * 
-		 * @param element the jQuery element where the rendered template will by inserted
-		 * @param {Array} extraParameters  Additional parameters to pass along to the event handler
-		 **/
-	$(element).render(htmlTemplateUrl, [context]);
+The template file is define into the template variable of a Controler::
+
+	define([ 'lib/controller'], function(Controller) {
+		return Controller.extend("FooController", {
+			template : 'path/foo.html',
+			init : function() {
+				this.render();
+			}
+		});
+	});
+
+The render function is defined as follow::
+
+	/**
+	 * Renders current widget with the template specified in
+	 * this.options.template. If none is defined, it used a
+	 * view with the same name of the controller
+	 *
+	 * @param daya datas used into the template
+	 * @param options fields or anonomyous methods passed to the template (see JQuery Tmpl docs)
+	 **/
+	render : function(data, options);
+
+This is an exemple using data and options parameters::
+
+	this.render({name:'bat'}, {
+		foo: function(bar) {
+			return bar + "man";
+		}
+	});
+
+And into the template:
+
+	<p>Who is ${$item.foo($name)} ?</p>
+
+In addition you can use template part into the Controller:
+
+	// template part
+	var tmpl = '<li><a href="${url}">${name}</a></li>';
+	// clear target element
+	$('#main').empty();
+	// fill target element with result
+	$.tmpl(tmpl, {name:'Batman',url:'about:blank'}).appendTo('#main');
+
+For more features and syntax documentation see Jquery Tmpl web site: http://api.jquery.com/jquery.tmpl/
 
 Repositories
 ------------
