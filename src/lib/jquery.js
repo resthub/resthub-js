@@ -1,21 +1,21 @@
 /** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 0.22.0 Copyright (c) 2010, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS 0.23.0 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
-/*jslint white: false, plusplus: false */
+/*jslint white: false, strict: false, plusplus: false */
 /*global window: false, navigator: false, document: false, importScripts: false,
   jQuery: false, clearInterval: false, setInterval: false, self: false,
   setTimeout: false */
 
-
 var require, define;
 (function () {
     //Change this version number for each release.
-    var version = "0.22.0",
+    var version = "0.23.0",
         commentRegExp = /(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg,
         cjsRequireRegExp = /require\(["']([^'"\s]+)["']\)/g,
         currDirRegExp = /^\.\//,
+        jsSuffixRegExp = /\.js$/,
         ostring = Object.prototype.toString,
         ap = Array.prototype,
         aps = ap.slice,
@@ -44,7 +44,7 @@ var require, define;
             "order": "require/order"
         },
         req, cfg = {}, currentlyAddingScript, s, head, baseElement, scripts, script,
-        rePkg, src, m, dataMain, i, scrollIntervalId, setReadyState, ctx;
+        src, subPath, mainScript, dataMain, i, scrollIntervalId, setReadyState, ctx;
 
     function isFunction(it) {
         return ostring.call(it) === "[object Function]";
@@ -72,12 +72,13 @@ var require, define;
 
     /**
      * Used to set up package paths from a packagePaths or packages config object.
-     * @param {Object} packages the object to store the new package config
+     * @param {Object} pkgs the object to store the new package config
      * @param {Array} currentPackages an array of packages to configure
      * @param {String} [dir] a prefix dir to use.
      */
-    function configurePackageDir(packages, currentPackages, dir) {
+    function configurePackageDir(pkgs, currentPackages, dir) {
         var i, location, pkgObj;
+
         for (i = 0; (pkgObj = currentPackages[i]); i++) {
             pkgObj = typeof pkgObj === "string" ? { name: pkgObj } : pkgObj;
             location = pkgObj.location;
@@ -85,16 +86,24 @@ var require, define;
             //Add dir to the path, but avoid paths that start with a slash
             //or have a colon (indicates a protocol)
             if (dir && (!location || (location.indexOf("/") !== 0 && location.indexOf(":") === -1))) {
-                pkgObj.location = dir + "/" + (pkgObj.location || pkgObj.name);
+                location = dir + "/" + (location || pkgObj.name);
             }
 
-            //Normalize package paths.
-            pkgObj.location = pkgObj.location || pkgObj.name;
-            pkgObj.lib = pkgObj.lib || "lib";
-            //Remove leading dot in main, so main paths are normalized.
-            pkgObj.main = (pkgObj.main || "lib/main").replace(currDirRegExp, '');
-
-            packages[pkgObj.name] = pkgObj;
+            //Create a brand new object on pkgs, since currentPackages can
+            //be passed in again, and config.pkgs is the internal transformed
+            //state for all package configs.
+            pkgs[pkgObj.name] = {
+                name: pkgObj.name,
+                location: location || pkgObj.name,
+                lib: pkgObj.lib || "lib",
+                //Remove leading dot in main, so main paths are normalized,
+                //and remove any trailing .js, since different package
+                //envs have different conventions: some use a module name,
+                //some use a file name.
+                main: (pkgObj.main || "lib/main")
+                      .replace(currDirRegExp, '')
+                      .replace(jsSuffixRegExp, '')
+            };
         }
     }
 
@@ -126,7 +135,7 @@ var require, define;
                 waitSeconds: 7,
                 baseUrl: s.baseUrl || "./",
                 paths: {},
-                packages: {}
+                pkgs: {}
             },
             defQueue = [],
             specified = {
@@ -143,6 +152,7 @@ var require, define;
             managerCallbacks = {},
             plugins = {},
             pluginsQueue = {},
+            resumeDepth = 0,
             normalizedWaiting = {};
 
         /**
@@ -194,7 +204,7 @@ var require, define;
                 //otherwise, assume it is a top-level require that will
                 //be relative to baseUrl in the end.
                 if (baseName) {
-                    if (config.packages[baseName]) {
+                    if (config.pkgs[baseName]) {
                         //If the baseName is a package name, then just treat it as one
                         //name to concat the name with.
                         baseName = [baseName];
@@ -213,7 +223,7 @@ var require, define;
 
                     //Some use of packages may use a . path to reference the
                     //"main" module name, so normalize for that.
-                    pkgConfig = config.packages[(pkgName = name[0])];
+                    pkgConfig = config.pkgs[(pkgName = name[0])];
                     name = name.join("/");
                     if (pkgConfig && name === pkgName + '/' + pkgConfig.main) {
                         name = pkgName;
@@ -382,7 +392,7 @@ var require, define;
         function updateNormalizedNames(pluginName) {
 
             var oldFullName, oldModuleMap, moduleMap, fullName, callbacks,
-                i, j, k, depArray,
+                i, j, k, depArray, existingCallbacks,
                 maps = normalizedWaiting[pluginName];
 
             if (maps) {
@@ -391,10 +401,24 @@ var require, define;
                     moduleMap = makeModuleMap(oldModuleMap.originalName, oldModuleMap.parentMap);
                     fullName = moduleMap.fullName;
                     callbacks = managerCallbacks[oldFullName];
+                    existingCallbacks = managerCallbacks[fullName];
 
                     if (fullName !== oldFullName) {
+                        //Update the specified object, but only if it is already
+                        //in there. In sync environments, it may not be yet.
+                        if (oldFullName in specified) {
+                            delete specified[oldFullName];
+                            specified[fullName] = true;
+                        }
+
                         //Update managerCallbacks to use the correct normalized name.
-                        managerCallbacks[fullName] = callbacks;
+                        //If there are already callbacks for the normalized name,
+                        //just add to them.
+                        if (existingCallbacks) {
+                            managerCallbacks[fullName] = existingCallbacks.concat(callbacks);
+                        } else {
+                            managerCallbacks[fullName] = callbacks;
+                        }
                         delete managerCallbacks[oldFullName];
 
                         //In each manager callback, update the normalized name in the depArray.
@@ -533,6 +557,7 @@ var require, define;
             var moduleMap = makeModuleMap(inName, relModuleMap),
                 name = moduleMap.name,
                 fullName = moduleMap.fullName,
+                uniques = {},
                 manager = {
                     //Use a wait ID because some entries are anon
                     //async require calls.
@@ -608,7 +633,8 @@ var require, define;
                     } else if (depName in defined && !(depName in waiting)) {
                         //Module already defined, no need to wait for it.
                         manager.deps[depName] = defined[depName];
-                    } else {
+                    } else if (!uniques[depName]) {
+
                         //A dynamic dependency.
                         manager.depMax += 1;
 
@@ -617,6 +643,8 @@ var require, define;
                         //Register to get notification when dependency loads.
                         (managerCallbacks[depName] ||
                         (managerCallbacks[depName] = [])).push(manager);
+
+                        uniques[depName] = true;
                     }
                 }
             }
@@ -718,6 +746,13 @@ var require, define;
                 noLoads = "", hasLoadedProp = false, stillLoading = false, prop,
                 err, manager;
 
+            //If there are items still in the paused queue processing wait.
+            //This is particularly important in the sync case where each paused
+            //item is processed right away but there may be more waiting.
+            if (context.pausedCount > 0) {
+                return undefined;
+            }
+
             //Determine if priority loading is done. If so clear the priority. If
             //not, then do not check
             if (config.priorityWait) {
@@ -794,8 +829,8 @@ var require, define;
             var name = dep.name,
                 fullName = dep.fullName;
 
-            //Do not bother if plugin is already defined.
-            if (fullName in defined) {
+            //Do not bother if plugin is already defined or being loaded.
+            if (fullName in defined || fullName in loaded) {
                 return;
             }
 
@@ -821,7 +856,9 @@ var require, define;
                     prefix: dep.prefix,
                     name: dep.name,
                     fullName: dep.fullName,
-                    callback: ret
+                    callback: function () {
+                        return ret;
+                    }
                 });
                 loaded[fullName] = true;
             }, config);
@@ -886,6 +923,8 @@ var require, define;
         resume = function () {
             var args, i, p;
 
+            resumeDepth += 1;
+
             if (context.scriptCount <= 0) {
                 //Synchronous envs will push the number below zero with the
                 //decrement above, be sure to set it back to zero for good measure.
@@ -911,6 +950,7 @@ var require, define;
 
             while (context.paused.length) {
                 p = context.paused;
+                context.pausedCount += p.length;
                 //Reset paused list
                 context.paused = [];
 
@@ -919,9 +959,19 @@ var require, define;
                 }
                 //Move the start time for timeout forward.
                 context.startTime = (new Date()).getTime();
+                context.pausedCount -= p.length;
             }
 
-            checkLoaded();
+            //Only check if loaded when resume depth is 1. It is likely that
+            //it is only greater than 1 in sync environments where a factory
+            //function also then calls the callback-style require. In those
+            //cases, the checkLoaded should not occur until the resume
+            //depth is back at the top level.
+            if (resumeDepth === 1) {
+                checkLoaded();
+            }
+
+            resumeDepth -= 1;
 
             return undefined;
         };
@@ -941,6 +991,7 @@ var require, define;
             urlFetched: {},
             defined: defined,
             paused: [],
+            pausedCount: 0,
             plugins: plugins,
             managerCallbacks: managerCallbacks,
             makeModuleMap: makeModuleMap,
@@ -950,7 +1001,7 @@ var require, define;
              * @param {Object} cfg config object to integrate.
              */
             configure: function (cfg) {
-                var paths, packages, prop, packagePaths, requireWait;
+                var paths, prop, packages, pkgs, packagePaths, requireWait;
 
                 //Make sure the baseUrl ends in a slash.
                 if (cfg.baseUrl) {
@@ -963,6 +1014,7 @@ var require, define;
                 //they are additive.
                 paths = config.paths;
                 packages = config.packages;
+                pkgs = config.pkgs;
 
                 //Mix in the config values, favoring the new values over
                 //existing ones in context.config.
@@ -984,18 +1036,18 @@ var require, define;
                     if (packagePaths) {
                         for (prop in packagePaths) {
                             if (!(prop in empty)) {
-                                configurePackageDir(packages, packagePaths[prop], prop);
+                                configurePackageDir(pkgs, packagePaths[prop], prop);
                             }
                         }
                     }
 
                     //Adjust packages if necessary.
                     if (cfg.packages) {
-                        configurePackageDir(packages, cfg.packages);
+                        configurePackageDir(pkgs, cfg.packages);
                     }
 
                     //Done with modifications, assing packages back to context config
-                    config.packages = packages;
+                    config.pkgs = pkgs;
                 }
 
                 //If priority loading is in effect, trigger the loads now
@@ -1008,6 +1060,13 @@ var require, define;
                     requireWait = context.requireWait;
                     context.requireWait = false;
                     context.require(cfg.priority);
+                    //Trigger a resume right away, for the case when
+                    //the script with the priority load is done as part
+                    //of a data-main call. In that case the normal resume
+                    //call will not happen because the scriptCount will be
+                    //at 1, since the script for data-main is being processed.
+                    resume();
+                    //Restore previous state.
                     context.requireWait = requireWait;
                     config.priorityWait = cfg.priority;
                 }
@@ -1173,8 +1232,7 @@ var require, define;
              * moduleName may actually be just an URL.
              */
             nameToUrl: function (moduleName, ext, relModuleMap) {
-
-                var paths, packages, pkg, pkgPath, syms, i, parentModule, url,
+                var paths, pkgs, pkg, pkgPath, syms, i, parentModule, url,
                     config = context.config;
 
                 if (moduleName.indexOf("./") === 0 || moduleName.indexOf("../") === 0) {
@@ -1205,7 +1263,7 @@ var require, define;
                     } else {
                         //A module that needs to be converted to a path.
                         paths = config.paths;
-                        packages = config.packages;
+                        pkgs = config.pkgs;
 
                         syms = moduleName.split("/");
                         //For each module name segment, see if there is a path
@@ -1216,7 +1274,7 @@ var require, define;
                             if (paths[parentModule]) {
                                 syms.splice(0, i, paths[parentModule]);
                                 break;
-                            } else if ((pkg = packages[parentModule])) {
+                            } else if ((pkg = pkgs[parentModule])) {
                                 //If module name is just the package name, then looking
                                 //for the main module.
                                 if (moduleName === pkg.name) {
@@ -1454,6 +1512,11 @@ var require, define;
         return undefined;
     };
 
+    define.amd = {
+        multiversion: true,
+        plugins: true
+    };
+
     /**
      * Executes a module callack function. Broken out as a separate function
      * solely to allow the build system to sequence the files in the built
@@ -1582,21 +1645,10 @@ var require, define;
         return null;
     };
 
-
-    //Determine what baseUrl should be if not already defined via a require config object
-    s.baseUrl = cfg.baseUrl;
-    if (isBrowser && (!s.baseUrl || !head)) {
+    //Look for a data-main script attribute, which could also adjust the baseUrl.
+    if (isBrowser) {
         //Figure out baseUrl. Get it from the script tag with require.js in it.
         scripts = document.getElementsByTagName("script");
-        if (cfg.baseUrlMatch) {
-            rePkg = cfg.baseUrlMatch;
-        } else {
-                        rePkg = /(requireplugins-|require-)?jquery[\-\d\.]*(min)?\.js(\W|$)/i;
-            
-            
-            
-            
-                    }
 
         for (i = scripts.length - 1; i > -1 && (script = scripts[i]); i--) {
             //Set the "head" where we can append children by
@@ -1605,44 +1657,34 @@ var require, define;
                 head = script.parentNode;
             }
 
-
             //Look for a data-main attribute to set main script for the page
-            //to load.
-            if (!dataMain && (dataMain = script.getAttribute('data-main'))) {
+            //to load. If it is there, the path to data main becomes the
+            //baseUrl, if it is not already set.
+            if ((dataMain = script.getAttribute('data-main'))) {
+                if (!cfg.baseUrl) {
+                    //Pull off the directory of data-main for use as the
+                    //baseUrl.
+                    src = dataMain.split('/');
+                    mainScript = src.pop();
+                    subPath = src.length ? src.join('/')  + '/' : './';
+
+                    //Set final config.
+                    cfg.baseUrl = subPath;
+                    //Strip off any trailing .js since dataMain is now
+                    //like a module name.
+                    dataMain = mainScript.replace(jsSuffixRegExp, '');
+                }
+
+                //Put the data-main script in the files to load.
                 cfg.deps = cfg.deps ? cfg.deps.concat(dataMain) : [dataMain];
 
-                //Favor using data-main tag as the base URL instead of
-                //trying to pattern-match src values.
-                if (!cfg.baseUrl && (src = script.src)) {
-                    src = src.split('/');
-                    src.pop();
-                    
-                    //**********************************
-                    //Start of RESThub JS modification//
-                    //**********************************
-                    src.pop();
-                    //**********************************
-                    //End of RESThub JS modification//
-                    //**********************************
-                    
-                    //Make sure current config gets the value.
-                    s.baseUrl = cfg.baseUrl = src.length ? src.join('/') : './';
-                }
-            }
-
-            //Using .src instead of getAttribute to get an absolute URL.
-            //While using a relative URL will be fine for script tags, other
-            //URLs used for text! resources that use XHR calls might benefit
-            //from an absolute URL.
-            if (!s.baseUrl && (src = script.src)) {
-                m = src.match(rePkg);
-                if (m) {
-                    s.baseUrl = src.substring(0, m.index);
-                    break;
-                }
+                break;
             }
         }
     }
+
+    //Set baseUrl based on config.
+    s.baseUrl = cfg.baseUrl;
 
     //****** START page load functionality ****************
     /**
@@ -1707,7 +1749,7 @@ var require, define;
                 if (!(prop in empty)) {
                     context = contexts[prop];
                     if (context.jQueryIncremented) {
-                        context.jQuery.readyWait -= 1;
+                        context.jQuery.ready(true);
                         context.jQueryIncremented = false;
                     }
                 }
@@ -1779,7 +1821,7 @@ var require, define;
     //traced. Use a setTimeout in the browser world, to allow all the modules to register
     //themselves. In a non-browser env, assume that modules are not built into require.js,
     //which seems odd to do on the server.
-    if (typeof setTimeout !== "undefined") {
+    if (req.isAsync && typeof setTimeout !== "undefined") {
         ctx = s.contexts[(cfg.context || defContextName)];
         //Indicate that the script that includes require() is still loading,
         //so that require()'d dependencies are not traced until the end of the
@@ -1805,13 +1847,12 @@ var require, define;
 }());
 
 /**
- * @license RequireJS i18n Copyright (c) 2010, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS i18n Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
-/*jslint white: false, regexp: false, nomen: false, plusplus: false */
+/*jslint white: false, regexp: false, nomen: false, plusplus: false, strict: false */
 /*global require: false, navigator: false, define: false */
-
 
 /**
  * This plugin handles i18n! prefixed modules. It does the following:
@@ -1948,14 +1989,13 @@ var require, define;
     });
 }());
 /**
- * @license RequireJS text Copyright (c) 2010, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS text Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
-/*jslint white: false, regexp: false, nomen: false, plusplus: false */
+/*jslint white: false, regexp: false, nomen: false, plusplus: false, strict: false */
 /*global require: false, XMLHttpRequest: false, ActiveXObject: false,
   define: false */
-
 
 (function () {
     var progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
@@ -2038,56 +2078,57 @@ var require, define;
         };
     }
 
-    define('require/text',{
-        load: function (name, req, onLoad, config) {
-            //Name has format: some.module.filext!strip
-            //The strip part is optional.
-            //if strip is present, then that means only get the string contents
-            //inside a body tag in an HTML string. For XML/SVG content it means
-            //removing the <?xml ...?> declarations so the content can be inserted
-            //into the current doc without problems.
+    define('require/text',['require','exports','module'],function () {
+        return {
+            load: function (name, req, onLoad, config) {
+                //Name has format: some.module.filext!strip
+                //The strip part is optional.
+                //if strip is present, then that means only get the string contents
+                //inside a body tag in an HTML string. For XML/SVG content it means
+                //removing the <?xml ...?> declarations so the content can be inserted
+                //into the current doc without problems.
 
-            var strip = false, url, index = name.indexOf("."),
-                modName = name.substring(0, index),
-                ext = name.substring(index + 1, name.length);
+                var strip = false, url, index = name.indexOf("."),
+                    modName = name.substring(0, index),
+                    ext = name.substring(index + 1, name.length);
 
-            index = ext.indexOf("!");
-            if (index !== -1) {
-                //Pull off the strip arg.
-                strip = ext.substring(index + 1, ext.length);
-                strip = strip === "strip";
-                ext = ext.substring(0, index);
-            }
-
-            //Load the text.
-            url = req.nameToUrl(modName, "." + ext);
-            require.fetchText(url, function (text) {
-                text = strip ? require.textStrip(text) : text;
-                if (config.isBuild && config.inlineText) {
-                    buildMap[name] = text;
+                index = ext.indexOf("!");
+                if (index !== -1) {
+                    //Pull off the strip arg.
+                    strip = ext.substring(index + 1, ext.length);
+                    strip = strip === "strip";
+                    ext = ext.substring(0, index);
                 }
-                onLoad(text);
-            });
-        },
 
-        write: function (pluginName, moduleName, write) {
-            if (moduleName in buildMap) {
-                var text = require.jsEscape(buildMap[moduleName]);
-                write("define('" + pluginName + "!" + moduleName  +
-                      "', function () { return '" + text + "';});\n");
+                //Load the text.
+                url = req.nameToUrl(modName, "." + ext);
+                require.fetchText(url, function (text) {
+                    text = strip ? require.textStrip(text) : text;
+                    if (config.isBuild && config.inlineText) {
+                        buildMap[name] = text;
+                    }
+                    onLoad(text);
+                });
+            },
+
+            write: function (pluginName, moduleName, write) {
+                if (moduleName in buildMap) {
+                    var text = require.jsEscape(buildMap[moduleName]);
+                    write("define('" + pluginName + "!" + moduleName  +
+                          "', function () { return '" + text + "';});\n");
+                }
             }
-        }
+        };
     });
 }());
 /**
- * @license RequireJS order Copyright (c) 2010, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS order Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
-/*jslint white: false, nomen: false, plusplus: false */
+/*jslint white: false, nomen: false, plusplus: false, strict: false */
 /*global require: false, define: false, window: false, document: false,
   setTimeout: false */
-
 
 (function () {
     //Sadly necessary browser inference due to differences in the way
@@ -2234,7 +2275,7 @@ var require, define;
  *
  * Date: Thu Nov 11 19:04:53 2010 -0500
  */
-(function( window ) {
+(function( window, undefined ) {
 
 // Use the correct document accordingly with window argument (sandbox)
 var document = window.document;
@@ -9397,7 +9438,7 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 });
 
 if ( typeof define !== "undefined" ) {
-	define('jquery',[], function() { return jQuery; });
+	define('jquery',[], function() { return jQuery });
 }
 
 })(window);

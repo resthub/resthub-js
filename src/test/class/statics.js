@@ -36,14 +36,14 @@ define(['lib/class'], function(Class) {
 	},{});
 
 	$('#staticPolymorphism').click(function() {
-		$('#main').html('ancestor static method. Animal: ' + Animal.shout() + 
-				'<br/>ancestor static method with subclass overloaded static attribute. Mammal: ' + Mammal.shout() +
-				'<br/>subclass static overloaded method. Shark: ' + Shark.shout() +
-				'<br/>subclass static extended method. Dolphin: ' + Dolphin.shout() +
-				'<br/><br/>static nested method. Animal: ' + Animal.move() + 
-				'<br/>static nested method. Mammal: ' + Mammal.move() +
-				'<br/>static nested method. Shark: ' + Shark.move() +
-				'<br/>static nested method. Dolphin: ' + Dolphin.move());
+		$('#main').html('ancestor static method. ' + Animal.shout() + ' (awaited: "GRRRRRRRRRAAAAAAA ! (Animal scream !)")' +
+				'<br/>ancestor static method with subclass overloaded static attribute. ' + Mammal.shout() + ' (awaited: "grrrraaa ! (Weak mammal scream)")' +
+				'<br/>subclass static overloaded method. ' + Shark.shout() + ' (awaited: "I don\'t scream, I eat fish")' +
+				'<br/>subclass static extended method. ' + Dolphin.shout() + ' (awaited: "I don\'t scream, I eat fish (and I\'m gay !)")' +
+				'<br/><br/>static nested method. ' + Animal.move() + ' (awaited: "I can\'t move...")' + 
+				'<br/>static nested method. ' + Mammal.move() + ' (awaited: "I can\'t move either !")' +
+				'<br/>static nested method. ' + Shark.move() + ' (awaited: "I swim in the sea")' +
+				'<br/>static nested method. ' + Dolphin.move() + ' (awaited: "I swim in the sea)")');
 	});
 	
 });

@@ -40,10 +40,10 @@ define(['lib/class'], function(Class) {
 		var harry = new Mammal('Harry');
 		var john = new Shark('John');
 		var tim = new Dolphin('Tim');
-		$('#main').html('ancestor method. Animal: ' + ted.shout() + 
-				'<br/>ancestor method with subclass overloaded attribute. Mammal: ' + harry.shout() +
-				'<br/>subclass overloaded method. Shark: ' + john.shout() +
-				'<br/>subclass extended method. Dolphin: ' + tim.shout());
+		$('#main').html('ancestor method. ' + ted.shout() + '  (awaited: "Ted Animal say: GRRRRRRRRRAAAAAAA ! (Animal scream !)")' +
+				'<br/>ancestor method with subclass overloaded attribute. ' + harry.shout() + '  (awaited: "Harry Mammal Animal say: grrrraaa ! (Weak mammal scream)")' +
+				'<br/>subclass overloaded method. ' + john.shout() +  '  (awaited: "Shark don\'t scream, they just eat fish")' +
+				'<br/>subclass extended method. ' + tim.shout() + '  (awaited: "Shark don\'t scream, they just eat fish (Dolphins are just gay sharks)")');
 	});
 	
 });

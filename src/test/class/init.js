@@ -36,8 +36,8 @@ define(['lib/class'], function(Class) {
 		callStack = '';
 		new Dolphin('Ted');
 		var callStack2 = callStack;
-		$('#main').html('call stack for Shark:<br/>' + callStack1+
-				'<br/>call stack for Dolphin:<br/>' + callStack2);
+		$('#main').html('call stack for Shark:<br/>' + callStack1 + ' (awaited: "Animal.init() Mammal.init() Shark.init()")' +
+				'<br/>call stack for Dolphin:<br/>' + callStack2 + ' (awaited: "Dolphin.init()")');
 	});
 
 });
