@@ -30,7 +30,7 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 		 * 
 		 */
 		$.route = function() {
-			
+			debugger;
 			if(arguments.length == 0 || arguments.length > 2) {
 				console.error('Wrong number of arguments, $.route take 1 or 2 argument');
 				return;
@@ -100,14 +100,24 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 					return;
 				}
 				
+				var hash = $(location).attr('hash');
+				// Change window has only if needed: natural browsing already changed the hash, contrary to programmatic
+				// calls to $.route('XXX') that need a manual hash change.
+				if (hash !== real_path) {
+					// If we manually change the hash, we must inhibit the dispatcher, to avoid looping.
+					$.route.dispacher._inhibit = true;
+					$(location).attr('hash', real_path);
+				}
+				$.publish('route-run', [real_path, args]);
+				
+				console.debug('Run route ' + arguments[0]);
+				
+				// Execute route callbacks.
 				var callbacks = $.route.routes[path];
 				for(var i=0; i<callbacks.length; i++){
 					callbacks[i](args);  
 				}			
-				location.hash = real_path;
-				$.publish('route-run', [real_path, args]);
-				console.debug('Run route ' + arguments[0]);
-				
+			
 				// Register route
 			} else if(arguments.length == 2) {
 				var callback = arguments[1];
@@ -122,14 +132,20 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 		
 		$.route.routes = {};
 		
-		$.route.dispacher = {};
+		$.route.dispacher = {
+			// Inihibition flag when unning a route manually.
+			_inhibit: false
+		};
 		$.route.dispacher._last = '';
 		
 		$.route.dispacher._onhashchange = function() {
-		    if($.route.dispacher._last != location.hash){
-		    	$.route.dispacher._last = location.hash;
-		        $.route(location.hash);
+			var hash = $(location).attr('hash');
+			// Dispatching may be inhibited if the change is trigger by a programmatic $.route() call.
+		    if(!$.route.dispacher._inhibit && $.route.dispacher._last != hash){
+		    	$.route.dispacher._last = hash;
+		        $.route(hash);
 		    }
+		    $.route.dispacher._inhibit = false;
 		};
 		
 		if ("onhashchange" in window) {
