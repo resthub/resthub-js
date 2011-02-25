@@ -9,8 +9,8 @@ define(['lib/class'], function(Class) {
 		// Adds a bindable variable.
 		$.makeBindable(obj, 'value', 'Hello World !');
 		// Binds changes to display value into the #main div 
-		$.bindAttribute(obj, 'value', function() {
-			console.debug('value changed !');
+		$.bindAttribute(obj, 'value', function(event, newValue, oldValue) {
+			console.debug('value changed from ' + oldValue + ' to ' + newValue);
 			$('#main').html(obj.value);
 		});
 		
