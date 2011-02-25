@@ -376,10 +376,57 @@ define(['lib/jquery'], function () {
 
 		});
 
+        /**
+	     * Adds to the object an attribute which name and defaultValue are specified.
+	     * But this special attribute triggers an event (named 'attrName'-change) when changed.
+	     * 
+	     * It's also bindable to functions.
+	     * 
+	     * @param obj The concerned object.
+	     * @param attrName The created attribute name.
+	     * @param defaultValue The attribute default value.
+	     */
+        $.makeBindable = function(obj, attrName, defaultValue) {
+        	if (Object['defineProperty']){
+        		// Javascript >= 1.8.5
+                // Adds an non-configurable, non-enumerable attribute, to store the data used by getter/setters.
+                Object.defineProperty(obj, '_'+attrName,{
+                        value : defaultValue,
+                        writable : true
+                });
+            } else {
+        		// Javascript < 1.8.5
+            	obj['_'+attrName] = defaultValue;
+        	}
 
+            // Creates the getter
+            obj.__defineGetter__(attrName, function() {
+            	return this['_'+attrName];
+	        });
+	        // Creates the setter that trigger the event
+	        obj.__defineSetter__(attrName, function(value) {
+	        	var oldValue = this['_'+attrName];
+	        	this['_'+attrName] = value;
+	        	$(this).trigger(attrName+'-change', [value, oldValue]);
+	        });
+        }; // makeBindable().
 
-
-
+        /**
+	     * Bound a function to changes from an attribute.
+	     * Every time the attribute is modified, then the function is called with 
+	     * following parameters:
+	     * 1 - event The change event.
+	     * 2 - newValue Attribute's new value.
+	     * 3 - oldValue Attribute's old value.
+	     * 
+	     * @param obj Concerned object.
+	     * @param attrName The bound attribute.
+	     * @param method Method bound to the attribute's changes
+	     */
+        $.bindAttribute = function(obj, attrName, method) {
+    		$(obj).bind(attrName+'-change', method);
+        }; // bindAttribute().
+        
 		jQuery.Class.prototype.
 		/**
 		 * @function callback
