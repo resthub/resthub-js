@@ -1,4 +1,4 @@
-define('jqueryui/dialog', ['lib/jquery','lib/jqueryui/core','lib/jqueryui/widget','lib/jqueryui/button','lib/jqueryui/draggable','lib/jqueryui/mouse','lib/jqueryui/position','lib/jqueryui/resizable'], function () {
+define(['lib/jquery','lib/jqueryui/core','lib/jqueryui/widget','lib/jqueryui/button','lib/jqueryui/draggable','lib/jqueryui/mouse','lib/jqueryui/position','lib/jqueryui/resizable'], function () {
 /*
  * jQuery UI Dialog 1.8.7
  *

@@ -1,4 +1,4 @@
-define('jqueryui/effects/blind', ['lib/jquery','lib/jqueryui/effects/core'], function () {
+define(['lib/jquery','lib/jqueryui/effects/core'], function () {
 /*
  * jQuery UI Effects Blind 1.8.7
  *

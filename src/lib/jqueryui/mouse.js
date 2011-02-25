@@ -1,4 +1,4 @@
-define('jqueryui/mouse', ['lib/jquery','lib/jqueryui/widget'], function () {
+define(['lib/jquery','lib/jqueryui/widget'], function () {
 /*!
  * jQuery UI Mouse 1.8.7
  *

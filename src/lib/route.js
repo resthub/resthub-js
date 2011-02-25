@@ -30,7 +30,6 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 		 * 
 		 */
 		$.route = function() {
-			debugger;
 			if(arguments.length == 0 || arguments.length > 2) {
 				console.error('Wrong number of arguments, $.route take 1 or 2 argument');
 				return;

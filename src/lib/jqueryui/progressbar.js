@@ -1,4 +1,4 @@
-define('jqueryui/progressbar', ['lib/jqueryui/core','lib/jqueryui/widget'], function () {
+define(['lib/jqueryui/core','lib/jqueryui/widget'], function () {
 /*
  * jQuery UI Progressbar 1.8.7
  *

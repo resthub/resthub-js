@@ -1,4 +1,4 @@
-define('jqueryui/resizable', ['jquery','lib/jqueryui/core','lib/jqueryui/mouse','lib/jqueryui/widget'], function () {
+define(['jquery','lib/jqueryui/core','lib/jqueryui/mouse','lib/jqueryui/widget'], function () {
 /*
  * jQuery UI Resizable 1.8.7
  *

@@ -1,4 +1,4 @@
-define('jqueryui/datepicker', ['lib/jquery','lib/jqueryui/core'], function () {
+define(['lib/jquery','lib/jqueryui/core'], function () {
 /*
  * jQuery UI Datepicker 1.8.7
  *

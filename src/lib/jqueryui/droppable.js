@@ -1,4 +1,4 @@
-define('jqueryui/droppable', ['lib/jquery','lib/jqueryui/core','lib/jqueryui/widget','lib/jqueryui/mouse','lib/jqueryui/draggable'], function () {
+define(['lib/jquery','lib/jqueryui/core','lib/jqueryui/widget','lib/jqueryui/mouse','lib/jqueryui/draggable'], function () {
 /*
  * jQuery UI Droppable 1.8.7
  *

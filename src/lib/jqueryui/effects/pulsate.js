@@ -1,4 +1,4 @@
-define('jqueryui/effects/pulsate', ['lib/jquery','lib/jqueryui/effects/core'], function () {
+define(['lib/jquery','lib/jqueryui/effects/core'], function () {
 /*
  * jQuery UI Effects Pulsate 1.8.7
  *

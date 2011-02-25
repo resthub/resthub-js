@@ -1,4 +1,4 @@
-define('jqueryui/effects/drop', ['lib/jquery','lib/jqueryui/effects/core'], function () {
+define(['lib/jquery','lib/jqueryui/effects/core'], function () {
 /*
  * jQuery UI Effects Drop 1.8.7
  *

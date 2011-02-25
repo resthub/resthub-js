@@ -1,4 +1,4 @@
-define('view', function () {	
+define(function () {	
  
 EJS.Helpers.prototype.date_tag = function(name, value , html_options) {
     if(! (value instanceof Date))

@@ -1,4 +1,4 @@
-define('jqueryui/effects/core', ['lib/jquery'], function () {
+define(['lib/jquery'], function () {
 /*
  * jQuery UI Effects 1.8.7
  *

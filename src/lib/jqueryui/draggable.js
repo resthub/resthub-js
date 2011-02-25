@@ -1,4 +1,4 @@
-define('jqueryui/draggable', ['lib/jquery','lib/jqueryui/core','lib/jqueryui/mouse','lib/jqueryui/widget'], function () {
+define(['lib/jquery','lib/jqueryui/core','lib/jqueryui/mouse','lib/jqueryui/widget'], function () {
 /*
  * jQuery UI Draggable 1.8.7
  *

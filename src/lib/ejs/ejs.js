@@ -1,4 +1,4 @@
-define('ejs', function () {	
+define(function () {	
     
 var rsplit = function(string, regex) {
 	var result = regex.exec(string),retArr = new Array(), first_idx, last_idx, first_bit;
