@@ -250,7 +250,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 		if ($.browser.opera && (/relative/).test(el.css('position')))
 			el.css({ position: 'relative', top: 'auto', left: 'auto' });
 
-		this.renderProxy();
+		this._renderProxy();
 
 		var curleft = num(this.helper.css('left')), curtop = num(this.helper.css('top'));
 
