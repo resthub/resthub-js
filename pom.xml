@@ -13,6 +13,20 @@
 
     <profiles>
         <profile>
+            <id>env-local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>env</name>
+                    <value>local</value>
+                </property>
+            </activation>
+            <properties>
+                <deploy.host>resthub.org</deploy.host>
+				        <site.plugin.version>3.0-beta-3</site.plugin.version>
+            </properties>
+        </profile>
+        <profile>
             <id>env-dev</id>
             <activation>
                 <property>
@@ -22,10 +36,15 @@
             </activation>
             <properties>
                 <deploy.host>localhost</deploy.host>
-				<site.plugin.version>2.0.1</site.plugin.version>
+				        <site.plugin.version>2.0.1</site.plugin.version>
             </properties>
         </profile>
     </profiles>
+    
+    <scm>
+        <connection>scm:hg:https://bitbucket.org/ilabs/resthub-js/</connection>
+        <url>http://bitbucket.org/ilabs/resthub-js/src/</url>
+    </scm>
     
 	<build>
 		<plugins>
@@ -57,6 +76,11 @@
 					</webAppConfig>
 				</configuration>
 			</plugin>
+			<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${site.plugin.version}</version>
+      </plugin>
 
 			<!-- To compress javascript : mvn net.alchim31.maven:yuicompressor-maven-plugin:0.9:compress -->
 			<plugin>
