@@ -1,12 +1,11 @@
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.resthub</groupId>
 	<artifactId>resthub-js</artifactId>
 	<name>Javascript stack</name>
 	<packaging>war</packaging>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1-beta1</version>
 	<description>
 		RESThub Javascript Stack including frameworks and helpers
     </description>
@@ -98,14 +97,14 @@
 				<!-- <aggregations> -->
 				<!-- <aggregation> -->
 				<!-- <insertNewLine>true</insertNewLine> -->
-<!---->
+
 				<!-- <output>${project.build.directory}/${project.build.finalName}/lib/resthub.stack.js</output> -->
 				<!-- <includes> -->
 				<!-- <include>${basedir}/src/main/webapp/lib/jquery.js</include> -->
 				<!-- </includes> -->
-<!---->
+
 				<!-- </aggregation> -->
-<!---->
+
 				<!-- </aggregations> -->
 				<!-- <jswarn>false</jswarn> -->
 				<!-- </configuration> -->
