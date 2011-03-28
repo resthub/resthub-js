@@ -343,7 +343,7 @@ $.widget( "ui.autocomplete", {
 		var ul = this.menu.element
 			.empty()
 			.zIndex( this.element.zIndex() + 1 );
-		this.renderMenu( ul, items );
+		this._renderMenu( ul, items );
 		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
 		this.menu.deactivate();
 		this.menu.refresh();
