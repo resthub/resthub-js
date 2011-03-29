@@ -384,7 +384,7 @@ $.widget("ui.dialog", {
 					})
 					.appendTo(uiButtonSet);
 				if ($.fn.button) {
-					button.button();
+					button.button({icons:props.icons});
 				}
 			});
 			uiDialogButtonPane.appendTo(self.uiDialog);
