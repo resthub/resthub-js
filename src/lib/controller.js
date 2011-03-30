@@ -1,8 +1,10 @@
 /**
  * Resthub-controller is a generic javascript controller for resthub
  * applications. It provides utility functions for basic op�rations.
+ * 
+ * <b>Do not remove the lib/jqueryui/widget inclusion: its needed for the destroy mechanism.</b>
  */
-define(['lib/jquery', 'lib/class', 'lib/tmpl'], function(p1, Class) {
+define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(p1, Class) {
 
 	return Class.extend("Controller", {
 
@@ -73,6 +75,19 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl'], function(p1, Class) {
 			},
 			
 			/**
+			 * Destroy function, invoked when the rendering is removed.
+			 * May be overrited to add specific finalization code.
+			 * 
+			 * <b>Don't forget to call this._super() in overriden methods.</br>
+			 */
+			destroy: function() {
+				// Unbind the removal event.
+				if (this.element.children().length > 0) {
+					$(this.element.children()[0]).unbind('remove.'+this['Class']._fullName);
+				}
+			},
+			
+			/**
 			 * Renders current widget with the template specified in
 			 * this.options.template. If none is defined, it used a
 			 * view with the same name of the controller
@@ -82,6 +97,10 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl'], function(p1, Class) {
 					this.element.render('./' + this.widgetName + '.html', data, options);
 				} else {
 					this.element.render(this.template, data, options);
+				}
+				// Bind to remove element to call the destroy method.
+				if (this.element.children().length > 0) {
+					$(this.element.children()[0]).bind('remove.'+this['Class']._fullName, $.proxy(this, 'destroy'));
 				}
 			}
 		});
