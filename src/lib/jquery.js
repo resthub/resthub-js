@@ -9438,7 +9438,7 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 });
 
 if ( typeof define !== "undefined" ) {
-	define('jquery',[], function() { return jQuery });
+	define('jquery',[], function() { return jQuery; });
 }
 
 })(window);
