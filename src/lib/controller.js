@@ -92,7 +92,6 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 			 * context, or name of an existing method (name is string).
 			 */
 			subscribe: function(eventType, callback) {
-				debugger;
 				var bound;
 				if (jQuery.isFunction(callback)) {
 					bound = $.proxy(callback, this);
