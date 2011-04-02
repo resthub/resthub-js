@@ -69,8 +69,15 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 			
 			template: '',
 			
+			/**
+			 * Handle for event subscription.
+			 * Automatically unsubscribed when the controller is destroyed.
+			 */
+			handles: [],
+			
 			setup: function( element, options ) {
 				this.element = $(element);
+				this.handles = [];
 				$.extend( true, this, options );
 			},
 			
@@ -78,9 +85,14 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 			 * Destroy function, invoked when the rendering is removed.
 			 * May be overrited to add specific finalization code.
 			 * 
-			 * <b>Don't forget to call this._super() in overriden methods.</br>
+			 * <b>Don't forget to call this._super() in overriden methods.</b>
+			 * Unsubribe all event handles stored in this.handles.
 			 */
 			destroy: function() {
+				// Unsubscribed known handles
+				for (var i = 0; this.handles && i < this.handles.length; i++) {
+					$.unsubscribe(this.handles[i]);
+				}
 				// Unbind the removal event.
 				if (this.element.children().length > 0) {
 					$(this.element.children()[0]).unbind('remove.'+this['Class']._fullName);

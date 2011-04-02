@@ -2,6 +2,7 @@ define(["lib/route"], function(p1) {
 	$(document).ready(function(){
 		
 		window.CONTROLLER_TEST_REMOVED = false;
+		window.CONTROLLER_TEST_EVENT_TRIGGERED = false;
 		
 		$.route('#',  function() {
 			$('#main').html("Home");
@@ -20,6 +21,29 @@ define(["lib/route"], function(p1) {
 			if (controllerPresent && !CONTROLLER_TEST_REMOVED) {
 				alert('Controller was not removed');
 			}
+		});
+		
+		$.route('#/removeController1AndPublish', function() {
+			// Reset
+			$('#main *').remove();
+			CONTROLLER_TEST_EVENT_TRIGGERED = false;
+			
+			require(["test/controller/widget1"], function() {
+				// Creates a controller.
+				$('#main').widget1();
+				$.publish('myEvent');
+				if (!CONTROLLER_TEST_EVENT_TRIGGERED) {
+					alert('Controller was not bound to "myEvent"');
+				}
+				// Removes controller
+				CONTROLLER_TEST_EVENT_TRIGGERED = false;
+				$('#main *').remove();
+				// Publish 
+				$.publish('myEvent');
+				if (CONTROLLER_TEST_EVENT_TRIGGERED) {
+					alert('Controller may have been unbound from "myEvent"');
+				}
+			})
 		});
 		
 		$.route(location.hash);
