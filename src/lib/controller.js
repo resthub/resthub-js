@@ -82,6 +82,33 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 			},
 			
 			/**
+			 * Subscribe an method of this controller (or an anonymous function)
+			 * to an event, keeping the returned handle for automatic removal
+			 * during destroy.
+			 * If eventType is an array, the handler is bound to all events.
+			 * 
+			 * @param eventType Type of event subscribed. Can be an array.
+			 * @param callback anonymous function executed in this controller 
+			 * context, or name of an existing method (name is string).
+			 */
+			subscribe: function(eventType, callback) {
+				debugger;
+				var bound;
+				if (jQuery.isFunction(callback)) {
+					bound = $.proxy(callback, this);
+				} else {
+					bound = $.proxy(this, callback);
+				}
+				if (!jQuery.isArray(eventType)) {
+					eventType = [eventType];
+				}
+				for (var i = 0; i < eventType.length; i++) {
+					// Register the callback and kept the handle.
+					this.handles.push($.subscribe(eventType[i], bound));
+				}
+			}, // subscribe().
+			
+			/**
 			 * Destroy function, invoked when the rendering is removed.
 			 * May be overrited to add specific finalization code.
 			 * 

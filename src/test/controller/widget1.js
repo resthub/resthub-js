@@ -14,8 +14,7 @@ define(['lib/controller'], function(Controller) {
 		init: function() {
 			this.template = 'widget1.html';
 			this.render({user:{login:'hsimpson', username:'Homer Simpson'}});
-			this.handles.push($.subscribe('myEvent', 
-					$.proxy(this, 'eventHandler')));
+			this.subscribe('myEvent', 'eventHandler');
 		}
 	});
 });
