@@ -9,48 +9,60 @@
  * Dual licensed under the MIT and GPL licenses.
  * http://benalman.com/about/license/
  */
-define(['lib/jquery'], function () {
-	(function($){
-	  
-	  var o = $({});
-	  
-	  /**
-	   * Define an event handler for this eventType listening on th event bus
-	   *
-	   * subscribe( eventType, handler(args) )
-	   * @param {String} eventType A string that identify your custom javaScript event type
-	   * @param {function} handler(args) function to execute each time the event is triggered, with
-	   * 
-	   */
-	  $.subscribe = function() {
-		
-		var type = arguments[0];
-		var callback = arguments[1];
-		// Remove uneeded event argument
-		var new_callback = function() {
-			callback.apply(this, Array.prototype.slice.call(arguments, 1));
+define([ 'lib/jquery' ], function() {
+	(function($) {
+
+		/**
+		 * Stores event handlers
+		 */
+		$._pubsubRootListener = {};
+
+		/**
+		 * Define an event handler for this eventType listening on the event bus
+		 *
+		 * subscribe( type, callback )
+		 * @param {String} type A string that identify your custom javaScript event type
+		 * @param {function} callback(args) function to execute each time the event is triggered, with
+		 * 
+		 * @return Handle used to unsubribe.
+		 */
+		$.subscribe = function(type, callback) {
+			// Creates an event source
+			var listener = $({});
+			// Binds the callback to the eventsource
+			listener.bind(type, function(){
+				// Remove the event arguments 
+				callback.apply(this, Array.prototype.slice.call(arguments, 1));
+			});
+			// Creates, stores and returns a handle.
+			var handle = ""+parseInt(Math.random()*1000000000);
+			$._pubsubRootListener[handle] = listener;
+			return handle;
 		};
-	    o.bind.apply( o, [type, new_callback] );
-	  };
-	  
-	  /**
-	   * Remove a previously-defined event handler for the matching eventType
-	   * 
-	   * @param {String} eventType A string that identify your custom javaScript event type
-	   */
-	  $.unsubscribe = function() {
-	    o.unbind.apply( o, arguments );
-	  };
-	  
-	  /**
-	   * Publish an event in the event bus
-	   * 
-	   * @param {String} eventType A string that identify your custom javaScript event type
-	   * @param {Array} extraParameters  Additional parameters to pass along to the event handler
-	   */
-	  $.publish = function() {
-	    o.trigger.apply( o, arguments );
-	  };
-	  
+
+		/**
+		 * Remove a previously-defined event handler for the matching eventType
+		 * 
+		 * @param {String} handle The handle returned by the $.subscribe() function
+		 */
+		$.unsubscribe = function(handle) {
+			if(handle in $._pubsubRootListener) {
+				$._pubsubRootListener[handle].unbind();
+				delete($._pubsubRootListener[handle]);
+			}
+		};
+
+		/**
+		 * Publish an event in the event bus
+		 * 
+		 * @param {String} type A string that identify your custom javaScript event type
+		 * @param {Array} data  Parameters to pass along to the event handler
+		 */
+		$.publish = function(type, data) {
+			for(var handle in $._pubsubRootListener) {
+				$._pubsubRootListener[handle].trigger(type, data);
+			}
+		};
+
 	})(jQuery);
 });

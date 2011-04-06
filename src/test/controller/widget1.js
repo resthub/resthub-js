@@ -7,9 +7,14 @@ define(['lib/controller'], function(Controller) {
 			this._super();
 		},
 		
+		eventHandler: function() {
+			CONTROLLER_TEST_EVENT_TRIGGERED = true;
+		},
+		
 		init: function() {
 			this.template = 'widget1.html';
-			this.render({user:{login:'hsimpson', username:'Homer Simpson'}});			
+			this.render({user:{login:'hsimpson', username:'Homer Simpson'}});
+			this.subscribe('myEvent', 'eventHandler');
 		}
 	});
 });

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Publish Subscribe</title>
+<script data-main="app" src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	require({baseUrl: "../../"});
+</script>
+</head>
+<body>
+
+	Run tests :
+	<ul>
+		<li><a href="#/shouldPublishTriggersAllListeners">simple publish with 2 listeners</a></li>
+		<li><a href="#/shouldPublishNotTriggersOtherListeners">event separation</a></li>
+		<li><a href="#/shouldPublishNotTriggersUnsubscirbedListeners">listener unsubscribe</a></li>
+		<li><a href="#/shouldPublishPassedData">data published</a></li>
+		<li><a href="#/shouldNotLostContext">context preserved</a>
+	</ul>
+	
+	<div id="main">
+	
+	</div>
+
+</script>
+</body>
+</html>
+
