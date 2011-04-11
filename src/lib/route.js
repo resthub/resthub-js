@@ -100,11 +100,12 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 				}
 				
 				var hash = $(location).attr('hash');
-				// Change window has only if needed: natural browsing already changed the hash, contrary to programmatic
+				// Change window hash only if needed: natural browsing already changed the hash, contrary to programmatic
 				// calls to $.route('XXX') that need a manual hash change.
 				if (hash !== real_path) {
 					// If we manually change the hash, we must inhibit the dispatcher, to avoid looping.
 					$.route.dispacher._inhibit = true;
+					$.route.dispacher._last = real_path;
 					$(location).attr('hash', real_path);
 				}
 				$.publish('route-run', [real_path, args]);
