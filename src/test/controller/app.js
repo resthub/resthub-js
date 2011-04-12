@@ -45,6 +45,29 @@ define(["lib/route"], function(p1) {
 				}
 			})
 		});
+					
+		$.route('#/shouldRenderNotTriggerDestroy', function() {
+			// Given an empty page
+			$('#main *').remove();
+			CONTROLLER_TEST_REMOVED = false;
+			
+			require(["test/controller/widget1"], function() {
+				// Given a controller
+				$('#main').widget1();
+				// When rendering it a second time
+				$('#main').data('widget1').render({user:{login:'hsimpson', username:'Homer Simpson'}});
+				// Then the destroy method was not called
+				if (CONTROLLER_TEST_REMOVED) {
+					alert('Destroy method must bot be called when rendering');
+				}
+				// When destroinging the rendering
+				$('#main *').remove();
+				// Then the destroy method was called
+				if (!CONTROLLER_TEST_REMOVED) {
+					alert('Destroy method was not called');
+				}
+			})
+		});
 		
 		$.route(location.hash);
 	});

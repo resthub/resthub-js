@@ -1,5 +1,5 @@
 define(['lib/controller'], function(Controller) {
-	Controller.extend("Widget1", {
+	return Controller.extend("Widget1Controller", {
 			
 		destroy: function() {
 			console.debug('Controller removed');

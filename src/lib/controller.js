@@ -36,28 +36,8 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 					isMethod = typeof options == "string"
 							&& $.isFunction(controller.prototype[options]), meth = args[0];
 					this.each(function() {
-						// check if created
-						var controllers = $.data(this, "controllers"),
-						// plugin is actually the controller
-						// instance
-						plugin = controllers && controllers[pluginname];
-
-						if (plugin) {
-							if (isMethod) {
-								// call a method on the
-								// controller with the remaining
-								// args
-								plugin[meth].apply(plugin, args.slice(1));
-							} else {
-								// call the plugin's update
-								// method
-								plugin.update.apply(plugin, args);
-							}
-
-						} else {
-							// create a new controller instance
-							controller.newInstance.apply(controller, [ this ].concat(args));
-						}
+						// create a new controller instance, and stores it in the node.
+						$.data(this, pluginname, controller.newInstance.apply(controller, [ this ].concat(args)));
 					});
 					// always return the element
 					return this;
@@ -79,6 +59,10 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 				this.element = $(element);
 				this.handles = [];
 				$.extend( true, this, options );
+				// Bind to remove element to call the destroy method.
+				if (this.element.children().length > 0) {
+					$(this.element.children()[0]).bind('remove.'+this['Class']._fullName, $.proxy(this, 'destroy'));
+				}
 			},
 			
 			/**
@@ -131,15 +115,16 @@ define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(
 			 * view with the same name of the controller
 			 */
 			render : function(data, options) {
+				// Unbind the destroy handler during rendering.
+				$(this.element.children()[0]).unbind('.'+this['Class']._fullName);
+				// Performs rendering.
 				if (typeof (this.template) == 'undefined') {
 					this.element.render('./' + this.widgetName + '.html', data, options);
 				} else {
 					this.element.render(this.template, data, options);
 				}
-				// Bind to remove element to call the destroy method.
-				if (this.element.children().length > 0) {
-					$(this.element.children()[0]).bind('remove.'+this['Class']._fullName, $.proxy(this, 'destroy'));
-				}
+				// Re-bind the destroy handler.
+				$(this.element.children()[0]).bind('remove.'+this['Class']._fullName, $.proxy(this, 'destroy'));
 			}
 		});
 
