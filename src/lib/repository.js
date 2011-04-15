@@ -34,50 +34,50 @@ define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 		init : function() {
 			this.root = this.root || '';
 		},
-		read : function(callback, id, errorCallback) {
-			return this._get(this.root + id, callback, errorCallback);
+		read : function(callback, id, errorCallback, settings) {
+			return this._get(this.root + id, callback, errorCallback, settings);
 		},
-		remove : function(callback, id, errorCallback) {
-			return this._delete(this.root + id, callback, errorCallback);
+		remove : function(callback, id, errorCallback, settings) {
+			return this._delete(this.root + id, callback, errorCallback, settings);
 		},
-		save : function(callback, data, errorCallback) {
-			return this._post(this.root, callback, data, errorCallback);
+		save : function(callback, data, errorCallback, settings) {
+			return this._post(this.root, callback, data, errorCallback, settings);
 
 		},
-		update : function(callback, id, data, errorCallback) {
-			return this._put(this.root + id, callback, data, errorCallback);
+		update : function(callback, id, data, errorCallback, settings) {
+			return this._put(this.root + id, callback, data, errorCallback, settings);
 		},
-		list: function(callback, page, size) {
+		list: function(callback, page, size, settings) {
 			page = page===null || page===undefined ? 0 : page;
 			size = size===null || size===undefined ? 5 : size;
-			this._get(this.root + '?page=' + page + '&size=' + size, callback);
+			this._get(this.root + '?page=' + page + '&size=' + size, callback, settings);
 		},
 
-		_post : function(url, callback, data, errorCallback) {
-			this._ajax(url, callback, 'POST', data, errorCallback);
+		_post : function(url, callback, data, errorCallback, settings) {
+			this._ajax(url, callback, 'POST', data, errorCallback, settings);
 			return this;
 		},
 
-		_get : function(url, callback, errorCallback) {
-			this._ajax(url, callback, 'GET', null, errorCallback);
+		_get : function(url, callback, errorCallback, settings) {
+			this._ajax(url, callback, 'GET', null, errorCallback, settings);
 			return this;
 		},
 
-		_put : function(url, callback, data, errorCallback) {
-			this._ajax(url, callback, 'PUT', data, errorCallback);
+		_put : function(url, callback, data, errorCallback, settings) {
+			this._ajax(url, callback, 'PUT', data, errorCallback, settings);
 			return this;
 		},
 
-		_delete : function(url, callback, errorCallback) {
-			this._ajax(url, callback, 'DELETE', null, errorCallback);
+		_delete : function(url, callback, errorCallback, settings) {
+			this._ajax(url, callback, 'DELETE', null, errorCallback, settings);
 			return this;
 		},
 
 		/**
 		 * Perform basic ajax request and call your widget back.
 		 */
-		_ajax : function(url, callback, type, data, errorCallback) {
-			var settings = {
+		_ajax : function(url, callback, type, data, errorCallback, settings) {
+			var _settings = {
 				url : url,
 				dataType : this.defaults.dataType,
 				contentType : this.defaults.contentType,
@@ -86,10 +86,10 @@ define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 				success : callback
 			};
 			if (errorCallback) {
-				settings.error = errorCallback;
+				_settings.error = errorCallback;
 			} else {
 				// Default callback.
-				settings.error = function(XMLHttpRequest, textStatus, errorThrown) {
+				_settings.error = function(XMLHttpRequest, textStatus, errorThrown) {
 					var error = {
 							pnotify_title: 'Server problem',
 							pnotify_text: 'The action cannot be realized:\n',
@@ -99,7 +99,10 @@ define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 					$.pnotify(error);
 				};
 			}
-			$.ajax(settings);
+			if (settings) {
+				$.extend(true, _settings, settings);
+			}
+			$.ajax(_settings);
 		}
 	}, {});
 });

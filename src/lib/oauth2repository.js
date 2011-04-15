@@ -19,10 +19,10 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 		 * Overload of the Repository ajax method to add the OAuth2 token when available.
 		 * The token is retrieved in the $.storage() with the key OAuth2Controller.storageKey.
 		 */
-		_ajax : function(url, callback, type, data, errorCallback) {
+		_ajax : function(url, callback, type, data, errorCallback, settings) {
 			// Gets the token existing in session.
 			var accessToken = $.storage.get(OAuth2Controller.storageKey);
-			var settings = {
+			var _settings = {
 					url : url,
 					dataType : this.defaults.dataType,
 					contentType : this.defaults.contentType,
@@ -52,7 +52,7 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 			}
 			// Gets the protocol errors.
 			var authorizationError = this.authorizationError;
-			settings.error = function(XMLHttpRequest, textStatus, errorThrown) {
+			_settings.error = function(XMLHttpRequest, textStatus, errorThrown) {
 				// Only for 400, 401 and 403 scopes.
 				if(XMLHttpRequest.status == 400 ||
 						XMLHttpRequest.status == 401
@@ -91,7 +91,10 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 				}
 			};
 			// Triggers the ajax call.
-			$.ajax(settings);
+			if (settings) {
+				$.extend(true, _settings, settings);
+			}
+			$.ajax(_settings);
 		}
 	}, {});
 });
