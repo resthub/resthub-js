@@ -33,7 +33,7 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 					beforeSend: function( XMLHttpRequest ) {
 						if(accessToken && "access_token" in accessToken) {
 							XMLHttpRequest.setRequestHeader("Authorization", 
-									'OAuth '+ accessToken.access_token);
+									'OAuth2 '+ accessToken.access_token);
 						}
 					}
 				};
