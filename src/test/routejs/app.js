@@ -40,6 +40,14 @@ define(["lib/route"], function() {
 				throw new Error('Window\'s hash was not changed !');
 			}
 		});
+
+		$.route('#/regexp-parameters/:regexp(.*)/edit', function(p) {
+			$('#main').html('RegExp parameter value with url fragment after: ' + p.regexp);
+		});
+
+		$.route('#/regexp-parameters/:regexp(.*)', function(p) {
+			$('#main').html('RegExp parameter value : ' + p.regexp);
+		});
 		
 		// Listen to the run-route event on the event bus
 		$.subscribe('route-run', function(path) {
