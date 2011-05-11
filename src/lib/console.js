@@ -45,10 +45,11 @@ define(['lib/jquery'], function() {
 	var logger, notSupported = function() {};
 	logger = ((typeof console === "object") && (typeof console.log === "function")) ? console : {log: notSupported };
 	
-	// for non-modules only in IE.
-	if($.browser.msie && typeof window === "object") {
+
+	//for non-modules
+	if(typeof window === "object" && !((typeof console === "object") && (typeof console.log === "function" )))
 		window.console = logger;
-	}
+	
 	
 	/**
 	 * Wraps the original log command with an anonym method that behave likes an Around AOP advisor.
