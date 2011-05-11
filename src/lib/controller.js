@@ -1,6 +1,6 @@
 /**
  * Resthub-controller is a generic javascript controller for resthub
- * applications. It provides utility functions for basic op�rations.
+ * applications. It provides utility functions for basic operations.
  * 
  * <b>Do not remove the lib/jqueryui/widget inclusion: its needed for the destroy mechanism.</b>
  */
