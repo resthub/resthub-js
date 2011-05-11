@@ -45,6 +45,11 @@ define(['lib/jquery'], function() {
 	var logger, notSupported = function() {};
 	logger = ((typeof console === "object") && (typeof console.log === "function")) ? console : {log: notSupported };
 	
+	// for non-modules only in IE.
+	if($.browser.msie && typeof window === "object") {
+		window.console = logger;
+	}
+	
 	/**
 	 * Wraps the original log command with an anonym method that behave likes an Around AOP advisor.
 	 * Do not execute the wrapped method if a logger.name is found and configured to be filtered.
@@ -95,10 +100,6 @@ define(['lib/jquery'], function() {
 	logger.profile = fallback('profile');
 	logger.profileEnd = fallback('profileEnd');
 	logger.count = fallback('count');
-	
-	// for non-modules only in IE.
-	if($.browser.msie && typeof window === "object") {
-		window.console = logger;
-	}
+		
 	return logger;
 });
