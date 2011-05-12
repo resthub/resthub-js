@@ -83,11 +83,8 @@ define(['lib/controller', 'lib/jquery'], function(Controller) {
 					error: function ( XMLHttpRequest, textStatus, errorThrown ) {
 						// Only for OAuth protocol errors.
 						if (XMLHttpRequest.status == 400 || XMLHttpRequest.status == 401) {
-							// Parse the server's response.
-							var err = $.parseJSON(XMLHttpRequest.responseText);
-							// Calls the callback
 							if (error instanceof Function) {
-								error.call( this, err.error, err.error_description);
+								error.call( this, "Authentication error", "Unable to login due to bad credentials");
 							}
 						}
 					} 
