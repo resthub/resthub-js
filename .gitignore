@@ -1,0 +1,7 @@
+.project
+.classpath
+target
+.settings
+.DS_Store
+resthub-js/src/main/webapp/WEB-INF/web.xml
+src/META-INF/MANIFEST.MF
