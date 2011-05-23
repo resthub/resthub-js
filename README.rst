@@ -1,1 +1,0 @@
-Check documentation at https://bitbucket.org/ilabs/resthub-doc/
