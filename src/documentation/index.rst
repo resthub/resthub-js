@@ -1,6 +1,6 @@
-================
-Javascript Stack
-================
+==================================
+RESThub JS |release| Documentation
+==================================
 	
 .. toctree::
 	:maxdepth: 2
