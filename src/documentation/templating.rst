@@ -41,7 +41,7 @@ And into the template
 
 .. code-block:: html
 
-	<p>Who is ${$item.foo($name)} ?</p>
+	<p>Who is ${$item.foo(name)} ?</p>
 
 A question remains: Where in the DOM is my template rendered ?
 In the controller's *element*. As controllers are jQuery plugins, they apply to a DOM node.
