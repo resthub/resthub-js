@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.resthub</groupId>
 	<artifactId>resthub-js</artifactId>
-	<name>Javascript stack</name>
 	<packaging>war</packaging>
 	<version>1.1-SNAPSHOT</version>
 	<description>
@@ -143,4 +142,5 @@
             <url>http://${deploy.host}/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+    <name>RESThub JS</name>
 </project>
