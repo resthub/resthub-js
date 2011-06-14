@@ -38,7 +38,7 @@ define(['lib/jquery'], function() {
 	 * @return True if the command must be displayed, false otherwise.
 	 */
 	$.isLogEnabled = function(commandName, level) {
-		var order={'all':0, 'debug':0, 'info':1, 'warn':2, 'error':3, 'off':4};
+		var order={'all':0, 'debug':1, 'info':2, 'warn':3, 'error':4, 'off':5};
 		return order[commandName] >= (level in order ? order[level] : 0);
 	};
 	
