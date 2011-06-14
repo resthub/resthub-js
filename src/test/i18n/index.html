@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>i18n</title>
+<script src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+function getUrlVars() {
+	var vars = [], hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	for(var i = 0; i < hashes.length; i++) {
+		hash = hashes[i].split('=');
+		if (hash.length > 1) {
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1].split('#')[0];
+		}
+	}
+	return vars;
+}
+function localStorageSupported() {
+	try {return 'localStorage' in window && window['localStorage'] !== null;}
+	catch(e) {return false;}
+}
+
+var locale = getUrlVars()['locale'];
+if (locale === undefined) {
+	locale = (localStorageSupported()) ? localStorage.getItem('locale') : null;
+}
+else if (localStorageSupported()) {
+	localStorage.setItem('locale', locale);
+}
+if (locale != null) {
+	require({baseUrl: "../../", locale: locale}, ['test/i18n/app']);
+}
+else {
+	require({baseUrl: "../../"}, ['test/i18n/app']);
+}
+</script>
+</head>
+<body>
+	Run tests :
+	<ul>
+		<li><a class="localSimpleTemplate" href="?locale=fr">Say hello in French</a></li>
+		<li><a class="localEachTemplate" href="?locale=en">Say hello in English</a></li>
+	</ul>
+	
+	<div id="main"></div>
+</body>
+</html>
+
