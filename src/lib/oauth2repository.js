@@ -1,4 +1,4 @@
-define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2Controller) {
+define([ 'lib/repository', 'lib/oauth2client' ], function(Repository, OAuth2Client) {
 
 	/**
 	 * Use this special Repository implementation when accessing a backend protected with OAuth2.
@@ -17,11 +17,11 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 	
 		/**
 		 * Overload of the Repository ajax method to add the OAuth2 token when available.
-		 * The token is retrieved in the $.storage() with the key OAuth2Controller.storageKey.
+		 * The token is retrieved in the $.storage() with the key OAuth2Client.storageKey.
 		 */
 		_ajax : function(url, callback, type, data, errorCallback, settings) {
 			// Gets the token existing in session.
-			var accessToken = $.storage.get(OAuth2Controller.storageKey);
+			var accessToken = $.storage.get(OAuth2Client.storageKey);
 			var _settings = {
 					url : url,
 					dataType : this.defaults.dataType,
@@ -77,7 +77,7 @@ define([ 'lib/repository', 'lib/oauth2controller' ], function(Repository, OAuth2
 					}
 					// Special case: expired_token needs to be removed.
 					if (status == 'expired_token' || status == 'invalid_token') {
-						$.storage.remove(OAuth2Controller.storageKey);
+						$.storage.remove(OAuth2Client.storageKey);
 					}
 					if (authorizationError instanceof Function) {
 						authorizationError.call(XMLHttpRequest, XMLHttpRequest, status, message);

@@ -4,7 +4,7 @@
 // It provides class level inheritance and callbacks.
 define(['lib/jquery'], function () {
 
-	// jQuery.Class taken for Javascript MVC framework
+	// jQuery.Class taken from Javascript MVC framework
 	//
 	// This is a modified version of John Resig's class
 	// http://ejohn.org/blog/simple-javascript-inheritance/

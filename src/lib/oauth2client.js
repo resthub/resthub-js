@@ -1,12 +1,10 @@
 /*!
- * jQuery OAuth 2 implementation
- * 
- * May be used as standalone functions, or directly in ResthubController widget.
+ * jQuery OAuth 2 client implementation
  * 
  * Does not manage the access token storage, nor that the protocol errors.
  * Users could thus plug their own storage and error management solutions. 
  */
-define(['lib/controller', 'lib/jquery'], function(Controller) {
+define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 
 	/**
 	 * Use this special Controller implementation when accessing a backend protected with OAuth2.
@@ -16,19 +14,19 @@ define(['lib/controller', 'lib/jquery'], function(Controller) {
 	 * Then call getOAuth2token() to authenticate the end-user and get the corresponding token.
 	 * This token will be stored in $.storage with key OAuth2Controller.storageKey
 	 */
-	return Controller.extend('OAuth2Controller', {
+	return Class.extend('OAuth2Client', {
 		/**
 		 * Static configuration used for OAuth 2 protocol calls with the server.
 		 */
 
 		/**
-		 * Unic identifier of the client (the webapp).
+		 * Unic identifier of the client (this Javascript aplication).
 		 * Not used for now.
 		 */
 		clientId: '',
 		
 		/**
-		 * Unic secret(password) of the client (the webapp).
+		 * Unic secret(password) of the client (this Javascript aplication).
 		 * Not used for now.
 		 */
 		clientSecret: '',
@@ -41,12 +39,11 @@ define(['lib/controller', 'lib/jquery'], function(Controller) {
 		/**
 		 * Key used to store token in storage.
 		 */
-		storageKey: 'oauth2Token'
-	}, {
-				
+		storageKey: 'oauth2Token',
+
 		/**
 		 * Sends a request to get the access token.
-		 * An OAuth 2 "token request" is sent to the OAuth2Controller.tokenEndPoint url.
+		 * An OAuth 2 "token request" is sent to the OAuth2Client.tokenEndPoint url.
 		 * 
 		 * The returned token (if successful) is given to the specified callback.
 		 * The retrieved token is stored in $.storage(), for further uses.
@@ -59,36 +56,42 @@ define(['lib/controller', 'lib/jquery'], function(Controller) {
 		 * This function takes two parameters: the first is the error string, and the second
 		 * an option explanation.
 		 */
-		getOAuth2token: function( username, password, success, error ) {	
-			var _this = this;
+		login: function( username, password, success, error ) {	
 			
 			// Performs a request to get an authentication token.
 			$.ajax({
-					url: OAuth2Controller.tokenEndPoint,
+					url: OAuth2Client.tokenEndPoint,
 					type: 'POST',
 					data: {
-						client_id: OAuth2Controller.clientId,
-						client_secret: OAuth2Controller.clientSecret,
+						client_id: OAuth2Client.clientId,
+						client_secret: OAuth2Client.clientSecret,
 						grant_type: "password",
 						username: username,
 						password: password
 					},
 					success: function ( data, textStatus, XMLHttpRequest ) {
-						$.storage.set(OAuth2Controller.storageKey, data);
+						$.storage.set(OAuth2Client.storageKey, data);
 						// Calls the callback
 						if (success instanceof Function) {
-							success.call( this, data );
+							success.call( OAuth2Client, data );
 						}
 					},
 					error: function ( XMLHttpRequest, textStatus, errorThrown ) {
 						// Only for OAuth protocol errors.
 						if (XMLHttpRequest.status == 400 || XMLHttpRequest.status == 401) {
 							if (error instanceof Function) {
-								error.call( this, "Authentication error", "Unable to login due to bad credentials");
+								error.call( OAuth2Client, "Authentication error", "Unable to login due to bad credentials");
 							}
 						}
 					} 
 			});
-		} // getOauth2token().
-	});						
+		},
+
+		/**
+		 * Logout by removing token stored in the localstorage. Don't forget to clear user too if needed.
+		 */
+		logout: function() {
+			$.storage.set(OAuth2Client.storageKey, null);
+		}
+	}, { } );						
 });
