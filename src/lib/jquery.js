@@ -129,7 +129,7 @@ var require, define;
             config = {
                 waitSeconds: 7,
                 baseUrl: s.baseUrl || "./",
-                paths: {},
+                paths: {'i18n': 'lib/i18n', 'text': 'lib/text', 'order': 'lib/order'},
                 pkgs: {}
             },
             defQueue = [],
