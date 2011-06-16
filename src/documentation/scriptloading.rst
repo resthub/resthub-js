@@ -36,15 +36,15 @@ If you need to use dependencies' returns in your function, just add arguments :
 
 home.js::
 
-	define([ 'lib/resthub', 'lib/controller', ], function(resthub, Controller) {
+	define([ 'lib/controller', 'lib/resthub' ], function() {
 	
-		return Controller.extend('HomeController', {
+		Controller.extend('HomeController', {
 			...
 		});
 		
 	});
 	
-The Controller argument will get the return of the lib/controller.js's inner function.
+The Controller argument will get the return of the lib/controller.js's inner function. Resthub main lib don't return anything, so we put it at the end of the dependency lib, and don't hav to match it to any variable.
 
 More informations
 -----------------
