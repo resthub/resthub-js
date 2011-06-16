@@ -31,17 +31,13 @@ The Controller's render function is defined as follow::
 
 This is an exemple using data and options parameters::
 
-	this.render({name:'bat'}, {
-		foo: function(bar) {
-			return bar + "man";
-		}
-	});
+	this.render({name:'bat'}); {
 
 And into the template
 
 .. code-block:: html
 
-	<p>Who is ${$item.foo(name)} ?</p>
+	<p>Who is ${name} ?</p>
 
 A question remains: Where in the DOM is my template rendered ?
 In the controller's *element*. As controllers are jQuery plugins, they apply to a DOM node.

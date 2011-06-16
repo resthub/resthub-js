@@ -15,6 +15,7 @@ RESThub JS |release| Documentation
 	templating
 	repositories
 	internationalization
+	oauth2
 	othercoolstuff
 		
 

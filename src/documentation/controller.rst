@@ -126,7 +126,7 @@ To lighten useage of event handles, Controllers have a specific subscribe() meth
 		
 		this.subscribe(['event1', 'event2'], '_eventHandler');
 		
-The controleller's subscribe() method will automatically holds the generated handle, and performs automatically unsubscription in the destroy() method.
+The controller's subscribe() method will automatically holds the generated handle, and performs automatically unsubscription in the destroy() method.
 
 You can quickly register a single handler to multiple events.
 

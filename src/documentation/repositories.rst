@@ -50,3 +50,5 @@ All ou need to do is to declare a subclass, with the root url of your REST WebSe
 	});
 	
 In this example, we add a specific functionnality that makes an ajax call to the distant webserver.
+
+You can easily can create mock repositories by return client side json files (mostly for read and list functions).

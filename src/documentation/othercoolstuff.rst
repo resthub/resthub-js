@@ -17,17 +17,20 @@ A filtering feature is added, to allow you filter your console traces, depending
 It globally works like log4j. Main difference is the absence of logger inheritance, and appender definitions.
 
 Here is the configuration::
+
 	LOGGER_CONF['myLogger1'] = 'debug';
 	LOGGER_CONF['myLogger2'] = 'error';
 
 The trace message must be formated this way::
+
 	console.debug('[myLogger1] a first message in debug level');
 	console.debug('[myLogger2] a second message in debug level');
 	console.error('[myLogger2] a critical error');
 
 Regarding the configuration, only the first and third message will appeared in the console.
 
-Extract from the documentation.
+Extract from the documentation.::
+
 	/**
 	 * Defines the logger configuration.
 	 * 

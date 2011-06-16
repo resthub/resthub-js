@@ -4,8 +4,7 @@ OAuth2 support
 
 RESThub JS is provided with an `OAuth2 protocol <http://tools.ietf.org/html/draft-ietf-oauth-v2>`_ support that allows Javascript applications to authenticate on serverside webservises protected by OAuth2 configured with `password grant type <http://tools.ietf.org/html/draft-ietf-oauth-v2>`_.
 
-Authentication
---------------
+This is the default AuthZ/AuthN mechanism in RESThub.
 
 .. code-block:: javascript
 
@@ -27,7 +26,7 @@ Authentication
 	/**
 	 * Set the key used to store token in local storage
 	 */
-	OAuth2Client.storageKey: 'oauth2Token';
+	OAuth2Client.storageKey = 'oauth2Token';
 
 	/**
 	 * Sends a request to get the access token.
@@ -44,5 +43,10 @@ Authentication
 	 * This function takes two parameters: the first is the error string, and the second
 	 * an option explanation.
 	 */
-	OAuth2Client.login: function( username, password, success, error );
+	OAuth2Client.login( username, password, success, error );
+
+	/**
+	* Logout by removing token stored in the localstorage. Don't forget to clear user too if needed.
+	*/
+	OAuth2Client.logout();
 

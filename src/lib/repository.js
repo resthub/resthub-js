@@ -1,4 +1,4 @@
-define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
+define([ 'lib/class', 'lib/jquery' ], function( Class ) {
 
 	/**
 	 * Repository class are designed to send ajax requests in order to retreive/send data from/to server

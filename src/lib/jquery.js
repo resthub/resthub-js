@@ -10821,5 +10821,5 @@ window.jQuery = window.$ = jQuery;
 
 //Register jQuery as a module.
 if (typeof define !== "undefined" && define.amd) {
-    define('jquery',[], function() {return jQuery });
+    define('lib/jquery',[], function() {return jQuery; });
 }

@@ -36,7 +36,7 @@ If you need to use dependencies' returns in your function, just add arguments :
 
 home.js::
 
-	define([ 'lib/controller', 'lib/resthub' ], function() {
+	define([ 'lib/controller', 'lib/resthub' ], function( Controller ) {
 	
 		Controller.extend('HomeController', {
 			...

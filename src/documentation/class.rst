@@ -12,7 +12,6 @@ Inheritance library and Javascript MVC improvements.
 Besides prototypal inheritance, it includes a few important features:
  * Static inheritance
  * Introspection
- * Namespaces
  * Setup and initialization methods
  * Easy callback function creation
 
@@ -107,17 +106,6 @@ You can also inherit static properties in the same way:::
 	},{})
 	
 	Second.staticMethod() // -> 2
-
-Namespaces
-----------
-
-Namespaces are a good idea! We encourage you to namespace all of your code.
-It makes it possible to drop your code into another app without problems.
-
-Making a namespaced class is easy:::
- 
-	$.Class.extend("MyNamespace.MyClass",{},{});
-	new MyNamespace.MyClass()
 		
 Introspection
 -------------
@@ -127,11 +115,10 @@ ORM class: http://api.rubyonrails.org/classes/ActiveRecord/Base.html is a great 
 JavaScript doesn't have a way of determining an object's name, so the developer must provide a name.
 Class fixes this by taking a String name for the class.::
 
-		$.Class.extend("MyOrg.MyClass",{},{})
-		MyOrg.MyClass.shortName //-> 'MyClass'
-		MyOrg.MyClass.fullName //->  'MyOrg.MyClass'
+		$.Class.extend("MyClass",{},{})
+		MyClass.name //->  'MyClass'
 		
-The fullName (with namespaces) and the shortName (without namespaces) are added to the Class's static properties.
+The name is added to the Class's static properties.
 
 Setup and initialization methods
 --------------------------------

@@ -1,47 +1,24 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+    	<artifactId>resthub-parent</artifactId>
+    	<groupId>org.resthub</groupId>
+    	<version>1.1-SNAPSHOT</version>
+    	<relativePath>resthub-parent/pom.xml</relativePath>
+    </parent>
+
 	<groupId>org.resthub</groupId>
 	<artifactId>resthub-js</artifactId>
 	<packaging>war</packaging>
 	<version>1.1-SNAPSHOT</version>
-	<description>
-		RESThub Javascript Stack including frameworks and helpers
-    </description>
-
-    <profiles>
-        <profile>
-            <id>env-local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>env</name>
-                    <value>local</value>
-                </property>
-            </activation>
-            <properties>
-                <deploy.host>resthub.org</deploy.host>
-				        <site.plugin.version>3.0-beta-3</site.plugin.version>
-            </properties>
-        </profile>
-        <profile>
-            <id>env-dev</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>dev</value>
-                </property>
-            </activation>
-            <properties>
-                <deploy.host>localhost</deploy.host>
-				        <site.plugin.version>2.0.1</site.plugin.version>
-            </properties>
-        </profile>
-    </profiles>
+	<name>RESThub JS</name>
+	<description>RESThub Javascript framework</description>
     
     <scm>
-        <connection>scm:hg:https://bitbucket.org/ilabs/resthub-js/</connection>
-        <url>http://bitbucket.org/ilabs/resthub-js/src/</url>
+        <connection>scm:git:https://github.com/pullrequest/resthub-js.git</connection>
+        <url>https://github.com/pullrequest/resthub-js/</url>
     </scm>
     
 	<build>
@@ -49,7 +26,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<warSourceDirectory>${basedir}/src</warSourceDirectory>
@@ -58,60 +34,9 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.2.0.v20101020</version>
 				<configuration>
 					<webAppSourceDirectory>${basedir}/src</webAppSourceDirectory>
-					<!-- We use non NIO connector in order to avoid read only static files 
-						under windows -->
-					<connectors>
-						<connector implementation="org.eclipse.jetty.server.bio.SocketConnector">
-							<port>8080</port>
-							<maxIdleTime>60000</maxIdleTime>
-						</connector>
-					</connectors>
-					<webAppConfig>
-						<contextPath>/</contextPath>
-					</webAppConfig>
 				</configuration>
-			</plugin>
-			<plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${site.plugin.version}</version>
-      </plugin>
-      <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <version>2.1</version>
-      </plugin>
-
-			<!-- To compress javascript : mvn net.alchim31.maven:yuicompressor-maven-plugin:0.9:compress -->
-			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>yuicompressor-maven-plugin</artifactId>
-				<version>0.9</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compress</goal>
-						</goals>
-					</execution>
-				</executions>
-				<!-- <configuration> -->
-				<!-- <aggregations> -->
-				<!-- <aggregation> -->
-				<!-- <insertNewLine>true</insertNewLine> -->
-
-				<!-- <output>${project.build.directory}/${project.build.finalName}/lib/resthub.stack.js</output> -->
-				<!-- <includes> -->
-				<!-- <include>${basedir}/src/main/webapp/lib/jquery.js</include> -->
-				<!-- </includes> -->
-
-				<!-- </aggregation> -->
-
-				<!-- </aggregations> -->
-				<!-- <jswarn>false</jswarn> -->
-				<!-- </configuration> -->
 			</plugin>
 		</plugins>
 	</build>
@@ -135,12 +60,12 @@
     <distributionManagement>
         <repository>
             <id>resthub-repo</id>
-            <url>http://${deploy.host}/nexus/content/repositories/releases</url>
+            <url>http://resthub.org/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>resthub-repo-snapshot</id>
-            <url>http://${deploy.host}/nexus/content/repositories/snapshots</url>
+            <url>http://resthub.org/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    <name>RESThub JS</name>
+    
 </project>
