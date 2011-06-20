@@ -4,7 +4,7 @@
  * 
  * <b>Do not remove the lib/jqueryui/widget inclusion: its needed for the destroy mechanism.</b>
  */
-define([ 'lib/class', 'lib/jquery', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
+define(['lib/jquery', 'lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(p1, Class) {
 
 	return Class.extend("Controller", {
 

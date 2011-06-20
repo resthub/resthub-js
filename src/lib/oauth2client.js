@@ -4,7 +4,7 @@
  * Does not manage the access token storage, nor that the protocol errors.
  * Users could thus plug their own storage and error management solutions. 
  */
-define([ 'lib/class', 'lib/jquery' ], function( Class ) {
+define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 
 	/**
 	 * Use this special Controller implementation when accessing a backend protected with OAuth2.
@@ -20,19 +20,21 @@ define([ 'lib/class', 'lib/jquery' ], function( Class ) {
 		 */
 
 		/**
-		 * Set the unique identifier of the client (this Javascript aplication)
+		 * Unic identifier of the client (this Javascript aplication).
+		 * Not used for now.
 		 */
 		clientId: '',
 		
 		/**
-		 * Set the unique secret(password) of the client (this Javascript aplication)
+		 * Unic secret(password) of the client (this Javascript aplication).
+		 * Not used for now.
 		 */
 		clientSecret: '',
 		
 		/**
 		 * Url of the authorization token end-point which issued tokens.
 		 */
-		tokenEndPoint: 'oauth/authorize',
+		tokenEndPoint: '',
 		
 		/**
 		 * Key used to store token in storage.

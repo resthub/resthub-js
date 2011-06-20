@@ -118,7 +118,7 @@ define(['lib/jquery'], function () {
 				
 				for( var i =0; i< funcs.length;i++ ) {
 					if(typeof funcs[i] == "string" && typeof this[funcs[i]] !== 'function'){
-						throw ("class.js "+( this.name || this.Class.name)+" does not have a "+funcs[i]+"method!");
+						throw ("class.js "+( this.fullName || this.Class.fullName)+" does not have a "+funcs[i]+"method!");
 					}
 				}
 				
@@ -147,7 +147,28 @@ define(['lib/jquery'], function () {
 					return cur;
 				};
 			},
-			
+			/**
+			 *   @function getObject 
+			 *   Gets an object from a String.
+			 *   If the object or namespaces the string represent do not
+			 *   exist it will create them.  
+			 *   @codestart
+			 *   Foo = {Bar: {Zar: {"Ted"}}}
+			 *   $.Class.getobject("Foo.Bar.Zar") //-> "Ted"
+			 *   @codeend
+			 *   @param {String} objectName the object you want to get
+			 *   @param {Object} [current=window] the object you want to look in.
+			 *   @return {Object} the object you are looking for.
+			 */
+			getObject: function( objectName, current ) {
+				var current = current || window,
+					parts = objectName ? objectName.split(/\./) : [],
+					i = 0;
+				for (; i < parts.length; i++ ) {
+					current = current[parts[i]] || (current[parts[i]] = {});
+				}
+				return current;
+			},
 			/**
 			 * @function newInstance
 			 * Creates a new instance of the class.  This method is useful for creating new instances
@@ -173,11 +194,11 @@ define(['lib/jquery'], function () {
 			/**
 			 * Copy and overwrite options from old class
 			 * @param {Object} oldClass
-			 * @param {String} name
+			 * @param {String} fullName
 			 * @param {Object} staticProps
 			 * @param {Object} protoProps
 			 */
-			setup: function( oldClass, name ) {
+			setup: function( oldClass, fullName ) {
 				this.defaults = $.extend(true, {}, oldClass.defaults, this.defaults);
 				return arguments;
 			},
@@ -198,17 +219,17 @@ define(['lib/jquery'], function () {
 			 * //With just a className
 			 * $.Class.extend('Task')
 			 * @codeend
-			 * @param {String} [name]  the classes name (used for classes w/ introspection)
+			 * @param {String} [fullName]  the classes name (used for classes w/ introspection)
 			 * @param {Object} [klass]  the new classes static/class functions
 			 * @param {Object} [proto]  the new classes prototype functions
 			 * @return {jQuery.Class} returns the new class
 			 */
-			extend: function( name, klass, proto ) {
+			extend: function( fullName, klass, proto ) {
 				// figure out what was passed
-				if ( typeof name != 'string' ) {
+				if ( typeof fullName != 'string' ) {
 					proto = klass;
-					klass = name;
-					name = null;
+					klass = fullName;
+					fullName = null;
 				}
 				if (!proto ) {
 					proto = klass;
@@ -218,7 +239,7 @@ define(['lib/jquery'], function () {
 				proto = proto || {};
 				var _super_class = this,
 					_super = this.prototype,
-					name, prototype;
+					name, shortName, namespace, prototype;
 
 				// Instantiate a base class (but only create the instance,
 				// don't run the init constructor)
@@ -242,7 +263,7 @@ define(['lib/jquery'], function () {
 				}
 				// Copy old stuff onto class
 				for ( name in this ) {
-					if ( this.hasOwnProperty(name) && $.inArray(name, ['prototype', 'defaults']) == -1 ) {
+					if ( this.hasOwnProperty(name) && $.inArray(name, ['prototype', 'defaults', 'getObject']) == -1 ) {
 						Class[name] = this[name];
 					}
 				}
@@ -250,11 +271,24 @@ define(['lib/jquery'], function () {
 				// do static inheritance
 				inheritProps(klass, this, Class);
 
+				// do namespace stuff
+				if ( fullName ) {
+
+					var parts = fullName.split(/\./),
+						shortName = parts.pop(),
+						current = $.Class.getObject(parts.join('.')),
+						namespace = current;
+
+					current[shortName] = Class;
+				}
+
 				// set things that can't be overwritten
 				$.extend(Class, {
 					prototype: prototype,
+					namespace: namespace,
+					shortName: shortName,
 					constructor: Class,
-					name: name
+					fullName: fullName
 				});
 
 				//make sure our prototype looks nice
@@ -262,11 +296,12 @@ define(['lib/jquery'], function () {
 
 
 				/**
-				 * @attribute name 
-				 * The name of the class provided for introspection purposes.
+				 * @attribute fullName 
+				 * The full name of the class, including namespace, provided for introspection purposes.
 				 * @codestart
-				 * $.Class.extend("MyClass",{},{})
-				 * MyClass.name //->  'MyClass'
+				 * $.Class.extend("MyOrg.MyClass",{},{})
+				 * MyOrg.MyClass.shortName //-> 'MyClass'
+				 * MyOrg.MyClass.fullName //->  'MyOrg.MyClass'
 				 * @codeend
 				 */
 
@@ -335,7 +370,7 @@ define(['lib/jquery'], function () {
 				 * var mc2 = new mc.Class();
 				 * @codeend
 				 * Getting static properties via the Class property, such as it's 
-				 * [jQuery.Class.static.name name] is very common.
+				 * [jQuery.Class.static.fullName fullName] is very common.
 				 */
 			}
 
