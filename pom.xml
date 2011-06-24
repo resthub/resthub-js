@@ -5,7 +5,7 @@
 	<parent>
     	<artifactId>resthub-parent</artifactId>
     	<groupId>org.resthub</groupId>
-    	<version>1.1</version>
+    	<version>1.1.1-SNAPSHOT</version>
     </parent>
 
 	<groupId>org.resthub</groupId>
