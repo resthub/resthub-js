@@ -1,4 +1,4 @@
-define(['lib/class'], function(Class) {
+define(['lib/class', 'lib/console'], function(Class) {
 
 	$(document).ready(function(){
 		

@@ -1,4 +1,4 @@
-define(['lib/jquery/jquery.tmpl'], function () {
+define(['lib/jquery', 'lib/jquery/jquery.tmpl'], function () {
 
 	$.fn.render = function( url, data, options, parentItem ) {
 		var element = this[0];

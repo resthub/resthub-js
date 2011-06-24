@@ -1,10 +1,9 @@
-define(["lib/route"], function() {
+define(['lib/route' , 'lib/console'], function() {
 
-	$(document).ready(function(){
+	
 		
 		// Define routes
 		$.route('#', function() {
-
 			$('#main').html('<span>Root</span>');
 		});
 				
@@ -36,7 +35,7 @@ define(["lib/route"], function() {
 		$.route('#/programmatic-route', function(p) {
 			//console.debug("Return to login");
 			$.route('#/login');
-			if ($(location).attr('hash') !== 'login') {
+			if ($(location).attr('hash') !== '#/login') {
 				throw new Error('Window\'s hash was not changed !');
 			}
 		});
@@ -58,6 +57,6 @@ define(["lib/route"], function() {
 		// Run current route
 		$.route(location.hash);
 				
-	});
+	
 
 });

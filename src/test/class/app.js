@@ -2,7 +2,8 @@ define(['lib/class',
         'test/class/statics', 
         'test/class/inheritance', 
         'test/class/attributes', 
-        'test/class/init'], function(Class) {
+        'test/class/init',
+        , 'lib/console'], function(Class) {
 
 	var Resource = Class.extend({
 	  init: function(name) {

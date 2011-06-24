@@ -1,4 +1,4 @@
-define(["lib/route"], function(p1) {
+define(['lib/route'], function() {
 	$(document).ready(function(){
 		
 		window.CONTROLLER_TEST_REMOVED = false;

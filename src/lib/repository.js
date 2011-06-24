@@ -1,4 +1,4 @@
-define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
+define([ 'lib/class', 'lib/jquery/jquery.pnotify' ], function(Class) {
 
 	/**
 	 * Repository class are designed to send ajax requests in order to retreive/send data from/to server
@@ -33,6 +33,10 @@ define([ 'lib/jquery', 'lib/class' ], function(p1, Class) {
 		
 		init : function() {
 			this.root = this.root || '';
+                        // Avoid GET caching issues with Internet Explorer
+                        if($.browser.msie) {
+                            $.ajaxSetup({ cache: false });
+                        }
 		},
 		read : function(callback, id, errorCallback, settings) {
 			return this._get(this.root + id, callback, errorCallback, settings);
