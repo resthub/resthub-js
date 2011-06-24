@@ -1,4 +1,4 @@
-define(['lib/jquery', 'lib/pubsub'], function () {
+define(['lib/console', 'lib/pubsub'], function () {
 	(function($) {
 		
 		/**
@@ -77,12 +77,12 @@ define(['lib/jquery', 'lib/pubsub'], function () {
 					// If path match
 					if(path_parts) {
 						console.debug("Found a matching between " + path + ' and ' + registered_route );
-						var registered_route_pattern = '^' + registered_route.replace(/:\w+\(([.^\/]*)\)/g, ':(\\w+)$1').replace(/:\w+/g, ':(\\w+)') + '$';
+						var registered_route_pattern = '^' + registered_route.replace(/:\w+\(.*\)/g, ':(\\w+).*').replace(/:\w+/g, ':(\\w+)') + '$';
 						var registered_route_regexp = new RegExp(registered_route_pattern);
 						var registered_route_parts = registered_route.match(registered_route_regexp);
 						
 						if(path_parts.length != registered_route_parts.length) {
-							console.error('Path and registered_route habe not the same part count !!!');
+							console.error('Path and registered_route have not the same part count !!!');
 						}
 						
 						for(var i=1; i<path_parts.length; i++){
