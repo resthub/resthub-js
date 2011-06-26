@@ -33,10 +33,10 @@ define([ 'lib/class', 'lib/jquery/jquery.pnotify' ], function(Class) {
 		
 		init : function() {
 			this.root = this.root || '';
-                        // Avoid GET caching issues with Internet Explorer
-                        if($.browser.msie) {
-                            $.ajaxSetup({ cache: false });
-                        }
+            // Avoid GET caching issues with Internet Explorer
+            if($.browser.msie) {
+                $.ajaxSetup({ cache: false });
+            }
 		},
 		read : function(callback, id, errorCallback, settings) {
 			return this._get(this.root + id, callback, errorCallback, settings);
@@ -55,6 +55,9 @@ define([ 'lib/class', 'lib/jquery/jquery.pnotify' ], function(Class) {
 			page = page===null || page===undefined ? 0 : page;
 			size = size===null || size===undefined ? 5 : size;
 			this._get(this.root + '?page=' + page + '&size=' + size, callback, settings);
+		},		
+		listAll: function(callback, settings) {
+			this._get(this.root + 'all', callback, settings);
 		},
 
 		_post : function(url, callback, data, errorCallback, settings) {
