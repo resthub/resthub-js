@@ -2,7 +2,7 @@
 OAuth2 support
 ==============
 
-RESThub JS is provided with an `OAuth2 protocol <http://tools.ietf.org/html/draft-ietf-oauth-v2>`_ support that allows Javascript applications to authenticate on serverside webservises protected by OAuth2 configured with `password grant type <http://tools.ietf.org/html/draft-ietf-oauth-v2-16#section-4.3>`_.
+RESThub JS is provided with an `OAuth2 protocol <http://tools.ietf.org/html/draft-ietf-oauth-v2>`_ support that allows Javascript applications to authenticate on serverside webservices protected by OAuth2 configured with `password grant type <http://tools.ietf.org/html/draft-ietf-oauth-v2-16#section-4.3>`_.
 
 This is the default AuthZ/AuthN mechanism in RESThub.
 

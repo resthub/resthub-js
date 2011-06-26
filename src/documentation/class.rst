@@ -2,11 +2,11 @@
 Class
 =====
 
-Because OOP is such a wellknown and effective paradigm, and because Javascript can't provide natively 
-OOP, we proposed the $.Class functionnality.
-(Javascript is prototype-base language, which is really different from an OOP language)
+Because OOP is such a well-known and effective paradigm, and because Javascript can't provide natively 
+OOP, we proposed the $.Class functionality.
+(Javascript is a prototype-based language, which is really different from an OOP language)
 
-It is based off John Resig's `Simple Class <http://ejohn.org/blog/simple-javascript-inheritance/>`_
+It is based on John Resig's `Simple Class <http://ejohn.org/blog/simple-javascript-inheritance/>`_
 Inheritance library and Javascript MVC improvements.
 
 Besides prototypal inheritance, it includes a few important features:
@@ -75,7 +75,7 @@ Inheritance
 
 When a class is extended, all static and prototype properties are available on the new class.
 If you overwrite a function, you can call the base class's function by calling this._super.
-Lets create a SeaMonster class. SeaMonsters are less efficient at eating small children, but more
+Let's create a SeaMonster class. SeaMonsters are less efficient at eating small children, but more
 powerful fighters.::
 
 	Monster.extend("SeaMonster", {
@@ -110,8 +110,8 @@ You can also inherit static properties in the same way:::
 Introspection
 -------------
 
-Often, it's nice to create classes whose name helps determine functionality.  Ruby on Rails's .. _ActiveRecord
-ORM class: http://api.rubyonrails.org/classes/ActiveRecord/Base.html is a great example of this. Unfortunately,
+Often, it's nice to create classes whose name helps determine functionality.  Ruby on Rails's `ActiveRecord
+ORM class <http://api.rubyonrails.org/classes/ActiveRecord/Base.html>`_ is a great example of this. Unfortunately,
 JavaScript doesn't have a way of determining an object's name, so the developer must provide a name.
 Class fixes this by taking a String name for the class.::
 
@@ -164,7 +164,7 @@ Callbacks
 ---------
 
 Similar to jQuery's proxy method, Class provides a jQuery.Class.static.callback function that returns
-a callback to a method that will always have this set to the class or instance of the class.
+a callback to a method that will always have ``this`` set to the class or instance of the class.
 
 The following example uses this.callback to make sure this.name is available in show.::
 

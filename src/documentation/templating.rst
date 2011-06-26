@@ -2,11 +2,11 @@
 Templating
 ==========
 
-We'll see what we can do with thoses templates.
-Client side templating capabilities based on `jQuery Tmpl <http://api.jquery.com/jquery.tmpl/>`_
+We'll see what we can do with those templates.
+Client side templating capabilities are based on `jQuery Tmpl <http://api.jquery.com/jquery.tmpl/>`_
 
-Template are HTML fragment. You must not provide a full HTML file, with a <html>, <header> or <body> tag.
-All you need is to provide a single root element (a div for exemple):
+Templates are HTML fragments. You must not provide a full HTML file, with a <html>, <header> or <body> tag.
+All you need is to provide a single root element (a div for example):
 
 .. code-block:: html
 
@@ -21,15 +21,15 @@ The Controller's render function is defined as follow::
 
 	/**
 	 * Renders current widget with the template specified in
-	 * this.options.template. If none is defined, it used a
-	 * view with the same name of the controller
+	 * this.options.template. If none is defined, it uses a
+	 * view with the same name as the controller
 	 *
-	 * @param daya datas used into the template
-	 * @param options fields or anonomyous methods passed to the template (see JQuery Tmpl docs)
+	 * @param data datas used into the template
+	 * @param options fields or anonymous methods passed to the template (see JQuery Tmpl docs)
 	 */
 	render : function(data, options);
 
-This is an exemple using data and options parameters::
+This is an example using data and options parameters::
 
 	this.render({name:'bat'}); {
 
@@ -41,13 +41,13 @@ And into the template
 
 A question remains: Where in the DOM is my template rendered ?
 In the controller's *element*. As controllers are jQuery plugins, they apply to a DOM node.
-The content of this DOM node will be replace by the template.
+The content of this DOM node will be replaced by the template.
 
-That means that you can have simultaneously multiple controllers/views rendered in the same time.
+That means that you can have simultaneously multiple controllers/views rendered at the same time.
 
-In addition you can use template part into the Controller::
+In addition you can use template fragments into the Controller::
 
-	// template part
+	// template fragment
 	var tmpl = '<li><a href="${url}">${name}</a></li>';
 	// clear target element
 	$('#main').empty();

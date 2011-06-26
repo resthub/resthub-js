@@ -3,10 +3,10 @@ Controller
 ==========
 
 You've got routes, script loading, OOP. Thoses are very low level tools. 
-To allow you building a strong and understandable Rich Application, RESThub-js proposed you an tiny MVC pattern.
+To allow you building a strong and understandable Rich Application, RESThub-js gives you an tiny MVC pattern.
 
-The Controller will embed presentation and tiny business logic.
-It's strongly related to a Template (see afterward), a.k.a view.
+The Controller handles presentation and some (not much) business logic.
+It's strongly linked with a Template (see afterward), a.k.a view.
 
 Controller definition
 ---------------------
@@ -38,7 +38,7 @@ We saw in the class paragraph that init() method acts like a constructor. So dur
 Controller usage
 ----------------
 
-To instanciate a controller, need to requires it, and to use it as a jQuery plugin::
+To instantiate a controller, we need to require it, and then to use it as a jQuery plugin::
 
 		$.route('#/home', function() {
 			require(['home'], function() {
@@ -48,11 +48,11 @@ To instanciate a controller, need to requires it, and to use it as a jQuery plug
 		
 Select an existing DOM node (the one with id 'myDiv' in the example), and apply the desired controller on it.
 
-The name of the jQuery plugin is the name of your controller, without the 'Controller' stuff, all in lowercase, with _ separating words.
+The name of the jQuery plugin is the name of your controller, without the 'Controller' part, all in lowercase, with _ separating words.
 
 Parameters passed to the controller plugin are usable in the init() method.
 
-Adds template interraction
+Add template interaction
 --------------------------
 
 Now we want to add some interactivity: let's plug a jQuery-UI button widget::
@@ -71,22 +71,22 @@ Now we want to add some interactivity: let's plug a jQuery-UI button widget::
 By itself the button does not handle clicks (its a business-agnostic widget).
 So we bound a handler method to the click event of the DOM Node.
 
-As you probably know, Javascript loses the 'context' (pointed by this keyword) when asynchronous event occurs.
+As you probably know, Javascript loses the 'context' (pointed by the ``this`` keyword) when asynchronous event occurs.
 
 So when the user will click, the handler will not be related to your Controller !
 
-Fortunately, the jQuery $.proxy() method correct this issue. 
+Fortunately, the jQuery $.proxy() method corrects this issue. 
 
-And we could use Controller's inner attribute in the handler::
+And we could use the Controller's inner attribute in the handler::
 			
 	/**
-	 * Handler of user clic. write a console message.
+	 * Handler of user click. Writes a console message.
 	 *
 	 * @param {Event} event Click event
 	 */
 	_buttonHandler: function(event) {
-		event.preventDefault();
 		// Stops event propagation
+		event.preventDefault();
 		console.info('You clicked me: ' + this._myName);
 		return false;
 	}
@@ -112,13 +112,13 @@ That's the purpose of the destroy() method::
 		this._super();
 	}
 
-*Be carefull ! you absolutely need to call the overriden method when overriding the destroy() method*.
+*Be careful ! You absolutely need to call the overriden method when overriding the destroy() method*.
 
 Event subscription
 ------------------
 
-In complex RIA, Controllers massively used event (the pub-sub mechanism). 
-To lighten useage of event handles, Controllers have a specific subscribe() method::
+In complex RIA, Controllers massively use event (the pub-sub mechanism). 
+To lighten usage of event handles, Controllers have a specific subscribe() method::
 
 	init : function() {
 		// Calls the view rendering 

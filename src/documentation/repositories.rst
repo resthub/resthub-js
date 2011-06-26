@@ -2,11 +2,11 @@
 Repositories
 ============
 
-What about connecting to a REST WebServer ? Well it's precisely Repositories purposes.
+What about connecting to a REST WebServer ? Well it's precisely Repositories' purpose.
 
-Repository is a Class that provides CRUD (Create Retrieve Update Delete) methods to handle a distant Resource, hold by a REST WebServer.
+Repository is a Class that provides CRUD (Create Retrieve Update Delete) methods to handle a distant Resource, held by a REST WebServer.
 
-Repository defines only static methods, because these functionnalities could be accessed from every controllers in the application.
+Repository defines only static methods, because these functionalities could be accessed from every controller in the application.
 It provides::
 
 		/**
@@ -20,7 +20,7 @@ It provides::
 		read : function(callback, id, errorCallback)
 			
 		/**
-		 * Updates values of an existing resource (identifies by its id).
+		 * Updates values of an existing resource (identified by its id).
 		 */
 		update : function(callback, id, data, errorCallback) 
 		
@@ -34,7 +34,7 @@ It provides::
 		 */
 		list: function(callback, page, size)
 
-All ou need to do is to declare a subclass, with the root url of your REST WebServer::
+All we need to do is to declare a subclass, with the root url of your REST WebServer::
 
 	define([ 'lib/repository' ], function(Repository) {
 
@@ -49,6 +49,6 @@ All ou need to do is to declare a subclass, with the root url of your REST WebSe
 		}, {});
 	});
 	
-In this example, we add a specific functionnality that makes an ajax call to the distant webserver.
+In this example, we add a specific functionality that makes an ajax call to the distant webserver.
 
-You can easily can create mock repositories by return client side json files (mostly for read and list functions).
+You can easily create mock repositories by returning JSON files on the client side (mostly for read and list functions).
