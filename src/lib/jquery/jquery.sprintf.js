@@ -117,7 +117,6 @@ jQuery.vsprintf = function jQuery_vsprintf( format, args ) {
 			switch( type ) {
 			case 'e':
 			case 'f':
-			case 'G':
 			case 'E':
 			case 'G':
 			case 'd': /* signed */
