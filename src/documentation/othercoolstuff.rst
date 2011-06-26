@@ -5,7 +5,7 @@ Other cool stuff
 Logging
 -------
 
-Minimal CommonJS Console (http://wiki.commonjs.org/wiki/Console) implementation, doesn't support advanced feature if not available through original console.
+Minimal CommonJS Console (http://wiki.commonjs.org/wiki/Console) implementation, doesn't support advanced features if not available through original console.
 Defined in console.js.::
 
 	console.debug(object);
@@ -13,8 +13,8 @@ Defined in console.js.::
 	console.warn(object);
 	console.error(object);
 
-A filtering feature is added, to allow you filter your console traces, depending on a configuration you provide.
-It globally works like log4j. Main difference is the absence of logger inheritance, and appender definitions.
+A filtering feature is added, to allow you to filter your console traces, depending on a configuration you provide.
+It works roughly like log4j. Main difference is the absence of logger inheritance, and appender definitions.
 
 Here is the configuration::
 
@@ -53,14 +53,14 @@ Extract from the documentation.::
 Storage
 -------
 
-Abstract various browser storage methods. Actually just localstorage is implemented, but it will shortly implement other storage mechanisms (memory, jquery data, session storage, cookie).
+Abstracts various browser storage methods. Right now, only localstorage is implemented, but other storage mechanisms will be soon supported (memory, jquery data, session storage, cookie).
 Implemented in storage.js.::
 
 	/**
 	 * Store an item in the local storage (Not compatible with Internet Explorer <= 7)
 	 * 
-	 * Publish an event 'storage-set-itemkey' (replace itemkey by you item key) and the item as eventData
-	 * For example, storing user item will publish a  storage-set-user event
+	 * Publish an event 'storage-set-itemkey' (replace itemkey by your item's key) and the item as eventData
+	 * For example, storing user item will publish a storage-set-user event
 	 *
 	 * @param {String} key Key of the stored item, this will be used to retreive it later
 	 * @param {Object} item Item than will be stored in the storage, can be a string or an object
@@ -68,10 +68,10 @@ Implemented in storage.js.::
 	$.storage.set(key, item);
     
 	/**
-	 * Retreive an item from the local storage
+	 * Retrieve an item from the local storage
 	 *
-	 * @param {String} key Key of the item to retreive
-	 * @return {Object} The object retreived
+	 * @param {String} key Key of the item to retrieve
+	 * @return {Object} The object retrieved
 	 **/
 	$.storage.get(key);
         
@@ -90,7 +90,7 @@ Implemented in storage.js.::
 JSON
 ----
 
-Abstract object to JSON and JSON to object conversions, in order to be able to handle this in browser when JSON.stringify() and
+Abstract object to JSON and JSON to object conversions, so as to handle this in browser when JSON.stringify() and
 JSON.parse() are not implemented.
 Implemented in json.js.::
 

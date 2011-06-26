@@ -2,29 +2,29 @@
 Routing
 =======
 
-Define or run a route depending parameters. 
+Defines or runs a route depending on given parameters. 
 A route is defined by a location hash, that will trigger the handler passed in parameter.
 
-On recent browser, the hashchange event is used. 
-On other browser, a timer check if location.hash has changed or not in order to determine what route should be runned.
+On recent browsers, the hashchange event is used. 
+On other browsers, a timer checks if location.hash has changed or not in order to determine what route should be run.
 
 Implemented in routes.js.::
 
 	/**
 	 * Define a route with the matching callback
-	 * @param {String} path A location hash (also named URL fragment) that identify the route, for
-	 *				   example #/ or #/route1. You can define some parameters that will be available
-	 *				   in the handler by user routes like #/user/:id for example
-	 * @param {Function} handler(params) A function to execute when the route is runned. If the path
-	 *					 contains some params like :id or :name, they will be available in the
+	 * @param {String} path A location hash (also named URL fragment) that identifies the route, for
+	 *				   example #/ or #/route1. You can define some parameters that will be made available
+	 *				   in the handler like #/user/:id
+	 * @param {Function} handler(params) A function to execute when the route is run. If the path
+	 *					 contains some params like :id or :name, they will be made available in the
 	 *					 handler with params.id or params.name
 	 **/
 	$.route(path, handler(params) );
 	
 	/**
 	 * Run a route
-	 * When a route is runned, the 'route-run' event is dispatched (could be catched thanks to $.subscribe())
-	 * @param {String} path The path that identitfy the route to run
+	 * When a route is run, the 'route-run' event is dispatched (can be caught thanks to $.subscribe())
+	 * @param {String} path The path that identitfies the route to run
 	 **/
 	 $.route(path);
 	

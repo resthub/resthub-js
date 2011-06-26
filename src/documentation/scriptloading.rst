@@ -2,13 +2,13 @@
 Script loading
 ==============
 
-Script loading with RequireJS allows you to benefit the same functionnality as import in the Java language.
+Script loading with RequireJS allows you to benefit from the same functionnalities as import in the Java language.
 It allows you to define properly dependencies between scripts, and offers an easy way to load them lazily at runtime.
 
 Quickstart
 ----------
 
-Example when you have :
+For example, when you have :
  * index.html Your application HTML main file
  * app.js Your application JS main file
  * routes.js JS files where are defined your routes
@@ -25,14 +25,14 @@ app.js::
 		...
 	});
 
-The function in app.js will be executed only when the lib/resthub.js, route.js and home.js scripts will have been loaded.
+The function in app.js will be executed only when the lib/resthub.js, route.js and home.js scripts will be loaded.
 (Require.js automatically adds the .js extension).
-No order is defined between dependencies, but it could be the case.
+No order is defined between these dependencies, but it could be the case.
 
 Re-use returned objects
 -----------------------
 
-If you need to use dependencies' returns in your function, just add arguments :
+If you need to use dependencies' return values in your function, just add arguments :
 
 home.js::
 
@@ -44,7 +44,7 @@ home.js::
 		
 	});
 	
-The Controller argument will get the return of the lib/controller.js's inner function. Resthub main lib don't return anything, so we put it at the end of the dependency lib, and don't hav to match it to any variable.
+The Controller argument will get the return of the lib/controller.js's inner function. Resthub main lib doesn't return anything, so we put it at the end of the dependency lib, and don't have to match it to any variable.
 
 More informations
 -----------------
