@@ -67,5 +67,17 @@ define(['lib/resthub'], function() {
 
             $('#main > section.content').render('./simpletemplate.html', dataObject);
     });
+
+    $('.ie8bug').click(function() {
+
+        var tpl = "<strong>${hero}</strong>";
+        var model = [{hero: "Chuck Norris"},{hero: "Steven Seagal"}];
+        var probe = $("<div>/").append($.tmpl(tpl, model));
+        if ($(probe).html() == "<strong>Chuck Norris</strong><strong>Steven Seagal</strong>") {
+              console.info("success");
+        } else {
+              console.info("failure");
+        }
+    });
 		
 });

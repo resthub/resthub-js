@@ -4,8 +4,6 @@
  * @see http://wiki.commonjs.org/wiki/Console
  * @author Florian Traverse, Damien Feugas
  */
-'use strict';
-
 define(['lib/jquery'], function() {
 	
 	/**

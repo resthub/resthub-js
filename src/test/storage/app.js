@@ -1,4 +1,4 @@
-define(['lib/storage'], function() {
+define(['lib/console', 'lib/storage'], function() {
 
 	$(document).ready(function(){
 		
