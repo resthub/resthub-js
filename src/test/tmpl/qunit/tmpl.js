@@ -18,8 +18,6 @@ require({baseUrl: "../../../"}, ['lib/resthub'], function() {
     module('tmpl');
 
     test('should be ok with basic templating', function(){
-    console.log($.tmpl( tmpl, data ).html());
-    
         equals($.tmpl( tmpl, data[0] ).html(), '<a href="http://ejohn.org/">Resig</a>', 'expect basic anchor markup');
         equals($.tmpl( tmpl, data ).text(), 'ResigReedMoore', 'expect enumerable to acts accordingly');
         
