@@ -1,31 +1,26 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Publish Subscribe</title>
-<script data-main="app" src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-	require({baseUrl: "../../"});
-</script>
-</head>
-<body>
-
-	Run tests :
-	<ul>
-		<li><a href="#/shouldPublishTriggersAllListeners">simple publish with 2 listeners</a></li>
-		<li><a href="#/shouldPublishNotTriggersOtherListeners">event separation</a></li>
-		<li><a href="#/shouldPublishNotTriggersUnsubscirbedListeners">listener unsubscribe</a></li>
-		<li><a href="#/shouldPublishPassedData">data published</a></li>
-		<li><a href="#/shouldNotLostContext">context preserved</a>
-	</ul>
-	
-	<div id="main">
-	
-	</div>
-
-	<br />
-	<a href="../index.html">Return to test home</a>
-
-</script>
-</body>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Tmpl Testsuite</title>
+		<link rel="stylesheet" href="../qunit/qunit.css"/>
+		
+		<script src="../../lib/jquery.js"></script>
+		<script src="../qunit/qunit.js"></script>
+		<script src="pubsub.js"></script>
+	</head>
+	<body>
+		<h1 id="qunit-header">Tmpl Testsuite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">
+			<p>
+				For tests that modify the DOM, we can use the #qunit-fixture element. We can put static markup in there and have each test use that or we can leave it empty and have each test append the elements it needs, without having to worry about removing them. QUnit will automatically reset the innerHTML property of the #qunit-fixture element after each test to the initial value. If jQuery is available, QUnit uses jQuery’s html() method instead, which also cleans up jQuery event handlers
+			</p>
+			
+			<ul></ul>
+		</div>	
+	</body>
 </html>
-
