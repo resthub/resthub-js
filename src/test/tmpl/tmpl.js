@@ -1,7 +1,7 @@
 /**
  * ## Basic Console Testsuite
  */
-require({baseUrl: "../../../"}, ['lib/resthub'], function() {
+require({baseUrl: "../../"}, ['lib/resthub'], function() {
 
     var tmpl = '<li><a href="${url}">${name}</a></li>',
     data = [{
