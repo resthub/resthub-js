@@ -1,33 +1,26 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Templating</title>
-<!--[if lt IE 9]>
-	<script src="http://www.modernizr.com/downloads/modernizr-latest.js"></script>
-<![endif]-->
-<script src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-	require({baseUrl: "../../"}, ['test/ie/app']);
-</script>
-</head>
-<body>
-	<article>
-		<header>
-			<h1>Run tests</h1>
-		</header>
-		<ul>
-			<li><a class="localSimpleTemplate" href="#">Render simple local template</a></li>
-			<li><a class="localEachTemplate" href="#">Render each local template</a></li>
-			<li><a class="remoteSimpleTemplate" href="#">Render simple remote template</a></li>
-			<li><a class="ie8bug" href="#">IE8 bug</a></li>
-		</ul>
-		<section id="main">
-			+++
-			<section class="content"></section>
-			---
-		</section>
-		<footer><a href="../index.html">Return to test home</a></footer>
-	</article>
-</body>
-</html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>IE8 basic support test suite</title>
+		<link rel="stylesheet" href="../qunit/qunit.css"/>
 
+		<script src="../../lib/jquery.js"></script>
+		<script src="../qunit/qunit.js"></script>
+		<script src="ie.js"></script>
+	</head>
+	<body>
+		<h1 id="qunit-header">IE8 basic support test suite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">
+			<p>
+				For tests that modify the DOM, we can use the #qunit-fixture element. We can put static markup in there and have each test use that or we can leave it empty and have each test append the elements it needs, without having to worry about removing them. QUnit will automatically reset the innerHTML property of the #qunit-fixture element after each test to the initial value. If jQuery is available, QUnit uses jQuery’s html() method instead, which also cleans up jQuery event handlers
+			</p>
+
+			<ul></ul>
+		</div>	
+	</body>
+</html>
