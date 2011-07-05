@@ -15,7 +15,7 @@ require({baseUrl: "../../"}, ['lib/resthub'], function() {
         url: "http://www.borismoore.com",
     }];
 
-    module('tmpl');
+    module('ie');
 
     test('should be ok with basic templating', function() {
         equals($.tmpl( tmpl, data[0] ).html(), '<a href="http://ejohn.org/">Resig</a>', 'expect basic anchor markup');
