@@ -1,52 +1,26 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>i18n</title>
-<script src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-function getUrlVars() {
-	var vars = [], hash;
-	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-	for(var i = 0; i < hashes.length; i++) {
-		hash = hashes[i].split('=');
-		if (hash.length > 1) {
-			vars.push(hash[0]);
-			vars[hash[0]] = hash[1].split('#')[0];
-		}
-	}
-	return vars;
-}
-function localStorageSupported() {
-	try {return 'localStorage' in window && window['localStorage'] !== null;}
-	catch(e) {return false;}
-}
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>i18n Testsuite</title>
+		<link rel="stylesheet" href="../qunit/qunit.css"/>
 
-var locale = getUrlVars()['locale'];
-if (locale === undefined) {
-	locale = (localStorageSupported()) ? localStorage.getItem('locale') : null;
-}
-else if (localStorageSupported()) {
-	localStorage.setItem('locale', locale);
-}
-if (locale != null) {
-	require({baseUrl: "../../", locale: locale}, ['test/i18n/app']);
-}
-else {
-	require({baseUrl: "../../"}, ['test/i18n/app']);
-}
-</script>
-</head>
-<body>
-	Run tests :
-	<ul>
-		<li><a class="localSimpleTemplate" href="?locale=fr">Say hello in French</a></li>
-		<li><a class="localEachTemplate" href="?locale=en">Say hello in English</a></li>
-	</ul>
-	
-	<div id="main"></div>
+		<script src="../../lib/jquery.js"></script>
+		<script src="../qunit/qunit.js"></script>
+		<script src="i18n-test.js"></script>
+	</head>
+	<body>
+		<h1 id="qunit-header">i18n Testsuite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">
+			<p>
+				For tests that modify the DOM, we can use the #qunit-fixture element. We can put static markup in there and have each test use that or we can leave it empty and have each test append the elements it needs, without having to worry about removing them. QUnit will automatically reset the innerHTML property of the #qunit-fixture element after each test to the initial value. If jQuery is available, QUnit uses jQuery’s html() method instead, which also cleans up jQuery event handlers
+			</p>
 
-	<br />
-	<a href="../index.html">Return to test home</a>
-</body>
+			<ul></ul>
+		</div>	
+	</body>
 </html>
-
