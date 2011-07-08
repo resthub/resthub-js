@@ -1,29 +1,28 @@
 define(['lib/class', 'lib/console'], function(Class) {
 
-	$(document).ready(function(){
+
 		
+	module('bindable');
+	
+	test('should behave correctly', 2, function() {
 		// Creates a class and its object.
-		Class.extend('TestClass', {});
-		obj = TestClass.newInstance();
+		var Dummy = Class.extend({}),
+		obj = new Dummy(),
+		main = $('#main');
 		
 		// Adds a bindable variable.
 		$.makeBindable(obj, 'value', 'Hello World !');
+		
 		// Binds changes to display value into the #main div 
 		$.bindAttribute(obj, 'value', function(event, newValue, oldValue) {
 			console.debug('value changed from ' + oldValue + ' to ' + newValue);
-			$('#main').html(obj.value);
+			equals(newValue, 'I changed my value !', 'newVal parameter should be "I changed my value !"');
+			equals(oldValue, 'Hello World !', 'newVal parameter should be "I changed my value !"');
 		});
 		
-		// Test storage handlers
-		$('.changeValue').click(function() {
-			obj.value = 'I changed my value !';
-			var result = $('#main').html();
-			if (result != obj.value) {
-				throw new Error('Expected "' + obj.value + '" but was "' + result + '"');
-			}
-		});
 		
-		// First displayal
-		$('#main').html(obj.value);
+		obj.value = 'I changed my value !';
+		
 	});
+	
 });
