@@ -1,149 +1,92 @@
-define(['lib/route', 'lib/pubsub'], function() {
+/**
+ * ## Basic Console Testsuite
+ */
+require(['lib/route', 'lib/pubsub'], function() {
 	
-	$.route('#/shouldPublishTriggersAllListeners', function() {
-		$('#main *').remove();
-		// Given two listeners bound to an event 'myEvent'
-		var l1 = {
-			method:function() {
-				$('#main').append('<div class="l1">l1 executed</div>');
-			}
-		};
-		var h1 = $.subscribe('myEvent', l1.method);
-		var l2 = {
-			method:function() {
-				$('#main').append('<div class="l2">l2 executed</div>');
-			}
-		};
-		var h2 = $.subscribe('myEvent', l2.method);
-		
-		// When triggering 'myEvent'
-		$.publish('myEvent');
-		
-		// Then both handler were called
-		if ($('#main > div').length != 2) {
-			alert('Failed: both listerners were not called');
+	var listeners = [];
+	
+	module('pusbub', {
+		teardown: function() {
+			$.each(listeners, function(i, listener) {
+				$.unsubscribe(listener);
+			});
+			
+			listeners  = [];
+		},
+		setup: function() {
+			localStorage.clear();
 		}
-		$.unsubscribe(h1);
-		$.unsubscribe(h2);
+	});
+
+	test('should publish triggers to all listeners', function() {
+		listeners.push($.subscribe('test-event', function () {
+			ok(true, 'test-event triggered twice');
+		}));
+		listeners.push($.subscribe('test-event', function () {
+			ok(true, 'test-event triggered twice');
+		}));
+
+		// When triggering 'myEvent'
+		$.publish('test-event');
+		
+		
+	});
+	
+	test('should not publish to other listeners', 1, function() {
+		listeners.push($.subscribe('test-event', function () {
+			ok(true, 'test-event triggered twice');
+		}));
+		listeners.push($.subscribe('test-event-2', function () {
+			ok(true, 'test-event-2 triggered twice');
+		}));
+
+		// When triggering 'myEvent1'
+		$.publish('test-event');
 	});
 	
 	
-	$.route('#/shouldPublishNotTriggersOtherListeners', function() {
-		$('#main *').remove();
-		// Given a listener bound to an event 'myEvent1'
-		var l1 = {
-			method:function() {
-				$('#main').append('<div class="l1">l1 executed</div>');
-			}
-		};
-		var h1 = $.subscribe('myEvent1', l1.method);
-		// Given a listener bound to an event 'myEvent2'
-		var l2 = {
-			method:function() {
-				$('#main').append('<div class="l2">l2 executed</div>');
-			}
-		};
-		var h2 = $.subscribe('myEvent2', l2.method);
+	test('should publish but prevent unsubscribed listeners', 1, function() {
+		var guid = $.subscribe('test-unsuscribe', function () {
+			ok(false, 'test-event-2 not triggered when unsubscribed');
+		});
+		
+		listeners.push($.subscribe('test-unsuscribe', function () {
+			ok(true, 'test-event triggered twice');
+		}));
+		
+		// unscribe one of the two listeners
+		$.unsubscribe(guid);
 		
 		// When triggering 'myEvent1'
-		$.publish('myEvent1');
+		$.publish('test-unsuscribe');
 		
-		// Then only listener 1 has been called
-		if ($('#main > div.l1').length != 1) {
-			alert('Failed: first listener not called');
-		}
-		if ($('#main > div').length != 1) {
-			alert('Failed: all listeners were called');
-		}
-		$.unsubscribe(h1);
-		$.unsubscribe(h2);
 	});
 	
 	
-	$.route('#/shouldPublishNotTriggersUnsubscirbedListeners', function() {
-		$('#main *').remove();
-		// Given two listeners bound to an event 'myEvent3'
-		var l1 = {
-			method:function() {
-				$('#main').append('<div class="l1">l1 executed</div>');
-			}
-		};
-		var h1 = $.subscribe('myEvent3', l1.method);
-		var l2 = {
-			method:function() {
-				$('#main').append('<div class="l2">l2 executed</div>');
-			}
-		};
-		var h2 = $.subscribe('myEvent3', l2.method);
+	test('should publish with data parameters', function() {		
+		var data = {should: 'be', good: 'enough'},
+		arr = ['should', 'be', 'good', 'enough'];
 		
-		// Given listerner 2 unsubribed.
-		$.unsubscribe(h2);
+		listeners.push($.subscribe('test-publish-data', function(o) {
+			deepEqual(o, data, 'listeners get data parameters');
+		}));
 		
-		// When triggering 'myEvent3'
-		$.publish('myEvent3');
+		$.publish('test-publish-data', [data]);
 		
-		// Then only listener 1 has been called
-		if ($('#main > div.l1').length != 1) {
-			alert('Failed: first listener not called');
-		}
-		if ($('#main > div').length != 1) {
-			alert('Failed: all listeners were called');
-		}
-		$.unsubscribe(h1);
-	});
-
-	
-	$.route('#/shouldPublishPassedData', function() {
-		$('#main *').remove();
-		// Given a listener bound to an event 'myEvent'
-		var l = {
-			method:function() {
-				$('#main').append('<div class="l1">'+ Array.prototype.join.call(
-						arguments, [' '])+'</div>');
-			}
-		};
-		var h = $.subscribe('myEvent', l.method);
-		
-		// When triggering 'myEvent' with data
-		$.publish('myEvent', ['Hello', 'World', true]);
-		
-		// Then only listener 1 has been called
-		if ($('#main > div').length != 1) {
-			alert('Failed: first listener not called');
-		}
-		if ($('#main > div').html() != 'Hello World true') {
-			alert('Failed: data was not properly passed');
-		}
-		$.unsubscribe(h);
-	});
-	
-	
-	$.route('#/shouldNotLostContext', function() {
-		$('#main *').remove();
-		// Given a listener bound to an event 'myEvent'
-		var l = {
-			argument: 'Hello world',
-			method:function() {
-				$('#main').append('<div class="l1">'+this.argument+'</div>');
-			}
-		};
-		var h = $.subscribe('myEvent', $.proxy(l, 'method'));
-		
-		// When triggering 'myEvent' with data
-		$.publish('myEvent', ['Hello', 'World', true]);
-		
-		// Then only listener 1 has been called
-		if ($('#main > div').length != 1) {
-			alert('Failed: first listener not called');
-		}
-		if ($('#main > div').html() != 'Hello world') {
-			alert('Failed: data was not properly passed');
-		}
-		$.unsubscribe(h);
-	});
-	
-	
-	$.route(location.hash);
+		listeners.push($.subscribe('test-publish-data-mutliple', function() {
+			var arr = Array.prototype.slice.call(arguments);			
+			equals(arr.join(' '), 'should be good enough', 'listeners can get a list of parameters too.');
+		}));
 
 
+		$.publish('test-publish-data-mutliple', arr);
+	});
+	
+	
+	test('should not lost binding', 1, function() {
+		var o = {foo: 'bar', test: function() { deepEqual(this, o, 'this is O !'); }};
+		listeners.push($.subscribe('test-binding', $.proxy(o.test, o)));
+		$.publish('test-binding');
+	});
+		
 });

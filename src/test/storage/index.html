@@ -1,33 +1,26 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>JSon support</title>
-<script data-main="app" src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-	require({baseUrl: "../../"});
-</script>
-</head>
-<body>
-
-	Run tests :
-	<ul>
-		<li><a class="setitem1" href="#">Set item1 (string)</a></li>
-		<li><a class="getitem1" href="#">Get item1</a></li>
-		<li><a class="setitem2" href="#">Set item2 (json)</a></li>
-		<li><a class="getitem2" href="#">Get item2 (json)</a></li>
-		<li><a class="removeitem1" href="#">Remove item1</a></li>
-		<li><a class="removeitem2" href="#">Remove item2</a></li>
-		<li><a class="clear" href="#">Clear</a></li>
-	</ul>
-	
-	<div id="main">
-	
-	</div>
-
-	<br />
-	<a href="../index.html">Return to test home</a>
-
-</script>
-</body>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Storage Testsuite</title>
+		<link rel="stylesheet" href="../qunit/qunit.css"/>
+		
+		<script src="../../lib/jquery.js"></script>
+		<script src="../qunit/qunit.js"></script>
+		<script>require({baseUrl: "../../"}, ['test/storage/app']);</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">Storage Testsuite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">
+			<p>
+				For tests that modify the DOM, we can use the #qunit-fixture element. We can put static markup in there and have each test use that or we can leave it empty and have each test append the elements it needs, without having to worry about removing them. QUnit will automatically reset the innerHTML property of the #qunit-fixture element after each test to the initial value. If jQuery is available, QUnit uses jQuery’s html() method instead, which also cleans up jQuery event handlers
+			</p>
+			
+			<ul></ul>
+		</div>	
+	</body>
 </html>
-

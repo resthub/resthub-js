@@ -1,5 +1,5 @@
 define(['lib/controller'], function(Controller) {
-	return Controller.extend("Widget1Controller", {
+	return Controller.extend("WidgetController", {
 			
 		destroy: function() {
 			console.debug('Controller removed');
@@ -12,7 +12,7 @@ define(['lib/controller'], function(Controller) {
 		},
 		
 		init: function() {
-			this.template = 'widget1.html';
+			this.template = /controller/.test(location.pathname) ? 'widget.html' : 'controller/widget.html';
 			this.render({user:{login:'hsimpson', username:'Homer Simpson'}});
 			this.subscribe('myEvent', 'eventHandler');
 		}

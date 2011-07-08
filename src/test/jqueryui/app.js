@@ -1,15 +1,15 @@
-define(['lib/jqueryui/button'], function() {
-	
-	$(document).ready(function() {		
-		$('.createButton').click(function() {
-			$('#main').empty();
-			$('#main').append('<a href="" id="myButton"></a>');
-			$('#myButton').button({
-					label:'Click me'
-				}).click(function(){
-					alert('You clicked me !');
-					return false;
-				});
-		});
+// ## Basic jquery-ui Testsuite
+
+require(['lib/jqueryui/button'], function() {
+
+	module('jquery-ui');
+
+	test('should be good when we create some widgets say button', function() {
+		var bt = $('<a />').button({label: 'fancy buttons'});
+		console.log(bt);
+		
+		ok(bt instanceof jQuery, 'is a jQuery el');
+		ok(bt.is('.ui-widget') && bt.is('.ui-button'), 'is a button widget');
 	});
+
 });
