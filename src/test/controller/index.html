@@ -1,30 +1,28 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Controller</title>
-<script data-main="app" src="../../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-	require({baseUrl: "../../"});
-</script>
-</head>
-<body>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Controller test suite</title>
+		<link rel="stylesheet" href="../qunit/qunit.css"/>
 
-	Run tests :
-	<ul>
-		<li><a href="#/">Home</a></li>
-		<li><a href="#/controller1">Create widget + controller !</a></li>
-		<li><a href="#/removeController1">Remove created controller</a></li>
-		<li><a href="#/removeController1AndPublish">Remove created controller and check automatic unsubsribe</a></li>
-		<li><a href="#/shouldRenderNotTriggerDestroy">Render twice a controller and check destroy() not called</a></li>
-	</ul>
-	
-	<div id="main">
-	
-	</div>
-	
-	<br />
-	<a href="../index.html">Return to test home</a>
+		<script src="../../lib/jquery.js"></script>
+		<script src="../qunit/qunit.js"></script>
 
-</body>
+		
+		<script>require({baseUrl: "../../"}, ['test/controller/app']);</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">Controller test suite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">
+			<p>
+				For tests that modify the DOM, we can use the #qunit-fixture element. We can put static markup in there and have each test use that or we can leave it empty and have each test append the elements it needs, without having to worry about removing them. QUnit will automatically reset the innerHTML property of the #qunit-fixture element after each test to the initial value. If jQuery is available, QUnit uses jQuery’s html() method instead, which also cleans up jQuery event handlers
+			</p>
+
+			<div id="main"></div>
+		</div>	
+	</body>
 </html>
-
