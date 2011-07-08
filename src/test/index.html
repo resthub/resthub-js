@@ -1,29 +1,26 @@
 <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>IE8 basic support test suite</title>
+		<link rel="stylesheet" href="./qunit/qunit.css"/>
 
-<html>
-<head>
-<title>RESThub JS test page</title>
-</head>
-<body>
+		<script src="../lib/jquery.js"></script>
+		<script src="./qunit/qunit.js"></script>
+		<script>require({baseUrl: "../"}, ['test/ie/ie']);</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">IE8 basic support test suite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">
+			<p>
+				For tests that modify the DOM, we can use the #qunit-fixture element. We can put static markup in there and have each test use that or we can leave it empty and have each test append the elements it needs, without having to worry about removing them. QUnit will automatically reset the innerHTML property of the #qunit-fixture element after each test to the initial value. If jQuery is available, QUnit uses jQuery’s html() method instead, which also cleans up jQuery event handlers
+			</p>
 
-	Test RESThub JS functionnalities :
-	<ul>
-		<li><a href="./routejs/index.html">Simple routing</a></li>
-		<li><a href="./controller/index.html">Controller</a></li>
-		<li><a href="./json/index.html">JSON support</a></li>
-		<li><a href="./class/index.html">Class support</a></li>
-		<li><a href="./storage/index.html">Storage</a></li>
-		<li><a href="./tmpl/index.html">Templating</a></li>
-		<li><a href="./sprintf/index.html">String replacement</a></li>
-		<li><a href="./jqueryui/index.html">JQueryui</a></li>
-		<li><a href="./bindable/index.html">Bindable</a></li>
-		<li><a href="./pubsub/index.html">Publish Subscribe</a></li>
-		<li><a href="./logger/index.html">Logger</a></li>
-		<li><a href="./i18n/index.html">i18n</a></li>
-		<li><a href="./ie/index.html">Legacy IE support</a></li>
-	</ul>
-
-</script>
-</body>
+			<ul></ul>
+		</div>	
+	</body>
 </html>
-

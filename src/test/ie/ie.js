@@ -1,7 +1,7 @@
 /**
  * ## Basic ie support test suite
  */
-require({baseUrl: "../../"}, ['lib/resthub'], function() {
+require(['lib/resthub'], function() {
 
     var tmpl = '<li><a href="${url}">${name}</a></li>',
     data = [{
@@ -25,7 +25,9 @@ require({baseUrl: "../../"}, ['lib/resthub'], function() {
         // also it works synchronously...
         var el = $('ul');
 
-        el.render('tmpl.fixture.html', data);
+        // deal with different basePath (running test from src/test or src/test/ie?)
+        // really have to change the way templates view are retrived to use requirejs !text plugin
+        el.render((/ie/.test(location.pathname) ? '' : 'ie/') + 'tmpl.fixture.html', data);
 
         equals($.trim(el.text()), 'Remote:Resig Remote:Reed Remote:Moore', 'using remote should be ok');
     });
