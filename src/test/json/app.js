@@ -1,17 +1,18 @@
-define(['lib/json'], function() {
+// ## Basic JSON Testsuite
 
-	$('.tojson').click(function() {
-		var thing = {plugin: 'jquery-json', version: 2.2};
-		var encoded = $.toJSON(thing);
-		$('#main').html(encoded);
+require(['lib/json'], function() {
+
+	module('json');
+
+	test('basic JSON.stringify test', function() {
+		var o = {plugin: 'jquery-json', version: 2.2};
+		equals($.toJSON(o), JSON.stringify(o), 'same as calling JSON.stringify...');
 	});
 	
-	$('.evaljson').click(function() {
-		var thing = {plugin: 'jquery-json', version: 2.2};
-		var encoded = $.toJSON(thing);
-		var name = $.evalJSON(encoded).plugin;
-		var version = $.evalJSON(encoded).version;
-		$('#main').html("Name : " + name + ", Version : " + version);
+	test('basic JSON.parse test', function() {
+		var o = $.toJSON({plugin: 'jquery-json', version: 2.2});
+		deepEqual($.evalJSON(o), JSON.parse(o), 'same as calling JSON.parse...');
 	});
-	
+
+
 });

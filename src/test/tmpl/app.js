@@ -1,71 +1,35 @@
-define(['lib/resthub'], function() {
+/**
+ * ## Basic Console Testsuite
+ */
+require(['lib/resthub'], function() {
 
-    // A template string
-    var tmpl = '<li><a href="${url}">${lastName}</a></li>';
+    var tmpl = '<li><a href="${url}">${name}</a></li>',
+    data = [{
+      name: "Resig",
+      url: "http://ejohn.org/"     
+    }, {
+        name: 'Reed',
+        url: 'http://weblogs.asp.net/infinitiesloop/',
+    }, {
+        name: 'Moore',
+        url: "http://www.borismoore.com",
+    }];
+       
+    module('tmpl');
 
-    $('.localSimpleTemplate').click(function() {
-            var dataObject = {
-                    firstName: "John",
-                    lastName: "Resig",
-                    url: "http://ejohn.org/",
-                    cities: [
-                            "Boston, MA",
-                            "San Francisco, CA"
-                    ]
-            };
-
-            $('#main').empty();
-            $.tmpl( tmpl, dataObject ).appendTo( '#main' );
+    test('should be ok with basic templating', function(){
+        equals($.tmpl( tmpl, data[0] ).html(), '<a href="http://ejohn.org/">Resig</a>', 'expect basic anchor markup');
+        equals($.tmpl( tmpl, data ).text(), 'ResigReedMoore', 'expect enumerable to acts accordingly');
+        
+        // $.fn.render do not return itself, no chaining sugar...
+        // also it works synchronously...
+        var el = $('ul'),
+        path = /src\/test\/tmpl/.test(location.pathname) ? 'tmpl.fixture.html' : 'tmpl/tmpl.fixture.html';
+        
+        el.render(path, data)
+        
+        equals($.trim(el.text()), 'Remote:Resig Remote:Reed Remote:Moore', 'using remote should be ok');
     });
-
-    $('.localEachTemplate').click(function() {
-            var people = [
-                    {
-                            firstName: "John",
-                            lastName: "Resig",
-                            url: "http://ejohn.org/",
-                            cities: [
-                                    { name: "Boston", state: "MA" },
-                                    { name: "San Francisco", state: "CA" }
-                            ]
-                    },
-                    {
-                            firstName: "Dave",
-                            lastName: "Reed",
-                            url: "http://dave.org/",
-                            cities: [
-                                    { name: "Seattle", state: "WA" },
-                                    { name: "Los Angeles", state: "CA" },
-                                    { name: "New York", state: "NY" }
-                            ]
-                    },
-                    {
-                            firstName: "Boris",
-                            lastName: "Moore",
-                            url: "http://boris.org/",
-                            cities: [
-                                    { name: "Redmond", state: "WA" }
-                            ]
-                    }
-            ];
-
-            $('#main').empty();
-            $.tmpl( tmpl, people ).appendTo( '#main' );
-
-    });
-
-    $('.remoteSimpleTemplate').click(function() {
-            var dataObject = {
-                    firstName: "John",
-                    lastName: "Resig",
-                    url: "http://ejohn.org/",
-                    cities: [
-                            "Boston, MA",
-                            "San Francisco, CA"
-                    ]
-            };
-
-            $('#main').render('simpletemplate.html', dataObject);
-    });
-		
+    
 });
+

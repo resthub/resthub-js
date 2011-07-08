@@ -1,83 +1,45 @@
-define(['lib/resthub'], function() {
+/**
+ * ## Basic ie support test suite
+ */
+require(['lib/resthub'], function() {
 
-    // A template string
-    var tmpl = '<section><a href="${url}">${lastName}</a></section>';
+    var tmpl = '<li><a href="${url}">${name}</a></li>',
+    data = [{
+      name: "Resig",
+      url: "http://ejohn.org/"     
+    }, {
+        name: 'Reed',
+        url: 'http://weblogs.asp.net/infinitiesloop/',
+    }, {
+        name: 'Moore',
+        url: "http://www.borismoore.com",
+    }];
 
-    $('.localSimpleTemplate').click(function() {
-            var dataObject = {
-                    firstName: "John",
-                    lastName: "Resig",
-                    url: "http://ejohn.org/",
-                    cities: [
-                            "Boston, MA",
-                            "San Francisco, CA"
-                    ]
-            };
+    module('ie');
 
-            $('.content').empty();
-            $.tmpl( tmpl, dataObject ).appendTo( '#main .content' );
+    test('should be ok with basic templating', function() {
+        equals($.tmpl( tmpl, data[0] ).html(), '<a href="http://ejohn.org/">Resig</a>', 'expect basic anchor markup');
+        equals($.tmpl( tmpl, data ).text(), 'ResigReedMoore', 'expect enumerable to acts accordingly');
+
+        // $.fn.render do not return itself, no chaining sugar...
+        // also it works synchronously...
+        var el = $('ul');
+
+        // deal with different basePath (running test from src/test or src/test/ie?)
+        // really have to change the way templates view are retrived to use requirejs !text plugin
+        el.render((/ie/.test(location.pathname) ? '' : 'ie/') + 'tmpl.fixture.html', data);
+
+        equals($.trim(el.text()), 'Remote:Resig Remote:Reed Remote:Moore', 'using remote should be ok');
     });
-
-    $('.localEachTemplate').click(function() {
-            var people = [
-                    {
-                            firstName: "John",
-                            lastName: "Resig",
-                            url: "http://ejohn.org/",
-                            cities: [
-                                    { name: "Boston", state: "MA" },
-                                    { name: "San Francisco", state: "CA" }
-                            ]
-                    },
-                    {
-                            firstName: "Dave",
-                            lastName: "Reed",
-                            url: "http://dave.org/",
-                            cities: [
-                                    { name: "Seattle", state: "WA" },
-                                    { name: "Los Angeles", state: "CA" },
-                                    { name: "New York", state: "NY" }
-                            ]
-                    },
-                    {
-                            firstName: "Boris",
-                            lastName: "Moore",
-                            url: "http://boris.org/",
-                            cities: [
-                                    { name: "Redmond", state: "WA" }
-                            ]
-                    }
-            ];
-
-            $('.content').empty();
-            $.tmpl( tmpl, people ).appendTo( '#main section.content' );
+    
+    test('should be ok with ie8 related testing', function() {
+        var tpl = "<strong>${hero}</strong>",
+        model = [{hero: "Chuck Norris"}, {hero: "Steven Seagal"}];
+       
+        result = $.tmpl( tpl, model ).text();
+        
+        equals(result, 'Chuck NorrisSteven Seagal', 'Chuck Norris does not use templates, templates use Chuck Norris');
 
     });
 
-    $('.remoteSimpleTemplate').click(function() {
-            var dataObject = {
-                    firstName: "John",
-                    lastName: "Resig",
-                    url: "http://ejohn.org/",
-                    cities: [
-                            "Boston, MA",
-                            "San Francisco, CA"
-                    ]
-            };
-
-            $('#main > section.content').render('./simpletemplate.html', dataObject);
-    });
-
-    $('.ie8bug').click(function() {
-
-        var tpl = "<strong>${hero}</strong>";
-        var model = [{hero: "Chuck Norris"},{hero: "Steven Seagal"}];
-        var probe = $("<div>/").append($.tmpl(tpl, model));
-        if ($(probe).html() == "<strong>Chuck Norris</strong><strong>Steven Seagal</strong>") {
-              console.info("success");
-        } else {
-              console.info("failure");
-        }
-    });
-		
 });

@@ -1,10 +1,15 @@
-define(['lib/jquery/jquery.sprintf'], function() {
+/**
+ * ## Basic sprintf Testsuite
+ */
+require(['lib/jquery/jquery.sprintf'], function() {
 
-	$('.sprintf').click(function() {
-		$('#main').html($.sprintf('Hello %s %s !', 'excited', 'world'));
-	});
-	
-	$('.printf').click(function() {
-		$('#main').printf('Hello %s %s !', 'excited', 'world');
-	});
+    module('printf');
+    
+
+    test('basic printf should be ok', function() {
+        equals($.sprintf('Hello %s %s !', 'excited', 'world'), 'Hello excited world !');
+        equals($.sprintf('Hello %s %s !', 'excited', 'world'), 'Hello excited world !');
+    });
+        
 });
+
