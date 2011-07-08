@@ -1,7 +1,7 @@
 /**
  * ## Basic Console Testsuite
  */
-require({baseUrl: "../../"}, ['lib/resthub'], function() {
+require(['lib/resthub'], function() {
 
     module('console');
 

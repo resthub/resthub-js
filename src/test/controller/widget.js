@@ -12,7 +12,7 @@ define(['lib/controller'], function(Controller) {
 		},
 		
 		init: function() {
-			this.template = 'widget.html';
+			this.template = /controller/.test(location.pathname) ? 'widget.html' : 'controller/widget.html';
 			this.render({user:{login:'hsimpson', username:'Homer Simpson'}});
 			this.subscribe('myEvent', 'eventHandler');
 		}

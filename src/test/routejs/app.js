@@ -1,6 +1,6 @@
 // ## Basic Router Testsuite
  
-require({baseUrl: "../../"}, ['lib/resthub'], function() {
+require(['lib/resthub'], function() {
 
     var tests = [
         '# Root',

@@ -1,9 +1,9 @@
 // ## Basic Console Testsuite
 
 // TODO: Guess how to programatically check the console output (cross-browserly, 
-require({baseUrl: "../../"}, ['lib/console'], function() {
+require(['lib/console'], function() {
 
-	module('console');
+	module('logger');
 
 	test('should feature basic filterered ouput', function() {
 		LOGGER_CONF['logger.unknown'] = 'unknown';

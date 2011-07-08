@@ -1,7 +1,7 @@
 /**
- * ## Basic Console Testsuite
+ * ## Basic sprintf Testsuite
  */
-require({baseUrl: "../../"}, ['lib/jquery/jquery.sprintf'], function() {
+require(['lib/jquery/jquery.sprintf'], function() {
 
     module('printf');
     

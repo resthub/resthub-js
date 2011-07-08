@@ -1,6 +1,6 @@
 // ## Basic jquery-ui Testsuite
 
-require({baseUrl: "../../"}, ['lib/jqueryui/button'], function() {
+require(['lib/jqueryui/button'], function() {
 
 	module('jquery-ui');
 

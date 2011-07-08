@@ -1,7 +1,7 @@
 /**
  * ## Basic Console Testsuite
  */
-require({baseUrl: "../../"}, ['lib/resthub'], function() {
+require(['lib/resthub'], function() {
 
     var tmpl = '<li><a href="${url}">${name}</a></li>',
     data = [{
@@ -23,9 +23,10 @@ require({baseUrl: "../../"}, ['lib/resthub'], function() {
         
         // $.fn.render do not return itself, no chaining sugar...
         // also it works synchronously...
-        var el = $('ul');
+        var el = $('ul'),
+        path = /src\/test\/tmpl/.test(location.pathname) ? 'tmpl.fixture.html' : 'tmpl/tmpl.fixture.html';
         
-        el.render('tmpl.fixture.html', data);
+        el.render(path, data)
         
         equals($.trim(el.text()), 'Remote:Resig Remote:Reed Remote:Moore', 'using remote should be ok');
     });

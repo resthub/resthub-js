@@ -2,15 +2,16 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>IE8 basic support test suite</title>
+		<title>RESThub TestSuite</title>
 		<link rel="stylesheet" href="./qunit/qunit.css"/>
 
-		<script src="../lib/jquery.js"></script>
 		<script src="./qunit/qunit.js"></script>
-		<script>require({baseUrl: "../"}, ['test/ie/ie']);</script>
+		
+		<script data-main="suite" src="../lib/jquery.js"></script>
+		
 	</head>
 	<body>
-		<h1 id="qunit-header">IE8 basic support test suite</h1>
+		<h1 id="qunit-header">RESThub TestSuite</h1>
 		<h2 id="qunit-banner"></h2>
 		<div id="qunit-testrunner-toolbar"></div>
 		<h2 id="qunit-userAgent"></h2>
@@ -21,6 +22,8 @@
 			</p>
 
 			<ul></ul>
+			
+			<div id="main"></div>
 		</div>	
 	</body>
 </html>

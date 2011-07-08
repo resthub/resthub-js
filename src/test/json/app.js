@@ -1,6 +1,6 @@
 // ## Basic JSON Testsuite
 
-require({baseUrl: "../../"}, ['lib/json'], function() {
+require(['lib/json'], function() {
 
 	module('json');
 

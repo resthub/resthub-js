@@ -1,7 +1,7 @@
 /**
  * ## Basic ie support test suite
  */
-require({baseUrl: "../../"}, ['i18n!test/i18n/nls/labels'], function(i18n) {
+require(['i18n!test/i18n/nls/labels'], function(i18n) {
 
 	module('i18n');
 

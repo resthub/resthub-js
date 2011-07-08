@@ -1,7 +1,7 @@
 /**
  * ## Basic Console Testsuite
  */
-require({baseUrl: "../../"}, ['lib/route', 'lib/pubsub'], function() {
+require(['lib/route', 'lib/pubsub'], function() {
 	
 	var listeners = [];
 	
