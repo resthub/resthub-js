@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Resthub-controller is a generic javascript controller for resthub
  * applications. It provides utility functions for basic operations.
  * 
@@ -115,16 +115,8 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 			 * view with the same name of the controller
 			 */
 			render : function(data, options) {
-				// Unbind the destroy handler during rendering.
-				$(this.element.children()[0]).unbind('.'+this['Class']._fullName);
-				// Performs rendering.
-				if (typeof (this.template) == 'undefined') {
-					this.element.render('./' + this.widgetName + '.html', data, options);
-				} else {
-					this.element.render(this.template, data, options);
-				}
-				// Re-bind the destroy handler.
-				$(this.element.children()[0]).bind('remove.'+this['Class']._fullName, $.proxy(this, 'destroy'));
+				$.tmpl(this.template, data, options).appendTo(this.element.empty());
+				return this;
 			}
 		});
 
