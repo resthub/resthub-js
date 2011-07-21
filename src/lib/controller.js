@@ -12,15 +12,21 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 		// used to remove the controller from the name
 		_underscoreAndRemoveController : function(className) {
 			var str = className.replace("jQuery.", "").replace( /\./g, '_').replace(/_?controllers?/ig, "");
-			return str.replace(/::/, '/').replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2').replace(/([a-z\d])([A-Z])/g, '$1_$2').replace(/([a-z\d])([A-Z])/g, '_').toLowerCase();
+			return str.replace(/::/, '/')
+				.replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+				.replace(/([a-z\d])([A-Z])/g, '$1_$2')
+				.replace(/([a-z\d])([A-Z])/g, '_')
+				.toLowerCase();
 		},
 
 		init : function() {
+			
 			// if you didn't provide a name, or are controller,
 			// don't do anything
 			if (!this.shortName || this.fullName == "jQuery.Controller") {
 				return;
 			}
+			
 			// cache the underscored names
 			this._fullName = this._underscoreAndRemoveController(this.fullName);
 			this._shortName = this._underscoreAndRemoveController(this.shortName);
@@ -33,8 +39,7 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 
 					var args = $.makeArray(arguments),
 					// if the arg is a method on this controller
-					isMethod = typeof options == "string"
-							&& $.isFunction(controller.prototype[options]), meth = args[0];
+					
 					this.each(function() {
 						// create a new controller instance, and stores it in the node.
 						$.data(this, pluginname, controller.newInstance.apply(controller, [ this ].concat(args)));
@@ -43,6 +48,9 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 					return this;
 				};
 			}
+			
+			
+			
 		}
 
 		}, {
@@ -56,6 +64,7 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 			handles: [],
 			
 			setup: function( element, options ) {
+				console.log('setup this > ', this);
 				this.element = $(element);
 				this.handles = [];
 				$.extend( true, this, options );
