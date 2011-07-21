@@ -31,21 +31,19 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 			this._fullName = this._underscoreAndRemoveController(this.fullName);
 			this._shortName = this._underscoreAndRemoveController(this.shortName);
 
-			var controller = this, pluginname = this.pluginName || this._fullName, funcName, forLint;
+			var controller = this, pluginname = this.pluginName || this._fullName;
 
 			// create jQuery plugin
 			if (!$.fn[pluginname]) {
 				$.fn[pluginname] = function(options) {
-
-					var args = $.makeArray(arguments),
+					var args = $.makeArray(arguments);
 					// if the arg is a method on this controller
 					
-					this.each(function() {
+					// always return the elements
+					return this.each(function() {
 						// create a new controller instance, and stores it in the node.
 						$.data(this, pluginname, controller.newInstance.apply(controller, [ this ].concat(args)));
 					});
-					// always return the element
-					return this;
 				};
 			}
 			
@@ -70,7 +68,7 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 				$.extend( true, this, options );
 				// Bind to remove element to call the destroy method.
 				if (this.element.children().length > 0) {
-					$(this.element.children()[0]).bind('remove.'+this['Class']._fullName, $.proxy(this, 'destroy'));
+					$(this.element.children()[0]).bind('remove.'+this.Class._fullName, $.proxy(this, 'destroy'));
 				}
 			},
 			
@@ -114,7 +112,7 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 				}
 				// Unbind the removal event.
 				if (this.element.children().length > 0) {
-					$(this.element.children()[0]).unbind('remove.'+this['Class']._fullName);
+					$(this.element.children()[0]).unbind('remove.'+this.Class._fullName);
 				}
 			},
 			
