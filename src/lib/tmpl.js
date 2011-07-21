@@ -11,7 +11,6 @@
 		
 		return this.each(function() {
 			var el = $(this);
-			console.log('Each: ', this, arguments);
 			// from the dom element, try to get a reference to any attached controller
 			// ou pas
 			
@@ -20,7 +19,6 @@
 			// get its template, perform the rendering (or just call render method)
 			
 			// feels heavy, for really no gain.
-			console.log('data: ', el.data());
 			$.each(el.data(), function(i, el) {
 				if(el instanceof Controller) {
 					el.render(data);
