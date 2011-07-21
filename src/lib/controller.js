@@ -33,22 +33,33 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 
 			var controller = this, pluginname = this.pluginName || this._fullName;
 
-			// create jQuery plugin
-			if (!$.fn[pluginname]) {
-				$.fn[pluginname] = function(options) {
-					var args = $.makeArray(arguments);
-					// if the arg is a method on this controller
-					
-					// always return the elements
-					return this.each(function() {
-						// create a new controller instance, and stores it in the node.
-						$.data(this, pluginname, controller.newInstance.apply(controller, [ this ].concat(args)));
-					});
-				};
+			// create jQuery plugin, if plugin name is set and non conflicting method
+			if (!pluginname || $.fn[pluginname]) {
+				return;
 			}
 			
-			
-			
+			// plugin helper, creates the controller instance, binds to the dom element
+			$.fn[pluginname] = function(options) {
+				var args = $.makeArray(arguments);
+				// if the arg is a method on this controller
+
+				// always return the elements
+				return this.each(function() {
+					// create a new controller instance, and stores it in the node.
+					var inst = controller.newInstance.apply(controller, [ this ].concat(args));
+					
+
+					// compile template for later use, templates are registered as tmpl.pluginname
+					// compiled function are attached to controller instance as this.tmpl
+					// todo: see if it's better to just replace the template property (raw string)
+					// with this compiled template
+					if(inst.template) {
+						inst.tmpl = $.template('tmpl' + pluginname, inst.template);
+					}
+
+					$.data(this, pluginname, inst);
+				});
+			};
 		}
 
 		}, {
@@ -118,12 +129,18 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 			
 			/**
 			 * Renders current widget with the template specified in
-			 * this.options.template. If none is defined, it used a
-			 * view with the same name of the controller
+			 * this.prototype.template.
 			 */
 			render : function(data, options) {
-				$.tmpl(this.template, data, options).appendTo(this.element.empty());
-				return this;
+				// if none is specified
+				
+				if(!this.tmpl) {
+					// no tmpl provided, fallback silently
+					return this;
+				}
+				
+				return this.element.empty()
+					.append($.tmpl((this.tmpl), data));
 			}
 		});
 

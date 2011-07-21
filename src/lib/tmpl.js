@@ -19,9 +19,9 @@
 			// get its template, perform the rendering (or just call render method)
 			
 			// feels heavy, for really no gain.
-			$.each(el.data(), function(i, el) {
-				if(el instanceof Controller) {
-					el.render(data);
+			$.each(el.data(), function(i, prop) {
+				if(prop instanceof Controller) {
+					prop.render(data);
 				}
 			});
 			

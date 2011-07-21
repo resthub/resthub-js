@@ -1,15 +1,16 @@
 ﻿/**
  * ## Basic Console Testsuite
+ *
  */
 require(['text!test/render/tmpl.html', 'lib/resthub'], function(tmpl) {
-     
-    module('render');
     
     var main = $('#qunit-fixture'),
     data = {title: 'Foobar', content: 'foobar', lang: 'en'},
     cleaner = function(res) {
         return $.trim(res.replace(/>\s+</g, '><'));
     };
+    
+    module('render');
     
     test('require should load text dependency', 1, function() {
         ok(tmpl, 'tmpl string and require !text ok.')
@@ -34,6 +35,18 @@ require(['text!test/render/tmpl.html', 'lib/resthub'], function(tmpl) {
         // init controller... and render
         main.test().render(data);
         
+        equals(cleaner(main.html()), cleaner(output), 'templating result is ok');
+    });
+    
+    test('a controller can be defined without template, the render method is then a noop.', function() {
+        var output = main.html();
+
+        // hmm, controller api... New controller means a new global...
+        var TestController = Controller.extend('NotmplController', {});
+        
+        // init controller... and render
+        main.notmpl().render(data);
+
         equals(cleaner(main.html()), cleaner(output), 'templating result is ok');
     });
     
