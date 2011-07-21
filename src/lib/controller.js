@@ -60,88 +60,85 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 					$.data(this, pluginname, inst);
 				});
 			};
-		}
+		}}, {
+			
+		template: '',
 
-		}, {
-			
-			template: '',
-			
-			/**
-			 * Handle for event subscription.
-			 * Automatically unsubscribed when the controller is destroyed.
-			 */
-			handles: [],
-			
-			setup: function( element, options ) {
-				console.log('setup this > ', this);
-				this.element = $(element);
-				this.handles = [];
-				$.extend( true, this, options );
-				// Bind to remove element to call the destroy method.
-				if (this.element.children().length > 0) {
-					$(this.element.children()[0]).bind('remove.'+this.Class._fullName, $.proxy(this, 'destroy'));
-				}
-			},
-			
-			/**
-			 * Subscribe an method of this controller (or an anonymous function)
-			 * to an event, keeping the returned handle for automatic removal
-			 * during destroy.
-			 * If eventType is an array, the handler is bound to all events.
-			 * 
-			 * @param eventType Type of event subscribed. Can be an array.
-			 * @param callback anonymous function executed in this controller 
-			 * context, or name of an existing method (name is string).
-			 */
-			subscribe: function(eventType, callback) {
-				var bound;
-				if (jQuery.isFunction(callback)) {
-					bound = $.proxy(callback, this);
-				} else {
-					bound = $.proxy(this, callback);
-				}
-				if (!jQuery.isArray(eventType)) {
-					eventType = [eventType];
-				}
-				for (var i = 0; i < eventType.length; i++) {
-					// Register the callback and kept the handle.
-					this.handles.push($.subscribe(eventType[i], bound));
-				}
-			}, // subscribe().
-			
-			/**
-			 * Destroy function, invoked when the rendering is removed.
-			 * May be overrited to add specific finalization code.
-			 * 
-			 * <b>Don't forget to call this._super() in overriden methods.</b>
-			 * Unsubribe all event handles stored in this.handles.
-			 */
-			destroy: function() {
-				// Unsubscribed known handles
-				for (var i = 0; this.handles && i < this.handles.length; i++) {
-					$.unsubscribe(this.handles[i]);
-				}
-				// Unbind the removal event.
-				if (this.element.children().length > 0) {
-					$(this.element.children()[0]).unbind('remove.'+this.Class._fullName);
-				}
-			},
-			
-			/**
-			 * Renders current widget with the template specified in
-			 * this.prototype.template.
-			 */
-			render : function(data, options) {
-				// if none is specified
-				
-				if(!this.tmpl) {
-					// no tmpl provided, fallback silently
-					return this;
-				}
-				
-				return this.element.empty()
-					.append($.tmpl((this.tmpl), data));
+		/**
+		 * Handle for event subscription.
+		 * Automatically unsubscribed when the controller is destroyed.
+		 */
+		handles: [],
+
+		setup: function( element, options ) {
+			console.log('setup this > ', this);
+			this.element = $(element);
+			this.handles = [];
+			$.extend( true, this, options );
+			// Bind to remove element to call the destroy method.
+			if (this.element.children().length > 0) {
+				$(this.element.children()[0]).bind('remove.'+this.Class._fullName, $.proxy(this, 'destroy'));
 			}
-		});
+		},
 
+		/**
+		 * Subscribe an method of this controller (or an anonymous function)
+		 * to an event, keeping the returned handle for automatic removal
+		 * during destroy.
+		 * If eventType is an array, the handler is bound to all events.
+		 * 
+		 * @param eventType Type of event subscribed. Can be an array.
+		 * @param callback anonymous function executed in this controller 
+		 * context, or name of an existing method (name is string).
+		 */
+		subscribe: function(eventType, callback) {
+			var bound;
+			if (jQuery.isFunction(callback)) {
+				bound = $.proxy(callback, this);
+			} else {
+				bound = $.proxy(this, callback);
+			}
+			if (!jQuery.isArray(eventType)) {
+				eventType = [eventType];
+			}
+			for (var i = 0; i < eventType.length; i++) {
+				// Register the callback and kept the handle.
+				this.handles.push($.subscribe(eventType[i], bound));
+			}
+		}, // subscribe().
+
+		/**
+		 * Destroy function, invoked when the rendering is removed.
+		 * May be overrited to add specific finalization code.
+		 * 
+		 * <b>Don't forget to call this._super() in overriden methods.</b>
+		 * Unsubribe all event handles stored in this.handles.
+		 */
+		destroy: function() {
+			// Unsubscribed known handles
+			for (var i = 0; this.handles && i < this.handles.length; i++) {
+				$.unsubscribe(this.handles[i]);
+			}
+			// Unbind the removal event.
+			if (this.element.children().length > 0) {
+				$(this.element.children()[0]).unbind('remove.'+this.Class._fullName);
+			}
+		},
+
+		/**
+		 * Renders current widget with the template specified in
+		 * this.prototype.template.
+		 */
+		render : function(data, options) {
+			// if none is specified
+
+			if(!this.tmpl) {
+				// no tmpl provided, fallback silently
+				return this;
+			}
+
+			return this.element.empty()
+				.append($.tmpl((this.tmpl), data));
+		}
+	});
 });
