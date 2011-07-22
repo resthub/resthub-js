@@ -6,6 +6,10 @@
  */
 define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 
+	// A global GUID counter for objects
+	var	uid = 0;
+
+
 	return Class.extend("Controller", {
 
 
@@ -47,16 +51,6 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 				return this.each(function() {
 					// create a new controller instance, and stores it in the node.
 					var inst = controller.newInstance.apply(controller, [ this ].concat(args));
-					
-
-					// compile template for later use, templates are registered as tmpl.pluginname
-					// compiled function are attached to controller instance as this.tmpl
-					// todo: see if it's better to just replace the template property (raw string)
-					// with this compiled template
-					if(inst.template) {
-						inst.tmpl = $.template('tmpl' + pluginname, inst.template);
-					}
-
 					$.data(this, pluginname, inst);
 				});
 			};
@@ -71,10 +65,18 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 		handles: [],
 
 		setup: function( element, options ) {
-			console.log('setup this > ', this);
 			this.element = $(element);
 			this.handles = [];
 			$.extend( true, this, options );
+			
+			// compile template for later use, templates are registered as tmpl.pluginname
+			// compiled function are attached to controller instance as this.tmpl
+			// todo: see if it's better to just replace the template property (raw string)
+			// with this compiled template
+			if(this.template) {
+				this.tmpl = $.template('tmpl_' + ++uid, this.template);
+			}
+			
 			// Bind to remove element to call the destroy method.
 			if (this.element.children().length > 0) {
 				$(this.element.children()[0]).bind('remove.'+this.Class._fullName, $.proxy(this, 'destroy'));
