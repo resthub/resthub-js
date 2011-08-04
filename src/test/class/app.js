@@ -122,19 +122,6 @@ define(['lib/class'], function(Class) {
 		var john = new Shark('John');
 		var tim = new Dolphin('Tim');
 		
-		
-
-		$('#instancePolymorphism').click(function() {
-			var ted = new Animal('Ted');
-			var harry = new Mammal('Harry');
-			var john = new Shark('John');
-			var tim = new Dolphin('Tim');
-			$('#main').html('ancestor method. ' + ted.shout() + '  (awaited: "Ted Animal say: GRRRRRRRRRAAAAAAA ! (Animal scream !)")' +
-					'<br/>ancestor method with subclass overloaded attribute. ' + harry.shout() + '  (awaited: "Harry Mammal Animal say: grrrraaa ! (Weak mammal scream)")' +
-					'<br/>subclass overloaded method. ' + john.shout() +  '  (awaited: "Shark don\'t scream, they just eat fish")' +
-					'<br/>subclass extended method. ' + tim.shout() + '  (awaited: "Shark don\'t scream, they just eat fish (Dolphins are just gay sharks)")');
-		});
-
 		equals(ted.shout(), 'Ted Animal say: GRRRRRRRRRAAAAAAA ! (Animal scream !)', 'should scream');
 		equals(harry.shout(), 'Harry Mammal Animal say: grrrraaa ! (Weak mammal scream)', 'should scream');
 		equals(john.shout(), "Shark don't scream, they just eat fish");
