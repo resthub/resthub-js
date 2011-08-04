@@ -78,9 +78,7 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 			}
 			
 			// Bind to remove element to call the destroy method.
-			if (this.element.children().length > 0) {
-				$(this.element.children()[0]).bind('remove.'+this.Class._fullName, $.proxy(this, 'destroy'));
-			}
+			this.element.bind('remove.'+this.Class._fullName, $.proxy(this.destroy, this));
 		},
 
 		/**
@@ -122,25 +120,36 @@ define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
 				$.unsubscribe(this.handles[i]);
 			}
 			// Unbind the removal event.
-			if (this.element.children().length > 0) {
-				$(this.element.children()[0]).unbind('remove.'+this.Class._fullName);
-			}
+			this.element.unbind('remove.'+this.Class._fullName);
 		},
 
 		/**
 		 * Renders current widget with the template specified in
 		 * this.prototype.template.
+		 * 
+		 * mdl: todo, see it destroy event bypass is really needed (and potentialy dangerous)
+		 * With proper instance attachement to the correct element, there's no need to this hacky thing,
+		 * problem is coming from the fact that instances were attached to the first children element
+		 * for no reason.
 		 */
 		render : function(data, options) {
+			var fullName = this['Class']._fullName;
+			// prevent destroy event from occuring while rendering
+			this.element.unbind('.' + fullName);
+			
 			// if none is specified
-
 			if(!this.tmpl) {
 				// no tmpl provided, fallback silently
 				return this;
 			}
 
-			return this.element.empty()
-				.append($.tmpl((this.tmpl), data));
+			this.element.empty()
+				.append($.tmpl(this.tmpl, data, options));
+				
+			// prevent destroy event from occuring while rendering
+			this.element.bind('remove.'+ fullName, $.proxy(this.destroy, this));
+			
+			return this;
 		}
 	});
 });
