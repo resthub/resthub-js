@@ -44,27 +44,19 @@
 		<!-- Contains all RESThub artifacts and transitive dependencies -->
 		<repository>
 			<id>resthub</id>
-			<url>http://resthub.org/nexus/content/groups/resthub</url>
+			<url>http://nexus.pullrequest.org/content/groups/resthub</url>
 		</repository>
 	</repositories>
 
-	<pluginRepositories>
-		<!-- Contains all RESThub artifacts and transitive dependencies -->
-		<pluginRepository>
-			<id>resthub</id>
-			<url>http://resthub.org/nexus/content/groups/resthub</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<distributionManagement>
-		<repository>
-			<id>resthub-repo</id>
-			<url>http://resthub.org/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>resthub-repo-snapshot</id>
-			<url>http://resthub.org/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
+        <repository>
+            <id>pullrequest-releases</id>
+            <url>http://nexus.pullrequest.org/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>pullrequest-snapshots</id>
+            <url>http://nexus.pullrequest.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
