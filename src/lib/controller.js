@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Resthub-controller is a generic javascript controller for resthub
  * applications. It provides utility functions for basic operations.
  * 
  * <b>Do not remove the lib/jqueryui/widget inclusion: its needed for the destroy mechanism.</b>
  */
-define(['lib/class', 'lib/tmpl', 'lib/jqueryui/widget'], function(Class) {
+define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(Class) {
 
 	// A global GUID counter for objects
 	var	uid = 0;

@@ -46,6 +46,26 @@ home.js::
 	
 The Controller argument will get the return of the lib/controller.js's inner function. Resthub main lib doesn't return anything, so we put it at the end of the dependency lib, and don't have to match it to any variable.
 
+Avoid caching issues
+--------------------
+
+In order to avoid caching issues when, for example, you update your JS or HTML files, you should use the `urlArgs RequireJS attribute <http://requirejs.org/docs/api.html#config>`_. You could filter the ${buildNumber} with you build tool (Maven, Ant, Gradle) at each build.
+
+
+index.html::
+
+	<script src="lib/jquery.js" type="text/javascript" charset="utf-8" ></script>
+	<script type="text/javascript">
+  	require({urlArgs: "kazanversion=${buildNumber}"}, ['app']);
+	</script>
+
+After filtering::
+
+	<script src="lib/jquery.js" type="text/javascript" charset="utf-8" ></script>
+	<script type="text/javascript">
+  	require({urlArgs: "kazanversion=763625256262-07082011"}, ['app']);
+	</script> 
+
 More informations
 -----------------
 

@@ -3,35 +3,40 @@ Controller
 ==========
 
 You've got routes, script loading, OOP. Thoses are very low level tools. 
-To allow you building a strong and understandable Rich Application, RESThub-js gives you an tiny MVC pattern.
+To allow you building a strong and understandable Rich Application, RESThub JS gives you a tiny MVC pattern.
 
-The Controller handles presentation and some (not much) business logic.
-It's strongly linked with a Template (see afterward), a.k.a view.
+A Controller is a autonomous component that will be attached to a DOM node (div, span) in order to display itself.
+It is statefull, so you can create many Controller instances, they will render themselves based on there own atributes.
+
+Template loading is based on `RequireJS text plugin <http://requirejs.org/docs/api.html#text>`_ and `jQuery tmpl <https://github.com/jquery/jquery-tmpl>`_.
 
 Controller definition
 ---------------------
 
-Controllers are Classes, so here is an exemple of declaration::
+Controllers are Classes, so here is an example of declaration::
 	
-	define([ 'lib/controller', 'lib/jqueryui/button' ], function(Controller) {
+	define([ 'text!home.html', lib/controller', 'lib/jqueryui/button' ], function(tmpl, Controller) {
 	
-		return Controller.extend("HomeController", {
+		return Controller.extend("MyHomeController", {
 		
-			template : 'home.html',
-			
-			_myName : "I'm called HomeController",
+			template : tmpl,
+			myName : "I'm called HomeController",
 			
 			/**
 			 * Constructor. Display template and creates widgets.
 			 */
 			init : function() {
+				var data = { user: $.storage.get(Constants.USER_KEY) };
 				// Calls the view rendering 
-				this.render();
+				this.render(data);
 			}
 		}
 	});
 
-The *template* attribute gives the path of the related view. We'll discuss templating afterward.
+There are 3 main points on the example :
+ * The home.html html template is loaded thanks to the text plugin, and stored in the tmpl variable
+ * tmpl is the compiled template, it is stored in the this.template attribute in order to be used later by the rendering process 
+ * render function dynamize the home.html html template with datas passed as parameter
 
 We saw in the class paragraph that init() method acts like a constructor. So during construction, the view will be rendered.
 
@@ -41,19 +46,19 @@ Controller usage
 To instantiate a controller, we need to require it, and then to use it as a jQuery plugin::
 
 		$.route('#/home', function() {
-			require(['home'], function() {
-				$('#myDiv').home();
+			require(['myhome'], function() {
+				$('#myDiv').my_home();
 			});
 		});
 		
+The name of the jQuery plugin is the name of your controller, without the 'Controller' part, all in lowercase, with _ separating words : 
+ * MyHomeController -> $('#myDiv').my_home();
+ * HomeController -> $('#myDiv').home();
+
 Select an existing DOM node (the one with id 'myDiv' in the example), and apply the desired controller on it.
 
-The name of the jQuery plugin is the name of your controller, without the 'Controller' part, all in lowercase, with _ separating words.
-
-Parameters passed to the controller plugin are usable in the init() method.
-
 Add template interaction
---------------------------
+------------------------
 
 Now we want to add some interactivity: let's plug a jQuery-UI button widget::
 
