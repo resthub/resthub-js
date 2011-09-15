@@ -7,7 +7,8 @@
 (function($, exports) {
 
 	var tests = [
-	  'test/bindable/app',
+		'test/autoremove/app',
+		'test/bindable/app',
 		'test/class/app',
 		'test/console/app',
 		'test/controller/app',

@@ -65,7 +65,14 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 		handles: [],
 
 		setup: function( element, options ) {
+			// Destroy previous DOM affected Controller
+			for (var ctrl in $(element).data()) {
+				if ($(element).data(ctrl) instanceof Class) {
+					$(element).data(ctrl).destroy();
+				}
+			}
 			this.element = $(element);
+			
 			this.handles = [];
 			$.extend( true, this, options );
 			
@@ -126,17 +133,8 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 		/**
 		 * Renders current widget with the template specified in
 		 * this.prototype.template.
-		 * 
-		 * mdl: todo, see it destroy event bypass is really needed (and potentialy dangerous)
-		 * With proper instance attachement to the correct element, there's no need to this hacky thing,
-		 * problem is coming from the fact that instances were attached to the first children element
-		 * for no reason.
 		 */
 		render : function(data, options) {
-			var fullName = this['Class']._fullName;
-			// prevent destroy event from occuring while rendering
-			this.element.unbind('.' + fullName);
-			
 			// if none is specified
 			if(!this.tmpl) {
 				// no tmpl provided, fallback silently
@@ -145,9 +143,6 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 
 			this.element.empty()
 				.append($.tmpl(this.tmpl, data, options));
-				
-			// prevent destroy event from occuring while rendering
-			this.element.bind('remove.'+ fullName, $.proxy(this.destroy, this));
 			
 			return this;
 		}
