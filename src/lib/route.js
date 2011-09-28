@@ -96,6 +96,7 @@ define(['lib/console', 'lib/pubsub'], function () {
 				
 				if(typeof $.route.routes[path] == 'undefined'){
 					console.info('No route registered for path = ' + path);
+					$.publish('unknown-route', [path, args]);
 					return;
 				}
 				
