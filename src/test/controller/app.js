@@ -16,7 +16,6 @@ define(['lib/route', 'test/controller/widget'], function() {
 		html = widget.html()
 			// clean up empty space
 			.replace(/>\s+</g, '><');
-		
 		equals(html, expected, 'Control rendering is ok');
 		
 		ok(widget instanceof jQuery, 'Widgets are valid jQuery instance');

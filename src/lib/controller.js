@@ -9,9 +9,7 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 	// A global GUID counter for objects
 	var	uid = 0;
 
-
 	return Class.extend("Controller", {
-
 
 		// used to remove the controller from the name
 		_underscoreAndRemoveController : function(className) {
@@ -24,7 +22,6 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 		},
 
 		init : function() {
-			
 			// if you didn't provide a name, or are controller,
 			// don't do anything
 			if (!this.shortName || this.fullName == "jQuery.Controller") {
@@ -34,14 +31,12 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 			// cache the underscored names
 			this._fullName = this._underscoreAndRemoveController(this.fullName);
 			this._shortName = this._underscoreAndRemoveController(this.shortName);
-
 			var controller = this, pluginname = this.pluginName || this._fullName;
 
 			// create jQuery plugin, if plugin name is set and non conflicting method
 			if (!pluginname || $.fn[pluginname]) {
 				return;
 			}
-			
 			// plugin helper, creates the controller instance, binds to the dom element
 			$.fn[pluginname] = function(options) {
 				var args = $.makeArray(arguments);

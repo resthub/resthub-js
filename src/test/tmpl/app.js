@@ -1,7 +1,7 @@
 /**
  * ## Basic Console Testsuite
  */
-require(['lib/resthub'], function() {
+require(['text!test/tmpl/tmpl.fixture.html', 'lib/resthub'], function(template) {
 
     var tmpl = '<li><a href="${url}">${name}</a></li>',
     data = [{
@@ -23,10 +23,8 @@ require(['lib/resthub'], function() {
         
         // $.fn.render do not return itself, no chaining sugar...
         // also it works synchronously...
-        var el = $('ul'),
-        path = /src\/test\/tmpl/.test(location.pathname) ? 'tmpl.fixture.html' : 'tmpl/tmpl.fixture.html';
-        
-        el.render(path, data)
+        var el = $('ul');
+        el.empty().append($.tmpl(template, data));
         
         equals($.trim(el.text()), 'Remote:Resig Remote:Reed Remote:Moore', 'using remote should be ok');
     });
