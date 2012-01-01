@@ -2,7 +2,6 @@ define(['lib/route', 'test/autoremove/ctrl'], function() {
 	
 	var main = $('#qunit-fixture');
 	
-	
 	module('controller');
 
 	test('should be ok with multiple call of a ctrl on a unique DOM object', function() {

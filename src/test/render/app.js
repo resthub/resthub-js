@@ -33,7 +33,7 @@ require(['text!test/render/tmpl.html', 'lib/resthub'], function(tmpl) {
         });
             
         // init controller... and render
-        main.test().render(data);
+        main.test().data('test').render(data);
         
         equals(cleaner(main.html()), cleaner(output), 'templating result is ok');
     });
@@ -45,7 +45,7 @@ require(['text!test/render/tmpl.html', 'lib/resthub'], function(tmpl) {
         var TestController = Controller.extend('NotmplController', {});
         
         // init controller... and render
-        main.notmpl().render(data);
+        main.notmpl().data('notmpl').render(data);
 
         equals(cleaner(main.html()), cleaner(output), 'templating result is ok');
     });
