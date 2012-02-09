@@ -1,9 +1,6 @@
 (function() {
 
-// due to two possible test location
-var file = /controller/.test(location.pathname) ? 'widget.html' : 'test/controller/widget.html';
-
-define(['text!' + file, 'lib/controller'], function(tmpl, Controller) {
+define(['text!test/controller/widget.html', 'lib/controller'], function(tmpl, Controller) {
 
 	return Controller.extend("WidgetController", {
 

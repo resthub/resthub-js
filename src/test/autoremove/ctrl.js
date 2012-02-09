@@ -1,9 +1,6 @@
 (function() {
 
-// due to two possible test location
-var file = /autoremove/.test(location.pathname) ? 'ctrl.html' : 'test/autoremove/ctrl.html';
-
-define(['text!' + file, 'lib/controller'], function(tmpl, Controller) {
+define(['text!test/autoremove/ctrl.html', 'lib/controller'], function(tmpl, Controller) {
 
 	return Controller.extend("CtrlController", {
 
