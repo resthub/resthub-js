@@ -27,7 +27,8 @@ define([ 'lib/repository', 'lib/oauth2client' ], function(Repository, OAuth2Clie
 		_ajax : function(url, callback, type, data, errorCallback, settings) {
 			// Gets the token existing in session.
 			var accessToken = $.storage.get(OAuth2Client.storageKey);
-			var _settings = {
+			var self = this;
+                        var _settings = {
 					url : url,
 					dataType : this.defaults.dataType,
 					contentType : this.defaults.contentType,
@@ -38,7 +39,7 @@ define([ 'lib/repository', 'lib/oauth2client' ], function(Repository, OAuth2Clie
 					beforeSend: function( XMLHttpRequest ) {
 						if(accessToken && "access_token" in accessToken) {
 							XMLHttpRequest.setRequestHeader("Authorization", 
-									this.authorizationScheme + ' '+ accessToken.access_token);
+									self.authorizationScheme + ' '+ accessToken.access_token);
 						}
 					}
 				};
