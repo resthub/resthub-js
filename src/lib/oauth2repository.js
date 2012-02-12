@@ -8,7 +8,7 @@ define([ 'lib/repository', 'lib/oauth2client' ], function(Repository, OAuth2Clie
 		/**
 		 * Authorization scheme, usually set to OAuth2 (old draft specs) or Bearer (recent draft specs)
 		 */
-		authorizationScheme: 'OAuth2 ',
+		authorizationScheme: 'OAuth2',
 
 		/**
 		 * This callback is invoked when an authentication error occured.
