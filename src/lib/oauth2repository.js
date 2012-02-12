@@ -6,6 +6,11 @@ define([ 'lib/repository', 'lib/oauth2client' ], function(Repository, OAuth2Clie
 	return Repository.extend("OAuth2Repository", {
 	
 		/**
+		 * Authorization scheme, usually set to OAuth2 (old draft specs) or Bearer (recent draft specs)
+		 */
+		authorizationScheme: 'OAuth2 ',
+
+		/**
 		 * This callback is invoked when an authentication error occured.
 		 * Used to have a single central management of 401 and 400 errors.
 		 * Please overload it with a function taking three parameters:
@@ -33,7 +38,7 @@ define([ 'lib/repository', 'lib/oauth2client' ], function(Repository, OAuth2Clie
 					beforeSend: function( XMLHttpRequest ) {
 						if(accessToken && "access_token" in accessToken) {
 							XMLHttpRequest.setRequestHeader("Authorization", 
-									'OAuth2 '+ accessToken.access_token);
+									this.authorizationScheme + ' '+ accessToken.access_token);
 						}
 					}
 				};
