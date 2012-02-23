@@ -2,6 +2,16 @@ define(['lib/console', 'lib/pubsub'], function () {
 	(function($) {
 		
 		/**
+		 * A shortcut to $.route(url, true).
+		 *
+		 * URL hash is not changed in the browser to
+		 * avoid looping when history.back() is called.
+		 */
+		$.redirect = function(url){
+			$.route(url, true);
+		}
+
+		/**
 		 * Define or run a route depending parameters.
 		 * A route is defined by a location hash, that will trigger the callback passed in parameter
 		 * 
@@ -28,6 +38,10 @@ define(['lib/console', 'lib/pubsub'], function () {
 		 * When a route is runned, the route-run event is dispatched (could be catched thanks to $.subscribe())
 		 * $.route('#/route1');
 		 * 
+		 * Define a route just for a redirect
+		 * $.route('#/oldRoute', function() {
+		 *		$.route('#/newRoute', true); /** Pass true to avoid looping when history.back() is called
+		 * });
 		 */
 		$.route = function() {
 			if(arguments.length == 0 || arguments.length > 2) {
@@ -35,6 +49,9 @@ define(['lib/console', 'lib/pubsub'], function () {
 				return;
 			}
 			
+			var isRouteDefinition = arguments.length == 2 && typeof arguments[1] === 'function';
+			var isRouteCall = arguments.length == 1 || (arguments.length == 2 && typeof arguments[1] === 'boolean');
+
 			var path = arguments[0];
 			
 			// Save the original path
@@ -64,7 +81,7 @@ define(['lib/console', 'lib/pubsub'], function () {
 				}
 			}
 			// Run route
-			if(arguments.length == 1) {
+			if(isRouteCall) {
 				
 				// Check route pattern matching
 				console.debug("Begin matching tests for route " + path);
@@ -87,7 +104,7 @@ define(['lib/console', 'lib/pubsub'], function () {
 						
 						for(var i=1; i<path_parts.length; i++){
 							args[registered_route_parts[i]] = path_parts[i];
-						}		
+						}
 						path = registered_route;
 						break;
 					}
@@ -103,7 +120,10 @@ define(['lib/console', 'lib/pubsub'], function () {
 				var hash = $(location).attr('hash');
 				// Change window hash only if needed: natural browsing already changed the hash, contrary to programmatic
 				// calls to $.route('XXX') that need a manual hash change.
-				if (hash !== real_path) {
+				
+				// in order to avoid looping when coming back to a redirect route, we can inhibit the hash change.
+				var forceInhibitHashChange = !!arguments[1];
+				if ((hash !== real_path) && (!forceInhibitHashChange)) {
 					// If we manually change the hash, we must inhibit the dispatcher, to avoid looping.
 					$.route.dispacher._inhibit = true;
 					$.route.dispacher._last = real_path;
@@ -116,11 +136,11 @@ define(['lib/console', 'lib/pubsub'], function () {
 				// Execute route callbacks.
 				var callbacks = $.route.routes[path];
 				for(var i=0; i<callbacks.length; i++){
-					callbacks[i](args);  
-				}			
+					callbacks[i](args);
+				}
 			
 				// Register route
-			} else if(arguments.length == 2) {
+			} else if(isRouteDefinition) {
 				var callback = arguments[1];
 				
 				if(typeof $.route.routes[path] == 'undefined'){
@@ -128,7 +148,7 @@ define(['lib/console', 'lib/pubsub'], function () {
 				}
 				$.route.routes[path].push(callback);
 				console.debug('Route ' + path + ' registered !');
-			} 		
+			}
 		};
 		
 		$.route.routes = {};
@@ -142,11 +162,11 @@ define(['lib/console', 'lib/pubsub'], function () {
 		$.route.dispacher._onhashchange = function() {
 			var hash = $(location).attr('hash');
 			// Dispatching may be inhibited if the change is trigger by a programmatic $.route() call.
-		    if(!$.route.dispacher._inhibit && $.route.dispacher._last != hash){
-		    	$.route.dispacher._last = hash;
-		        $.route(hash);
-		    }
-		    $.route.dispacher._inhibit = false;
+			if(!$.route.dispacher._inhibit && $.route.dispacher._last != hash){
+				$.route.dispacher._last = hash;
+				$.route(hash);
+			}
+			$.route.dispacher._inhibit = false;
 		};
 		
 		if ("onhashchange" in window) {
@@ -159,3 +179,4 @@ define(['lib/console', 'lib/pubsub'], function () {
 		
 	})(jQuery);
 });
+
