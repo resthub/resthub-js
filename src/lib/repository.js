@@ -13,7 +13,8 @@ define([ 'lib/class', 'lib/jquery/jquery.pnotify' ], function(Class) {
 	 *
 	 *  	BookingRepository.read(callback, id);
 	 *  
-	 *  Be carefull about 2 points :
+	 *  Be carefull about 3 points :
+	 *	 - The data parameter is text, so be sure to pass $.toJSON(this.myattribute) and not directly this.myattribute as parameter
 	 *   - Don't forget the second pair of {} in your repository declaration, it means that vars and functions declared in
 	 *     the first one are static. Read Class JSdoc for more details
 	 *   - you may need to use $.proxy(this, 'callback') instead just callback if you use "this" object in your callback

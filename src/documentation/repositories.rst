@@ -34,7 +34,7 @@ It provides::
 		 */
 		list: function(callback, page, size)
 
-All we need to do is to declare a subclass, with the root url of your REST WebServer::
+All we need to do is to declare a subclass, with the root url of your REST WebServer in a user.repository.js file. In this example, we extend the basic CRUD repository in order to specify the ROOT URL (api/user) and to add a specific method (check) that makes an ajax call to the distant webserver. Don't forget the last bracket pair {}, that means the the methods we add are statics, like original Repository ones ::
 
 	define([ 'lib/repository' ], function(Repository) {
 
@@ -48,7 +48,12 @@ All we need to do is to declare a subclass, with the root url of your REST WebSe
 
 		}, {});
 	});
-	
-In this example, we add a specific functionality that makes an ajax call to the distant webserver.
 
+
+When you want to use this user repository :
+	* Import the user.repository thanks to RequireJS
+	* Call the static method you need, for exemple UserRepository.save($.proxy(this, '_endOfBooking'), $.toJSON(this.booking));
+	* The data parameter is text, so be sure to pass $.toJSON(this.myattribute) and not directly this.myattribute
+	* The callback will be called after the asynchronous request has been processed, and by default you will loose the current context. If you want to keep the current context (for exemple where this is your Controller instance), you will need to use the $.proxy(this, '_myCallback') instead of this._myCallback
+	
 You can easily create mock repositories by returning JSON files on the client side (mostly for read and list functions).

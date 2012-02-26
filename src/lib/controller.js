@@ -4,7 +4,7 @@
  * 
  * <b>Do not remove the lib/jqueryui/widget inclusion: its needed for the destroy mechanism.</b>
  */
-define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(Class) {
+define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget', 'lib/console'], function(Class) {
 
 	// A global GUID counter for objects
 	var	uid = 0;
@@ -126,18 +126,31 @@ define(['lib/class', 'lib/jquery/jquery.tmpl', 'lib/jqueryui/widget'], function(
 		},
 
 		/**
-		 * Renders current widget with the template specified in
-		 * this.prototype.template.
+		 * Renders current widget with the template specified in this.prototype.template.
+		 * 
+		 * @param data Mandatory, the data to render. This can be any JavaScript type, including Array or Object.. For example an object {value : 'test'} passed as data parameter will be referenced as ${value} in the template
+		 * @param options An optional map of user-defined key-value pairs. Extends the tmplItem data structure, available to the template during rendering
+		 * @param el Optional, used to override the default element when the template will be rendered (by default this.element)
+		 * @param template Optional, used to override the default template (by default this.tmpl)
 		 */
-		render : function(data, options) {
-			// if none is specified
-			if(!this.tmpl) {
-				// no tmpl provided, fallback silently
+		render : function(data, options, el, tmpl) {
+			
+			if(!tmpl) {
+				tmpl = this.tmpl;
+			}
+			// if no template is defined
+			if(!tmpl) {
+				// no tmpl provided,
+				console.warn("No template provided for this " + this.Class._fullName + " instance, so skip rendering");
 				return this;
 			}
 
-			this.element.empty()
-				.append($.tmpl(this.tmpl, data, options));
+			if(!el) {
+				// If not element was specified, use default one
+				el = this.element;
+			}
+
+			el.empty().append($.tmpl(tmpl, data, options));
 			
 			return this;
 		}

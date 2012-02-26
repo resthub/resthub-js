@@ -8,7 +8,7 @@ To allow you building a strong and understandable Rich Application, RESThub JS g
 A Controller is a autonomous component that will be attached to a DOM node (div, span) in order to display itself.
 It is statefull, so you can create many Controller instances, they will render themselves based on there own atributes.
 
-Template loading is based on `RequireJS text plugin <http://requirejs.org/docs/api.html#text>`_ and `jQuery tmpl <https://github.com/jquery/jquery-tmpl>`_.
+Template loading is based on `RequireJS text plugin <http://requirejs.org/docs/api.html#text>`_ and `jQuery tmpl <http://api.jquery.com/jquery.tmpl/>`_.
 
 Controller definition
 ---------------------
@@ -35,8 +35,8 @@ Controllers are Classes, so here is an example of declaration::
 
 There are 3 main points on the example :
  * The home.html html template is loaded thanks to the text plugin, and stored in the tmpl variable
- * tmpl is the compiled template, it is stored in the this.template attribute in order to be used later by the rendering process 
- * render function dynamize the home.html html template with datas passed as parameter
+ * The template is stored in the this.template attribute, and will be compiled during Controller initialization in order to be used later by the rendering process 
+ * render function dynamize the home.html html template with data passed as parameter
 
 We saw in the class paragraph that init() method acts like a constructor. So during construction, the view will be rendered.
 
@@ -56,6 +56,19 @@ The name of the jQuery plugin is the name of your controller, without the 'Contr
  * HomeController -> $('#myDiv').home();
 
 Select an existing DOM node (the one with id 'myDiv' in the example), and apply the desired controller on it.
+
+The render method
+-----------------
+
+	/**
+	 * Renders current widget with the template specified in this.prototype.template.
+	 * 
+	 * @param data Mandatory, the data to render. This can be any JavaScript type, including Array or Object.. For example an object {value : 'test'} passed as data arameter will be referenced as ${value} in the template
+	 * @param options Optional map of user-defined key-value pairs. Extends the tmplItem data structure, available to the template during rendering
+	 * @param el Optional, used to override the default element when the template will be rendered (by default this.element)
+	 * @param tmpl Optional, used to override the default template (by default this.tmpl)
+	 */
+	render : function(data, options, el, tmpl);
 
 Add template interaction
 ------------------------
