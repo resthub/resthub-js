@@ -85,7 +85,7 @@ define(['lib/console', 'lib/pubsub'], function () {
 				
 				// Check route pattern matching
 				console.debug("Begin matching tests for route " + path);
-				for(registered_route in $.route.routes){
+				for(var registered_route in $.route.routes){
 
 					var path_pattern = '^' + registered_route.replace(/:\w+\((.*)\)/g, '($1)').replace(/:\w+/g, '([\\w\-]+)') + '$';
 					var path_regexp = new RegExp(path_pattern); 

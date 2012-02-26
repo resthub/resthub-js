@@ -26,7 +26,7 @@ require(['lib/resthub'], function() {
         var tpl = "<strong>${hero}</strong>",
         model = [{hero: "Chuck Norris"}, {hero: "Steven Seagal"}];
        
-        result = $.tmpl( tpl, model ).text();
+        var result = $.tmpl( tpl, model ).text();
         
         equals(result, 'Chuck NorrisSteven Seagal', 'Chuck Norris does not use templates, templates use Chuck Norris');
 
