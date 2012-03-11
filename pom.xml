@@ -28,6 +28,7 @@
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<warSourceDirectory>${basedir}/src</warSourceDirectory>
+					<packagingExcludes>documentation/**,test/**,WEB-INF/**,META-INF/**</packagingExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
