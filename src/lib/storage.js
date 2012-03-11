@@ -2,7 +2,7 @@ define(['lib/jquery', 'lib/json', 'lib/pubsub'], function() {
 (function($) {
 
     if(!localStorage) {
-        throw('localStorage support is required');
+        throw new Error('localStorage support is required');
     }
 
     /**
