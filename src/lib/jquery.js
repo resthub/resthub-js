@@ -173,7 +173,7 @@ var requirejs, require, define;
             config = {
                 waitSeconds: 7,
                 baseUrl: "./",
-                paths: {},
+                paths: {'i18n': 'lib/i18n', 'text': 'lib/text', 'order': 'lib/order'},
                 pkgs: {},
                 catchError: {}
             },
