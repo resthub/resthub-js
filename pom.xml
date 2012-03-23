@@ -28,7 +28,7 @@
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<warSourceDirectory>${basedir}/src</warSourceDirectory>
-					<packagingExcludes>documentation/**,test/**,WEB-INF/**,META-INF/**</packagingExcludes>
+					<packagingExcludes>documentation/**,test/**,WEB-INF/**,META-INF/**,src/resthub.build.js</packagingExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
