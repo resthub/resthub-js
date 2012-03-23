@@ -1,0 +1,1 @@
+node src/lib/r.js -o src/resthub.build.js
