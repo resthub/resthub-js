@@ -60,6 +60,8 @@ Select an existing DOM node (the one with id 'myDiv' in the example), and apply 
 The render method
 -----------------
 
+The render method will display the current Controller based on the template and the data passed as parameters::
+
 	/**
 	 * Renders current widget with the template specified in this.prototype.template.
 	 * 
