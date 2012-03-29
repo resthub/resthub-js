@@ -6,12 +6,12 @@
 	<parent>
 		<artifactId>resthub-parent</artifactId>
 		<groupId>org.resthub</groupId>
-		<version>1.1.2</version>
+		<version>1.1.3</version>
 	</parent>
 
 	<artifactId>resthub-js</artifactId>
 	<packaging>war</packaging>
-	<version>1.1.4-SNAPSHOT</version>
+	<version>1.1.3.1</version>
 	<name>RESThub JS</name>
 	<description>RESThub Javascript framework</description>
 
